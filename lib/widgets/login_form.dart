@@ -1,3 +1,4 @@
+import 'package:bookartify/widgets/password_form_field.dart';
 import 'package:bookartify/widgets/register_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -52,26 +53,8 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 40, vertical: 0),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                      labelText: "Password",
-                      hintText: "Enter your password",
-                      fillColor: const Color(0xFFF5EFE1),
-                      filled: true,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none
-                      )
-                  ),
-                  obscureText: true,
-                  validator: (value) {
-                    if (value?.isEmpty ?? true) {
-                      return "Please, enter your password";
-                    }
-                    // Add more password validation if needed
-                    return null;
-                  },
+                margin: EdgeInsets.symmetric(horizontal: 40),
+                child: PasswordFormField(
                   onChanged: (value) {
                     setState(() {
                       _password = value;
@@ -80,7 +63,8 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 10.0),
+                margin: EdgeInsets.only(top: 10.0, left: 40.0, right: 40.0),
+                width: double.infinity,
                 child: RegisterButton(
                   onPressed: () {
                     if (_formKey.currentState?.validate() ?? false) {

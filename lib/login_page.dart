@@ -1,3 +1,4 @@
+import 'package:bookartify/signup_page.dart';
 import 'package:bookartify/widgets/register_button.dart';
 import 'package:bookartify/widgets/divider_text.dart';
 import 'package:bookartify/widgets/login_form.dart';
@@ -62,11 +63,18 @@ class LoginPage extends StatelessWidget {
                 child: const DividerWithText(text: "or")
             ),
             /* -------- Create account button -------- */
-            RegisterButton(
-              onPressed: () {
-                print("Button clicked");
-              },
-              buttonText: "Create an account",
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 40.0),
+              width: double.infinity,
+              child: RegisterButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignUpPage()),
+                  );
+                },
+                buttonText: "Create an account",
+              ),
             )
           ],
         ),
