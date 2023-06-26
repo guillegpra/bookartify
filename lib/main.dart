@@ -1,3 +1,4 @@
+import 'package:bookartify/home_page.dart';
 import 'package:bookartify/login_page.dart';
 import 'package:bookartify/signup_page.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class Bookartify extends StatelessWidget {
     return MaterialApp(
       title: "BookARtify",
       theme: ThemeData(primarySwatch: Colors.amber),
-      home: const LoginPage(),
+      home: const HomePage(),
     );
   }
 }
