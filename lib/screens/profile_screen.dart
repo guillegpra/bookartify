@@ -1,3 +1,5 @@
+import 'package:bookartify/widgets/user_counter.dart';
+import 'package:bookartify/widgets/user_info.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -31,33 +33,31 @@ class ProfileScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Column(
                 children: [
                   CircleAvatar(
-                    radius: 50,
+                    radius: 40,
                     // backgroundImage: AssetImage("..."),
                   ),
+                  SizedBox(width: 10),
                   Row(
                     children: [
-                      Column(
-                        children: [
-                          Text("Art"),
-                          Text("34") // TODO: change number
-                        ],
+                      UserCounter(
+                        name: "Art",
+                        number: 26 // TODO: change number
                       ),
-                      Column(
-                        children: [
-                          Text("Followers"),
-                          Text("78") // TODO: change number
-                        ],
+                      SizedBox(width: 10),
+                      UserCounter(
+                        name: "Followers",
+                        number: 89 // TODO: change number
                       )
                     ],
                   )
                 ],
               ),
-              Text("username")
+              UserInfo()
             ],
           )
         ],
