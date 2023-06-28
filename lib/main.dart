@@ -21,7 +21,7 @@ class Bookartify extends StatelessWidget {
           Theme.of(context).textTheme,
         )
       ),
-      home: const HomePage(),
+      home: HomePage(),
     );
   }
 }

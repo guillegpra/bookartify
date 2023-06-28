@@ -1,3 +1,4 @@
+import 'package:bookartify/widgets/profile_tabs.dart';
 import 'package:bookartify/widgets/user_counter.dart';
 import 'package:bookartify/widgets/user_info.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +60,9 @@ class ProfileScreen extends StatelessWidget {
               ),
               UserInfo()
             ],
-          )
+          ),
+          SizedBox(height: 5),
+          Expanded(child: ProfileTabs())
         ],
       )
     );
