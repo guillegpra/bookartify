@@ -8,7 +8,7 @@ class ProfileTabs extends StatefulWidget {
   _ProfileTabsState createState() => _ProfileTabsState();
 }
 
-class _ProfileTabsState extends State<ProfileTabs> with SingleTickerProviderStateMixin {
+class _ProfileTabsState extends State<ProfileTabs> with TickerProviderStateMixin, AutomaticKeepAliveClientMixin<ProfileTabs> {
   late TabController _tabController;
 
   @override
@@ -24,7 +24,12 @@ class _ProfileTabsState extends State<ProfileTabs> with SingleTickerProviderStat
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Column(
       children: [
         TabBar(
@@ -41,37 +46,68 @@ class _ProfileTabsState extends State<ProfileTabs> with SingleTickerProviderStat
           child: TabBarView(
             controller: _tabController,
             children: [
-              // Bookart content
-              const ImageGrid(
-                imagePaths: const [
-                  "images/fanart.jpg",
-                  "images/fanart.jpg",
-                  "images/fanart.jpg",
-                  "images/fanart.jpg",
-                  "images/fanart.jpg",
-                  "images/fanart.jpg",
-                  "images/fanart.jpg",
-                  "images/fanart.jpg",
-                ],
-                imageTitles: const [
-                  "Evelyn Hugo",
-                  "Evelyn Hugo",
-                  "Evelyn Hugo",
-                  "Evelyn Hugo",
-                  "Evelyn Hugo",
-                  "Evelyn Hugo",
-                  "Evelyn Hugo",
-                  "Evelyn Hugo",
-                ],
+              // ------ Bookart content ------
+              KeepAliveWrapper(
+                key: ValueKey(0),
+                child: ImageGrid(
+                  imagePaths: const [
+                    "images/fanart.jpg",
+                    "images/fanart.jpg",
+                    "images/fanart.jpg",
+                    "images/fanart.jpg",
+                    "images/fanart.jpg",
+                    "images/fanart.jpg",
+                    "images/fanart.jpg",
+                    "images/fanart.jpg",
+                  ],
+                  imageTitles: const [
+                    "Evelyn Hugo",
+                    "Evelyn Hugo",
+                    "Evelyn Hugo",
+                    "Evelyn Hugo",
+                    "Evelyn Hugo",
+                    "Evelyn Hugo",
+                    "Evelyn Hugo",
+                    "Evelyn Hugo",
+                  ],
+                ),
               ),
-              // Covers content
-              Center(child: Text("Covers")),
-              // Collection content
-              Center(child: Text("Collection")),
+              // ------ Covers content ------
+              KeepAliveWrapper(
+                key: ValueKey(1),
+                child: Center(child: Text("Covers"))
+              ),
+              // ------ Collections content ------
+              KeepAliveWrapper(
+                key: ValueKey(2),
+                child: Center(child: Text("Collection"))
+              ),
             ],
           )
         )
       ],
     );
+  }
+}
+
+class KeepAliveWrapper extends StatefulWidget {
+  final Widget child;
+
+  const KeepAliveWrapper({required this.child, Key? key}) : super(key: key);
+
+  @override
+  _KeepAliveWrapperState createState() => _KeepAliveWrapperState();
+}
+
+class _KeepAliveWrapperState extends State<KeepAliveWrapper>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context); // Call super.build(context) to maintain the state
+
+    return widget.child;
   }
 }
