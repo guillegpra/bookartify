@@ -1,11 +1,10 @@
-import 'package:bookartify/widgets/follow_button.dart';
 import 'package:bookartify/widgets/share_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class UserInfo extends StatelessWidget {
-  const UserInfo({super.key});
+class UserData extends StatelessWidget {
+  const UserData({super.key});
   
   Future<void> _launchUrl() async {
     Uri url = Uri.parse("https://www.goodreads.com/user/sign_in"); // TODO: change url

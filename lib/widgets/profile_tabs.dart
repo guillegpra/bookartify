@@ -1,7 +1,5 @@
 import 'package:bookartify/widgets/image_grid.dart';
-import 'package:bookartify/widgets/post_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class ProfileTabs extends StatefulWidget {
   @override
