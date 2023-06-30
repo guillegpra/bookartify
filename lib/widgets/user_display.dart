@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class UserData extends StatelessWidget {
-  const UserData({super.key});
+class UserDisplay extends StatelessWidget {
+  final String username;
+
+  const UserDisplay({super.key, required this.username});
   
   Future<void> _launchUrl() async {
     Uri url = Uri.parse("https://www.goodreads.com/user/sign_in"); // TODO: change url
@@ -22,7 +24,7 @@ class UserData extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              "username",
+              username,
               style: GoogleFonts.dmSerifDisplay(
                 fontWeight: FontWeight.bold,
                 fontSize: 24
