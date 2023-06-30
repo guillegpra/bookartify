@@ -33,30 +33,74 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
           ),
-          Card(
-            color: const Color.fromRGBO(245, 239, 225, 1),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Image.asset(
-                  'images/forYouSample.jpg'
-                ), // Replace with your desired image asset path
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Art Work Title',
-                    style: GoogleFonts.poppins(fontSize: 18),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'By artist name',
-                    style:
-                    GoogleFonts.poppins(fontSize: 14, color: Colors.grey),
-                  ),
-                ),
-              ],
+          Flexible(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: ListView.builder(
+                itemCount: 3,
+                itemBuilder: (context, index) {
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 16.0), // Add margin between cards
+                    child: Card(
+                      color: const Color.fromRGBO(245, 239, 225, 1),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Image.asset(
+                            'images/forYouSample.jpg',
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    'Art Work Title',
+                                    style: GoogleFonts.dmSerifDisplay(fontSize: 18),
+                                  ),
+                                ),
+                                SizedBox(width: 8.0),
+                                Icon(
+                                  Icons.favorite_outline,
+                                  color: const Color.fromRGBO(55, 34, 19, 1),
+                                  size: 24.0,
+                                  semanticLabel:
+                                      'Text to announce in accessibility modes',
+                                ),
+                                SizedBox(width: 8.0),
+                                Icon(
+                                  Icons.bookmark_outline,
+                                  color: const Color.fromRGBO(55, 34, 19, 1),
+                                  size: 24.0,
+                                  semanticLabel:
+                                      'Text to announce in accessibility modes',
+                                ),
+                                SizedBox(width: 8.0),
+                                Icon(
+                                  Icons.share_outlined,
+                                  color: const Color.fromRGBO(55, 34, 19, 1),
+                                  size: 24.0,
+                                  semanticLabel:
+                                      'Text to announce in accessibility modes',
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'By artist name',
+                              style: GoogleFonts.poppins(
+                                  fontSize: 14, color: Colors.grey),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
           ),
         ],
