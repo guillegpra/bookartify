@@ -16,7 +16,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
 
-  final List<Widget> _pages = [
+  final List<Widget> _pages = const [
     HomeScreen(),
     ExploreScreen(),
     UploadScreen(),
@@ -38,9 +38,9 @@ class _HomePageState extends State<HomePage> {
         ),
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          backgroundColor: Color(0xFFF4F1EA),
-          selectedItemColor: Color(0xFFBFA054),
-          unselectedItemColor: Color(0xFF372213),
+          backgroundColor: const Color(0xFFF4F1EA),
+          selectedItemColor: const Color(0xFFBFA054),
+          unselectedItemColor: const Color(0xFF372213),
           currentIndex: _currentIndex,
           onTap: (int index) {
             setState(() {
@@ -70,8 +70,8 @@ class _HomePageState extends State<HomePage> {
                 label: "Profile"
             ),
           ],
-          selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-          unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),
+          selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+          unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.normal),
         ),
       ),
     );

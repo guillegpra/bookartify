@@ -30,6 +30,29 @@ class _ProfileTabsState extends State<ProfileTabs> with TickerProviderStateMixin
   Widget build(BuildContext context) {
     super.build(context);
 
+    const placeholderContent = ImageGrid(
+      imagePaths: [
+        "images/fanart.jpg",
+        "images/fanart.jpg",
+        "images/fanart.jpg",
+        "images/fanart.jpg",
+        "images/fanart.jpg",
+        "images/fanart.jpg",
+        "images/fanart.jpg",
+        "images/fanart.jpg",
+      ],
+      imageTitles: [
+        "Evelyn Hugo",
+        "Evelyn Hugo",
+        "Evelyn Hugo",
+        "Evelyn Hugo",
+        "Evelyn Hugo",
+        "Evelyn Hugo",
+        "Evelyn Hugo",
+        "Evelyn Hugo",
+      ],
+    );
+
     return Column(
       children: [
         TabBar(
@@ -49,38 +72,17 @@ class _ProfileTabsState extends State<ProfileTabs> with TickerProviderStateMixin
               // ------ Bookart content ------
               KeepAliveWrapper(
                 key: ValueKey(0),
-                child: ImageGrid(
-                  imagePaths: const [
-                    "images/fanart.jpg",
-                    "images/fanart.jpg",
-                    "images/fanart.jpg",
-                    "images/fanart.jpg",
-                    "images/fanart.jpg",
-                    "images/fanart.jpg",
-                    "images/fanart.jpg",
-                    "images/fanart.jpg",
-                  ],
-                  imageTitles: const [
-                    "Evelyn Hugo",
-                    "Evelyn Hugo",
-                    "Evelyn Hugo",
-                    "Evelyn Hugo",
-                    "Evelyn Hugo",
-                    "Evelyn Hugo",
-                    "Evelyn Hugo",
-                    "Evelyn Hugo",
-                  ],
-                ),
+                child: placeholderContent
               ),
               // ------ Covers content ------
               KeepAliveWrapper(
                 key: ValueKey(1),
-                child: Center(child: Text("Covers"))
+                child: placeholderContent
               ),
               // ------ Collections content ------
               KeepAliveWrapper(
                 key: ValueKey(2),
-                child: Center(child: Text("Collection"))
+                child: placeholderContent
               ),
             ],
           )

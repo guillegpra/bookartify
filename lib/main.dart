@@ -1,5 +1,6 @@
 import 'package:bookartify/home_page.dart';
 import 'package:bookartify/login_page.dart';
+import 'package:bookartify/screens/art_screen.dart';
 import 'package:bookartify/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
