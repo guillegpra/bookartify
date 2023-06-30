@@ -1,6 +1,6 @@
 import 'package:bookartify/widgets/image_grid.dart';
 import 'package:bookartify/widgets/user_counter.dart';
-import 'package:bookartify/widgets/user_info.dart';
+import 'package:bookartify/widgets/user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -11,7 +11,25 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateMixin,
+    AutomaticKeepAliveClientMixin<ProfileScreen> {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
     const placeholderContent = ImageGrid(
@@ -55,7 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onPressed: () {
                 // Handle more options button
               },
-              icon: Icon(Icons.more_vert)
+              icon: const Icon(Icons.more_vert)
           )
         ],
       ),
@@ -92,7 +110,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         )
                       ],
                     ),
-                    UserInfo()
+                    UserData()
                   ],
                 ),
               ),
@@ -113,11 +131,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: TabBarView(
                     children: [
                       // ------ Bookart content ------
-                      placeholderContent,
+                      KeepAliveWrapper(
+                          key: ValueKey(0),
+                          child: placeholderContent
+                      ),
                       // ------ Covers content ------
-                      placeholderContent,
+                      KeepAliveWrapper(
+                          key: ValueKey(1),
+                          child: placeholderContent
+                      ),
                       // ------ Collections content ------
-                      placeholderContent,
+                      KeepAliveWrapper(
+                          key: ValueKey(2),
+                          child: placeholderContent
+                      ),
                     ],
                   )
               )
@@ -126,5 +153,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
+  }
+}
+
+class KeepAliveWrapper extends StatefulWidget {
+  final Widget child;
+
+  const KeepAliveWrapper({required this.child, Key? key}) : super(key: key);
+
+  @override
+  _KeepAliveWrapperState createState() => _KeepAliveWrapperState();
+}
+
+class _KeepAliveWrapperState extends State<KeepAliveWrapper>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context); // Call super.build(context) to maintain the state
+
+    return widget.child;
   }
 }
