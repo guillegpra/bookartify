@@ -1,5 +1,6 @@
 import 'package:bookartify/widgets/info_box.dart';
 import 'package:bookartify/widgets/register_button.dart';
+import 'package:bookartify/widgets/save_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -9,14 +10,17 @@ class BookInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 8.0, top: 8.0),
+      margin: const EdgeInsets.only(bottom: 8.0, top: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Container(
-            height: 240,
+            // height: 240,
+            // height: MediaQuery.of(context).size.height * 0.3,
+            // take up 42% of the screen width
+            width: MediaQuery.of(context).size.width * 0.42,
             decoration: BoxDecoration(
-              color: Color(0xFFF5EFE1),
+              color: const Color(0xFFF5EFE1),
               borderRadius: BorderRadius.circular(10)
             ),
             child: ClipRRect(
@@ -28,22 +32,39 @@ class BookInfo extends StatelessWidget {
             )
           ),
           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Book Title",
-                style: GoogleFonts.dmSerifDisplay(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20
-                ),
+              Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Book Title",
+                        style: GoogleFonts.dmSerifDisplay(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20
+                        ),
+                      ),
+                      const Text("by Author Name"),
+                    ],
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(left: 15),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 10),
+                      child: SaveIcon(),
+                    ),
+                  )
+                ],
               ),
-              Text("by Author Name"),
               SizedBox(height: 8.0,),
               Row(
                 children: [
-                  InfoBox(title: "Released", number: 2022),
+                  InfoBox(title: "Released", info: "April 2022"),
                   SizedBox(width: 10.0),
-                  InfoBox(title: "Pages", number: 340)
+                  InfoBox(title: "Pages", info: "340")
                 ],
               ),
               SizedBox(height: 8.0),

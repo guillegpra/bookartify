@@ -3,18 +3,18 @@ import 'package:google_fonts/google_fonts.dart';
 
 class InfoBox extends StatelessWidget {
   final String title;
-  final int number;
+  final String info;
 
-  const InfoBox({super.key, required this.title, required this.number});
+  const InfoBox({super.key, required this.title, required this.info});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Color(0xFFF5EFE1),
+        color: const Color(0xFFF5EFE1),
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
-          color: Color(0xFFE3D4B5),
+          color: const Color(0xFFE3D4B5),
           width: 1
         )
       ),
@@ -29,7 +29,7 @@ class InfoBox extends StatelessWidget {
                 fontWeight: FontWeight.w500
               )
             ),
-            Text(number.toString())
+            Text(info)
           ],
         ),
       ),
