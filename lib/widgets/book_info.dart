@@ -1,6 +1,8 @@
 import 'package:bookartify/widgets/info_box.dart';
 import 'package:bookartify/widgets/register_button.dart';
 import 'package:bookartify/widgets/save_icon.dart';
+import 'package:bookartify/widgets/upload_button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -72,52 +74,53 @@ class BookInfo extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    ElevatedButton(
+                    UploadButton(
+                      buttonLabel: 'Upload your cover',
                       onPressed: () {
-                        // TODO: take to upload cover page
+                        // TODO
                       },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFBFA054),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)
-                        ),
-                        textStyle: GoogleFonts.dmSerifDisplay(
-                          fontSize: 14,
-                        ),
+                      backgroundColor: const Color(0xFFBFA054),
+                      foregroundColor: const Color(0xFF2F2F2F),
+                      icon: const Icon(
+                        CupertinoIcons.add,
+                        size: 22,
                       ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(6.0),
-                        child: Text(
-                          "Upload your cover",
-                          style: TextStyle(
-                              color: Color(0xFF2F2F2F)
-                          ),
-                        ),
-                      )
                     ),
-                    ElevatedButton(
+                    UploadButton(
+                      buttonLabel: 'Upload your art',
                       onPressed: () {
-                        // TODO: take to upload art page
+                        // TODO
                       },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF2F2F2F),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)
-                        ),
-                        textStyle: GoogleFonts.dmSerifDisplay(
-                          fontSize: 14,
-                        ),
+                      backgroundColor: const Color(0xFF2F2F2F),
+                      foregroundColor: const Color(0xFFFBF8F2),
+                      icon: const Icon(
+                        CupertinoIcons.add,
+                        size: 22,
                       ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(6.0),
-                        child: Text(
-                          "Upload your art",
-                          style: TextStyle(
-                              color: Color(0xFFFBF8F2)
-                          ),
-                        ),
-                      )
                     ),
+                    // ElevatedButton(
+                    //   onPressed: () {
+                    //     // TODO: take to upload art page
+                    //   },
+                    //   style: ElevatedButton.styleFrom(
+                    //     backgroundColor: const Color(0xFF2F2F2F),
+                    //     shape: RoundedRectangleBorder(
+                    //         borderRadius: BorderRadius.circular(10)
+                    //     ),
+                    //     textStyle: GoogleFonts.dmSerifDisplay(
+                    //       fontSize: 14,
+                    //     ),
+                    //   ),
+                    //   child: const Padding(
+                    //     padding: EdgeInsets.all(6.0),
+                    //     child: Text(
+                    //       "Upload your art",
+                    //       style: TextStyle(
+                    //           color: Color(0xFFFBF8F2)
+                    //       ),
+                    //     ),
+                    //   )
+                    // ),
                   ],
                 ),
               ),

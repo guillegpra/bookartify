@@ -1,5 +1,6 @@
 //UPLOAD BUTTON WITH ANIMATION
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class UploadButton extends StatefulWidget {
   const UploadButton({
@@ -70,18 +71,23 @@ class _UploadButtonState extends State<UploadButton>
             style: ElevatedButton.styleFrom(
               backgroundColor: widget.backgroundColor,
               foregroundColor: widget.foregroundColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10)
+              ),
+              textStyle: GoogleFonts.dmSerifDisplay(
+                fontSize: 14,
+              )
             ),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(flex: 2, child: widget.icon),
-                Expanded(
-                  flex: 8,
-                  child: Text(
-                    widget.buttonLabel,
-                    style: const TextStyle(fontSize: 16),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
+                widget.icon,
+                SizedBox(width: 3.0,),
+                Text(
+                  widget.buttonLabel,
+                  style: const TextStyle(fontSize: 16),
+                  textAlign: TextAlign.center,
+                )
               ],
             ),
           ),
