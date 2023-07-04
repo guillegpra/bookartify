@@ -1,6 +1,10 @@
+import 'dart:math';
+
 import 'package:bookartify/widgets/book_info.dart';
+import 'package:bookartify/widgets/book_info_tablet.dart';
 import 'package:bookartify/widgets/image_grid.dart';
 import 'package:bookartify/widgets/keep_alive_wrapper.dart';
+import 'package:bookartify/widgets/synopsis_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -61,24 +65,24 @@ class _BookScreenState extends State<BookScreen> {
         centerTitle: true,
       ),
       body: DefaultTabController(
-        length: 3,
+        length: isTablet(context) ? 2 : 3,
         child: NestedScrollView(
           // allows you to build a list of elements that would be scrolled away till the
           // body reached the top
           headerSliverBuilder: (context, _) {
-            return const [
+            return [
               SliverToBoxAdapter(
-                child: BookInfo(),
+                child: !isTablet(context) ? const BookInfo() : const BookInfoTablet(),
               ),
             ];
           },
-          body: const Column(
+          body: Column(
             children: <Widget>[
               TabBar(
                   indicatorColor: Color(0xFF8A6245),
                   // labelStyle: GoogleFonts.poppins(),
                   tabs: [
-                    Tab(text: 'Synopsis'),
+                    if (!isTablet(context)) Tab(text: 'Synopsis'),
                     Tab(text: 'Bookart'),
                     Tab(text: 'Covers'),
                   ]
@@ -87,25 +91,20 @@ class _BookScreenState extends State<BookScreen> {
                   child: TabBarView(
                     children: [
                       // ------ Synopsis content ------
-                      KeepAliveWrapper(
+                      if (!isTablet(context))
+                        KeepAliveWrapper(
                           key: ValueKey(0),
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.vertical,
-                            child: Padding(
-                              padding: EdgeInsets.all(16.0),
-                              child: Text("The Seven Husbands of Evelyn Hugo tells the story of old Hollywood actor Evelyn Hugo, determined to secure an A-List spot in the industry by doing whatever it takes to get there. While attempting to complete her rise to stardom, she marries  seven husbands and outlives them all. Later in her life, Hugo then hires a lesser-known journalist to write her memoir and, for the first time in her decorated life, tells details and secrets about her love life leaving readers with no choice but to keep turning the pages.\n\nMonique Grant – the journalist hired by Hugo – goes on her own journey while learning about the actress and as the book goes on, Grant seeks to discover why she was chosen to document Hugo’s life. The reason is later revealed, in a twist leaving readers on edge."),
-                            ),
-                          )
-                      ),
+                          child: SynopsisWidget(synopsis: "The Seven Husbands of Evelyn Hugo tells the story of old Hollywood actor Evelyn Hugo, determined to secure an A-List spot in the industry by doing whatever it takes to get there. While attempting to complete her rise to stardom, she marries  seven husbands and outlives them all. Later in her life, Hugo then hires a lesser-known journalist to write her memoir and, for the first time in her decorated life, tells details and secrets about her love life leaving readers with no choice but to keep turning the pages.\n\nMonique Grant – the journalist hired by Hugo – goes on her own journey while learning about the actress and as the book goes on, Grant seeks to discover why she was chosen to document Hugo’s life. The reason is later revealed, in a twist leaving readers on edge.")
+                        ),
                       // ------ Covers content ------
                       KeepAliveWrapper(
-                          key: ValueKey(1),
-                          child: placeholderContent
+                        key: ValueKey(isTablet(context) ? 0 : 1),
+                        child: placeholderContent
                       ),
                       // ------ Collections content ------
                       KeepAliveWrapper(
-                          key: ValueKey(2),
-                          child: placeholderContent
+                        key: ValueKey(isTablet(context) ? 1 : 2),
+                        child: placeholderContent
                       ),
                     ],
                   )
@@ -117,3 +116,12 @@ class _BookScreenState extends State<BookScreen> {
     );
   }
 }
+
+bool isTablet(BuildContext context) {
+  final screenSize = MediaQuery.of(context).size;
+  final diagonalSize = sqrt(
+    (screenSize.width * screenSize.width) +
+      (screenSize.height * screenSize.height));
+  return diagonalSize >= 600; // Adjust the threshold according to your needs
+}
+

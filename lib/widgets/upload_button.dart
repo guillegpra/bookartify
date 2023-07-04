@@ -82,7 +82,7 @@ class _UploadButtonState extends State<UploadButton>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 widget.icon,
-                SizedBox(width: 3.0,),
+                const SizedBox(width: 3.0,),
                 Text(
                   widget.buttonLabel,
                   style: const TextStyle(fontSize: 16),
