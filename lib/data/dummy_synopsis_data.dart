@@ -1,5 +1,0 @@
-import 'package:bookartify/models/synopsis_class.dart';
-
-Synopsis synopsisData = const Synopsis(
-    synopsisInfo:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu tortor a felis sodales luctus. Cras pretium, neque vitae tincidunt tincidunt, diam tortor fermentum turpis, at ultricies odio sapien a risus. Phasellus ultrices lorem ex, ac pellentesque massa ultrices a. Morbi id placerat turpis. Proin sed massa quis diam consequat convallis. Sed sollicitudin feugiat metus, ut egestas sem varius in. Aenean et pulvinar dolor. Sed eleifend rhoncus velit, vitae pretium massa condimentum ac. Mauris vel pharetra tellus. Pellentesque non erat id justo scelerisque faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vivamus pharetra fermentum nisi, sit amet convallis elit iaculis at. Phasellus congue, nulla a tristique volutpat, nulla dolor facilisis dolor, eget vestibulum erat lacus vitae massa. Mauris auctor, lacus ac convallis dignissim, justo nisi convallis nibh, eu cursus enim metus eu nisl.");
