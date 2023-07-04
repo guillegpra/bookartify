@@ -1,3 +1,4 @@
+import 'package:bookartify/is_tablet.dart';
 import 'package:bookartify/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,15 +15,15 @@ class ExploreScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildCardSection('Fiction'),
-            _buildCardSection('Fantasy'),
+            _buildCardSection('Fiction', context),
+            _buildCardSection('Fantasy', context),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildCardSection(String category) {
+  Widget _buildCardSection(String category, BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -52,7 +53,14 @@ class ExploreScreen extends StatelessWidget {
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children: List.generate(4, (index) {
+            children: !isTablet(context) ?
+            List.generate(4, (index) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: _buildCard(),
+              );
+            }) :
+            List.generate(8, (index) {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: _buildCard(),
