@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:bookartify/is_tablet.dart';
 import 'package:bookartify/widgets/book_info.dart';
 import 'package:bookartify/widgets/book_info_tablet.dart';
 import 'package:bookartify/widgets/image_grid.dart';
@@ -92,7 +93,7 @@ class _BookScreenState extends State<BookScreen> {
                     children: [
                       // ------ Synopsis content ------
                       if (!isTablet(context))
-                        KeepAliveWrapper(
+                        const KeepAliveWrapper(
                           key: ValueKey(0),
                           child: SynopsisWidget(synopsis: "The Seven Husbands of Evelyn Hugo tells the story of old Hollywood actor Evelyn Hugo, determined to secure an A-List spot in the industry by doing whatever it takes to get there. While attempting to complete her rise to stardom, she marries  seven husbands and outlives them all. Later in her life, Hugo then hires a lesser-known journalist to write her memoir and, for the first time in her decorated life, tells details and secrets about her love life leaving readers with no choice but to keep turning the pages.\n\nMonique Grant – the journalist hired by Hugo – goes on her own journey while learning about the actress and as the book goes on, Grant seeks to discover why she was chosen to document Hugo’s life. The reason is later revealed, in a twist leaving readers on edge.")
                         ),
@@ -115,13 +116,5 @@ class _BookScreenState extends State<BookScreen> {
       ),
     );
   }
-}
-
-bool isTablet(BuildContext context) {
-  final screenSize = MediaQuery.of(context).size;
-  final diagonalSize = sqrt(
-    (screenSize.width * screenSize.width) +
-      (screenSize.height * screenSize.height));
-  return diagonalSize >= 600; // Adjust the threshold according to your needs
 }
 

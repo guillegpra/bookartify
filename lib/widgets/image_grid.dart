@@ -1,3 +1,4 @@
+import 'package:bookartify/is_tablet.dart';
 import 'package:bookartify/widgets/post_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -12,8 +13,8 @@ class ImageGrid extends StatelessWidget {
     return GridView.builder(
       padding: const EdgeInsets.all(10),
       itemCount: _imagePaths.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: !isTablet(context) ? 2 : 3,
         mainAxisSpacing: 10,
         crossAxisSpacing: 10,
         childAspectRatio: 0.75, // Adjust this value for desired aspect ratio
