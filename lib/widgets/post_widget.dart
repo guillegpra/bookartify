@@ -11,6 +11,8 @@ class PostWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final double imgSize = !isTablet(context) ? 200 : 480;
+
     return Container(
       // width: width,
       // height: 250,
@@ -19,17 +21,19 @@ class PostWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(10)
       ),
       child: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: !isTablet(context) ? const EdgeInsets.all(10.0) : const EdgeInsets.all(15.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Image.asset(
-                path,
-                height: !isTablet(context) ? 200 : 480,
-                fit: BoxFit.fitHeight,
+              child: AspectRatio(
+                aspectRatio: 1.0,
+                child: Image.asset(
+                  path,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             const SizedBox(height: 5),

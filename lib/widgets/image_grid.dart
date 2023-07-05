@@ -17,7 +17,7 @@ class ImageGrid extends StatelessWidget {
         crossAxisCount: !isTablet(context) ? 2 : 3,
         mainAxisSpacing: 10,
         crossAxisSpacing: 10,
-        childAspectRatio: 0.75, // Adjust this value for desired aspect ratio
+        childAspectRatio: 0.85, // Adjust this value for desired aspect ratio
       ),
       itemBuilder: (BuildContext context, int index) {
         return PostWidget(
