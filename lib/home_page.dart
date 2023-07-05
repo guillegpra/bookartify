@@ -17,14 +17,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
 
-  // final List<Widget> _pages = const [
-  //   HomeScreen(),
-  //   ExploreScreen(),
-  //   UploadScreen(),
-  //   BookScreen(),
-  //   ProfileScreen()
-  // ];
-
   Map<int, GlobalKey<NavigatorState>> navigatorKeys = {
     0: GlobalKey<NavigatorState>(),
     1: GlobalKey<NavigatorState>(),
@@ -41,35 +33,56 @@ class _HomePageState extends State<HomePage> {
     ProfileScreen()
   ];
 
-  // final List<Widget> _pages = const [
-  //   Navigator(
-  //     key: navigatorKeys[0],
+  // buildNavigator() {
+  //   return Navigator(
+  //     key: navigatorKeys[_currentIndex],
   //     onGenerateRoute: (RouteSettings settings) {
-  //       return MaterialPageRoute(
-  //         builder: (context) => HomeScreen();
-  //       );
+  //       return MaterialPageRoute(builder: (_) => _pages.elementAt(_currentIndex));
   //     },
-  //   )
-  // ];
+  //   );
+  // }
 
-  buildNavigator() {
-    return Navigator(
-      key: navigatorKeys[_currentIndex],
+  final List<Widget> _navPages = <Widget> [
+    Navigator(
+      key: GlobalKey<NavigatorState>(),
       onGenerateRoute: (RouteSettings settings) {
-        return MaterialPageRoute(builder: (_) => _pages.elementAt(_currentIndex));
-      },
-    );
-  }
+        return MaterialPageRoute(builder: (_) => const HomeScreen());
+      }
+    ),
+    Navigator(
+        key: GlobalKey<NavigatorState>(),
+        onGenerateRoute: (RouteSettings settings) {
+          return MaterialPageRoute(builder: (_) => const ExploreScreen());
+        }
+    ),
+    Navigator(
+        key: GlobalKey<NavigatorState>(),
+        onGenerateRoute: (RouteSettings settings) {
+          return MaterialPageRoute(builder: (_) => const UploadScreen());
+        }
+    ),
+    Navigator(
+        key: GlobalKey<NavigatorState>(),
+        onGenerateRoute: (RouteSettings settings) {
+          return MaterialPageRoute(builder: (_) => const SearchScreen());
+        }
+    ),
+    Navigator(
+        key: GlobalKey<NavigatorState>(),
+        onGenerateRoute: (RouteSettings settings) {
+          return MaterialPageRoute(builder: (_) => const ProfileScreen());
+        }
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // body: _pages[_currentIndex],
-      // body: IndexedStack(
-      //   index: _currentIndex,
-      //   children: _pages,
-      // ),
-      body: buildNavigator(),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _navPages,
+      ),
+      // body: buildNavigator(),
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
           textTheme: GoogleFonts.poppinsTextTheme()
