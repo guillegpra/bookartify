@@ -35,7 +35,7 @@ class HomeScreen extends StatelessWidget {
           ),
           Flexible(
             child: Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: ListView.builder(
                 itemCount: 3,
                 itemBuilder: (context, index) {

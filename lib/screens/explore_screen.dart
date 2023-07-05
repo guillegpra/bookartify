@@ -25,12 +25,12 @@ class ExploreScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCardSection(String category, BuildContext context) {
+  Widget _buildCardSection(String genre, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(10.0),
           child: Container(
             decoration: BoxDecoration(
               color: const Color.fromRGBO(245, 239, 225, 1),
@@ -44,7 +44,7 @@ class ExploreScreen extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  category,
+                  genre,
                   style: GoogleFonts.poppins(
                     fontSize: 18,
                     color: const Color.fromRGBO(47, 47, 47, 1),
@@ -83,7 +83,9 @@ class ExploreScreen extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ViewMoreScreen()),
+                  MaterialPageRoute(builder: (context) => ViewMoreScreen(
+                    genre: genre,
+                  )),
                 );
               },
               child: const Text(

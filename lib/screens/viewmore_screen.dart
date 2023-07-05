@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ViewMoreScreen extends StatelessWidget {
-  const ViewMoreScreen({Key? key}) : super(key: key);
+  final String genre;
+
+  const ViewMoreScreen({super.key, required this.genre});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class ViewMoreScreen extends StatelessWidget {
               ),
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "Genre",
+                genre,
                 style: GoogleFonts.poppins(
                   fontSize: 18,
                   color: const Color.fromRGBO(47, 47, 47, 1),
