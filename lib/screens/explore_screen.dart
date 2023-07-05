@@ -2,6 +2,8 @@ import 'package:bookartify/is_tablet.dart';
 import 'package:bookartify/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:bookartify/screens/viewmore_screen.dart';
+import 'package:bookartify/widgets/search_bar.dart';
 
 class ExploreScreen extends StatelessWidget {
   const ExploreScreen({Key? key}) : super(key: key);
@@ -24,74 +26,79 @@ class ExploreScreen extends StatelessWidget {
   }
 
   Widget _buildCardSection(String category, BuildContext context) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: const Color.fromRGBO(245, 239, 225, 1),
-            borderRadius: BorderRadius.circular(8.0),
-            border: Border.all(
-              color: const Color.fromRGBO(191, 160, 84, 1),
-              width: 2.0,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: const Color.fromRGBO(245, 239, 225, 1),
+              borderRadius: BorderRadius.circular(8.0),
+              border: Border.all(
+                color: const Color.fromRGBO(191, 160, 84, 1),
+                width: 2.0,
+              ),
             ),
-          ),
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            category,
-            style: GoogleFonts.poppins(
-              fontSize: 18,
-              color: const Color.fromRGBO(47, 47, 47, 1),
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Text(
+                  category,
+                  style: GoogleFonts.poppins(
+                    fontSize: 18,
+                    color: const Color.fromRGBO(47, 47, 47, 1),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
-      ),
-      SizedBox(
-        height: 220.0, // Adjust the height of the card
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: !isTablet(context) ?
-            List.generate(4, (index) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: _buildCard(),
-              );
-            }) :
-            List.generate(8, (index) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: _buildCard(),
-              );
-            }),
+        SizedBox(
+          height: 220.0, // Adjust the height of the card
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: !isTablet(context)
+                  ? List.generate(4, (index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: _buildCard(),
+                      );
+                    })
+                  : List.generate(8, (index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: _buildCard(),
+                      );
+                    }),
+            ),
           ),
         ),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(right: 16.0, bottom: 8.0),
-        child: Align(
-          alignment: Alignment.bottomRight,
-          child: GestureDetector(
-            onTap: () {
-              // Handle the "View More..." action
-              // You can navigate to a new screen or perform any desired action
-            },
-            child: const Text(
-              'View More...',
-              style: TextStyle(
-                fontSize: 13,
-                color: Color.fromRGBO(55, 34, 19, 1),
-                fontWeight: FontWeight.bold,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ViewMoreScreen()),
+                );
+              },
+              child: const Text(
+                'View More',
+                style: TextStyle(
+                  color: Color.fromRGBO(55, 34, 19, 1),
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
         ),
-      ),
-    ],
-  );
-}
+      ],
+    );
+  }
 
   Widget _buildCard() {
     return Card(
@@ -105,7 +112,8 @@ class ExploreScreen extends StatelessWidget {
               'images/forYouSample.jpg',
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -126,7 +134,8 @@ class ExploreScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
               child: Text(
                 'By artist name',
                 style: GoogleFonts.poppins(fontSize: 14, color: Colors.grey),
