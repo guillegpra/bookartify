@@ -4,6 +4,7 @@ import 'package:bookartify/widgets/divider_text.dart';
 import 'package:bookartify/widgets/login_form.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -30,9 +31,9 @@ class LoginPage extends StatelessWidget {
                   children: [
                     Container(
                       height: 48,
-                      padding: EdgeInsets.all(10),
-                      margin: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
+                      padding: const EdgeInsets.all(10),
+                      margin: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
                           color: Colors.amber,
                           shape: BoxShape.circle
                       ),
@@ -54,8 +55,8 @@ class LoginPage extends StatelessWidget {
             ),
             /* -------- Login form -------- */
             Container(
-                margin: EdgeInsets.only(top: 15),
-                child: LoginForm()
+                margin: const EdgeInsets.only(top: 15),
+                child: const LoginForm()
             ),
             /* -------- Divider -------- */
             Container(
@@ -64,13 +65,13 @@ class LoginPage extends StatelessWidget {
             ),
             /* -------- Create account button -------- */
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 40.0),
+              margin: const EdgeInsets.symmetric(horizontal: 40.0),
               width: double.infinity,
               child: RegisterButton(
                 onPressed: () {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SignUpPage()),
+                      MaterialPageRoute(builder: (context) => const SignUpPage()),
                   );
                 },
                 buttonText: "Create an account",
