@@ -1,3 +1,4 @@
+import 'package:bookartify/screens/book_screen.dart';
 import 'package:bookartify/screens/explore_screen.dart';
 import 'package:bookartify/screens/home_screen.dart';
 import 'package:bookartify/screens/profile_screen.dart';
@@ -16,22 +17,59 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
 
-  final List<Widget> _pages = const [
+  // final List<Widget> _pages = const [
+  //   HomeScreen(),
+  //   ExploreScreen(),
+  //   UploadScreen(),
+  //   BookScreen(),
+  //   ProfileScreen()
+  // ];
+
+  Map<int, GlobalKey<NavigatorState>> navigatorKeys = {
+    0: GlobalKey<NavigatorState>(),
+    1: GlobalKey<NavigatorState>(),
+    2: GlobalKey<NavigatorState>(),
+    3: GlobalKey<NavigatorState>(),
+    4: GlobalKey<NavigatorState>(),
+  };
+
+  final List<Widget> _pages = const <Widget> [
     HomeScreen(),
     ExploreScreen(),
     UploadScreen(),
-    SearchScreen(),
+    BookScreen(),
     ProfileScreen()
   ];
+
+  // final List<Widget> _pages = const [
+  //   Navigator(
+  //     key: navigatorKeys[0],
+  //     onGenerateRoute: (RouteSettings settings) {
+  //       return MaterialPageRoute(
+  //         builder: (context) => HomeScreen();
+  //       );
+  //     },
+  //   )
+  // ];
+
+  buildNavigator() {
+    return Navigator(
+      key: navigatorKeys[_currentIndex],
+      onGenerateRoute: (RouteSettings settings) {
+        return MaterialPageRoute(builder: (_) => _pages.elementAt(_currentIndex));
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // body: _pages[_currentIndex],
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _pages,
-      ),
+      // body: IndexedStack(
+      //   index: _currentIndex,
+      //   children: _pages,
+      // ),
+      body: buildNavigator(),
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
           textTheme: GoogleFonts.poppinsTextTheme()
