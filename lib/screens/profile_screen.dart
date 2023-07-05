@@ -58,7 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
     return Scaffold(
       // Persistent AppBar that never scrolls
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0,
         title: Text(
           "username",

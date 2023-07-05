@@ -93,7 +93,6 @@ class ExploreScreen extends StatelessWidget {
   );
 }
 
-
   Widget _buildCard() {
     return Card(
       color: const Color.fromRGBO(245, 239, 225, 1),
