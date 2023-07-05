@@ -43,11 +43,20 @@ class HomeScreen extends StatelessWidget {
                     margin: const EdgeInsets.only(bottom: 16.0), // Add margin between cards
                     child: Card(
                       color: const Color.fromRGBO(245, 239, 225, 1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Image.asset(
-                            'images/forYouSample.jpg',
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.asset(
+                                'images/forYouSample.jpg',
+                              ),
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
