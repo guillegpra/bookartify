@@ -1,5 +1,6 @@
 import 'package:bookartify/widgets/password_form_field.dart';
 import 'package:bookartify/widgets/register/register_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SignUpForm extends StatefulWidget {
@@ -108,7 +109,7 @@ class _SignUpFormState extends State<SignUpForm> {
               onPressed: () {
                 if (_formKey.currentState?.validate() ?? false) {
                   // Perform the login operation or handle form submission
-                  // You can access _email and _password variables here
+                  signUp(context, _email, _password);
                 }
               },
               buttonText: "Create an account",
@@ -118,5 +119,22 @@ class _SignUpFormState extends State<SignUpForm> {
       )
     );
   }
+}
+
+Future signUp(BuildContext context, String email, String password) async {
+  showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(child: CircularProgressIndicator())
+  );
+
+  try {
+    await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password);
+  } on FirebaseAuthException catch (e) {
+    print(e);
+  }
+
+  Navigator.pop(context);
 }
 

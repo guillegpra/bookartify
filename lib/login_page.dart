@@ -7,7 +7,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  final Function() onClickedCreate;
+
+  const LoginPage({super.key, required this.onClickedCreate});
 
   @override
   Widget build(BuildContext context) {
@@ -68,12 +70,13 @@ class LoginPage extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 40.0),
               width: double.infinity,
               child: RegisterButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const SignUpPage()),
-                  );
-                },
+                // onPressed: () {
+                //   Navigator.push(
+                //       context,
+                //       MaterialPageRoute(builder: (context) => const SignUpPage()),
+                //   );
+                // },
+                onPressed: onClickedCreate,
                 buttonText: "Create an account",
               ),
             )

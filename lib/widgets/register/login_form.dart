@@ -71,7 +71,7 @@ class _LoginFormState extends State<LoginForm> {
                     if (_formKey.currentState?.validate() ?? false) {
                       // Perform the login operation or handle form submission
                       // You can access _email and _password variables here
-                      signIn(_email, _password);
+                      signIn(context, _email, _password);
                     }
                   },
                   buttonText: "Login",
@@ -84,9 +84,20 @@ class _LoginFormState extends State<LoginForm> {
   }
 }
 
-Future signIn(String email, String password) async {
-  await FirebaseAuth.instance.signInWithEmailAndPassword(
-    email: email,
-    password: password
+Future signIn(BuildContext context, String email, String password) async {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) => const Center(child: CircularProgressIndicator())
   );
+
+  try {
+    await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
+  } on FirebaseAuthException catch (e) {
+    print(e);
+  }
+
+  // Hide dialog
+  Navigator.pop(context);
 }

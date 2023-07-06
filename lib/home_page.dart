@@ -4,6 +4,7 @@ import 'package:bookartify/screens/home_screen.dart';
 import 'package:bookartify/screens/profile_screen.dart';
 import 'package:bookartify/screens/search_screen.dart';
 import 'package:bookartify/screens/upload_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -15,6 +16,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // -------------- User info --------------
+  final user = FirebaseAuth.instance.currentUser!;
+
+  // -------------- Navigation bar --------------
   int _currentIndex = 0;
 
   Map<int, GlobalKey<NavigatorState>> navigatorKeys = {
