@@ -1,6 +1,6 @@
-import 'package:bookartify/widgets/alternative_signup_button.dart';
+import 'package:bookartify/widgets/register/alternative_signup_button.dart';
 import 'package:bookartify/widgets/divider_text.dart';
-import 'package:bookartify/widgets/signup_form.dart';
+import 'package:bookartify/widgets/register/signup_form.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';

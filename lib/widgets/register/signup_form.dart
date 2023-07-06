@@ -1,7 +1,6 @@
 import 'package:bookartify/widgets/password_form_field.dart';
-import 'package:bookartify/widgets/register_button.dart';
+import 'package:bookartify/widgets/register/register_button.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({super.key});
@@ -25,12 +24,12 @@ class _SignUpFormState extends State<SignUpForm> {
         children: [
           /* -------- Email -------- */
           Container(
-            margin: EdgeInsets.only(top: 10, bottom: 5, left: 20, right: 20),
+            margin: const EdgeInsets.only(top: 10, bottom: 5, left: 20, right: 20),
             child: TextFormField(
               decoration: InputDecoration(
                   labelText: "Email",
                   hintText: "Enter your email",
-                  fillColor: Color(0xFFF5EFE1),
+                  fillColor: const Color(0xFFF5EFE1),
                   filled: true,
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -53,12 +52,12 @@ class _SignUpFormState extends State<SignUpForm> {
           ),
           /* -------- Username -------- */
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             child: TextFormField(
               decoration: InputDecoration(
                   labelText: "Username",
                   hintText: "Choose a username",
-                  fillColor: Color(0xFFF5EFE1),
+                  fillColor: const Color(0xFFF5EFE1),
                   filled: true,
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -81,7 +80,7 @@ class _SignUpFormState extends State<SignUpForm> {
           ),
           /* -------- Password -------- */
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             child: PasswordFormField(
               onChanged: (value) {
                 setState(() {
@@ -92,7 +91,7 @@ class _SignUpFormState extends State<SignUpForm> {
           ),
           /* -------- Confirm password -------- */
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             child: PasswordFormField(
               onChanged: (value) {
                 setState(() {
@@ -103,7 +102,7 @@ class _SignUpFormState extends State<SignUpForm> {
           ),
           /* -------- Button -------- */
           Container(
-            margin: EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+            margin: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
             width: double.infinity,
             child: RegisterButton(
               onPressed: () {

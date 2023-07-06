@@ -3,6 +3,7 @@ import 'package:bookartify/login_page.dart';
 import 'package:bookartify/screens/art_screen.dart';
 import 'package:bookartify/signup_page.dart';
 import 'package:bookartify/firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -31,7 +32,18 @@ class Bookartify extends StatelessWidget {
           Theme.of(context).textTheme,
         )
       ),
-      home: HomePage(),
+      home: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            // if user is logged in
+            return const HomePage();
+          }
+          else {
+            return const LoginPage();
+          }
+        },
+      ),
     );
   }
 }

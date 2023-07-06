@@ -1,5 +1,6 @@
 import 'package:bookartify/widgets/password_form_field.dart';
-import 'package:bookartify/widgets/register_button.dart';
+import 'package:bookartify/widgets/register/register_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -26,12 +27,12 @@ class _LoginFormState extends State<LoginForm> {
           child: Column(
             children: [
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
                 child: TextFormField(
                   decoration: InputDecoration(
                       labelText: "Email",
                       hintText: "Enter your email",
-                      fillColor: Color(0xFFF5EFE1),
+                      fillColor: const Color(0xFFF5EFE1),
                       filled: true,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -53,7 +54,7 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 40),
+                margin: const EdgeInsets.symmetric(horizontal: 40),
                 child: PasswordFormField(
                   onChanged: (value) {
                     setState(() {
@@ -63,13 +64,14 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 10.0, left: 40.0, right: 40.0),
+                margin: const EdgeInsets.only(top: 10.0, left: 40.0, right: 40.0),
                 width: double.infinity,
                 child: RegisterButton(
                   onPressed: () {
                     if (_formKey.currentState?.validate() ?? false) {
                       // Perform the login operation or handle form submission
                       // You can access _email and _password variables here
+                      signIn(_email, _password);
                     }
                   },
                   buttonText: "Login",
@@ -80,4 +82,11 @@ class _LoginFormState extends State<LoginForm> {
       ),
     );
   }
+}
+
+Future signIn(String email, String password) async {
+  await FirebaseAuth.instance.signInWithEmailAndPassword(
+    email: email,
+    password: password
+  );
 }
