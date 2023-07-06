@@ -39,6 +39,8 @@ dependencies:
   google_sign_in: ^6.1.4
   url_launcher: ^6.1.11
   firebase_core: ^2.14.0
+  http: ^1.0.0  
+  rxdart: ^0.27.2
 
 dev_dependencies:
   flutter_test:
@@ -68,6 +70,7 @@ flutter:
     - images/fanart.jpg
     - images/forYouSample.jpg
     - images/book_cover.jpg
+    - images/search_placeholder_image.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
