@@ -43,6 +43,8 @@ dependencies:
   firebase_database: ^10.2.3
   firebase_storage: ^11.2.4
   cloud_firestore: ^4.8.2
+  http: ^1.0.0  
+  rxdart: ^0.27.2
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +74,7 @@ flutter:
     - images/fanart.jpg
     - images/forYouSample.jpg
     - images/book_cover.jpg
+    - images/search_placeholder_image.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
