@@ -1,6 +1,7 @@
 import 'package:bookartify/widgets/image_grid.dart';
 import 'package:bookartify/widgets/keep_alive_wrapper.dart';
-import 'package:bookartify/widgets/user_info.dart';
+import 'package:bookartify/widgets/user_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -68,12 +69,42 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
         ),
         centerTitle: true,
         actions: [
-          IconButton(
-              onPressed: () {
-                // Handle more options button
-              },
-              icon: const Icon(Icons.more_vert)
-          )
+          PopupMenuButton(
+            itemBuilder: (BuildContext context) {
+              return [
+                const PopupMenuItem(
+                  value: "edit",
+                  child: Text("Edit profile"),
+                ),
+                const PopupMenuItem(
+                  value: "change_pwd",
+                  child: Text("Change password"),
+                ),
+                const PopupMenuItem(
+                  value: "logout",
+                  child: Text("Logout"),
+                ),
+              ];
+            },
+            onSelected: (value) {
+              // Handle selected option
+              switch (value) {
+                case "edit":
+                  // TODO
+                  break;
+                case "change_pwd":
+                  // TODO
+                  break;
+                case "logout":
+                  // TODO
+                  FirebaseAuth.instance.signOut();
+                  break;
+                default:
+                  print("Error");
+              }
+            },
+            icon: const Icon(Icons.more_vert),
+          ),
         ],
       ),
       body: DefaultTabController(
@@ -84,7 +115,7 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
           headerSliverBuilder: (context, _) {
             return const [
               SliverToBoxAdapter(
-                child: UserInfo(
+                child: UserWidget(
                   username: "username",
                 ),
               ),
