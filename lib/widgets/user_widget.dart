@@ -2,10 +2,10 @@ import 'package:bookartify/widgets/user_counter.dart';
 import 'package:bookartify/widgets/user_display.dart';
 import 'package:flutter/material.dart';
 
-class UserInfo extends StatelessWidget {
+class UserWidget extends StatelessWidget {
   final String username;
 
-  const UserInfo({super.key, required this.username});
+  const UserWidget({super.key, required this.username});
 
   @override
   Widget build(BuildContext context) {
