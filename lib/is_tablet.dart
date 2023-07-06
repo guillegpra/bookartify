@@ -7,5 +7,5 @@ bool isTablet(BuildContext context) {
   final diagonalSize = sqrt(
     (screenSize.width * screenSize.width) +
       (screenSize.height * screenSize.height));
-  return diagonalSize >= 1000; // Adjust the threshold according to your needs
+  return diagonalSize >= 1100; // Adjust the threshold according to your needs
 }
