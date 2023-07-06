@@ -84,6 +84,7 @@ class _SearchScanBarState extends State<SearchScanBar> {
 
 
 
+
 //OLD SEARCHBAR CODE  
 // import 'package:flutter/material.dart';
 // import 'package:google_fonts/google_fonts.dart';
