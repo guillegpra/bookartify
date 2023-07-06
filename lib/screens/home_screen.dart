@@ -8,7 +8,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const SearchScanBar(),
+      // appBar: const SearchScanBar(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
