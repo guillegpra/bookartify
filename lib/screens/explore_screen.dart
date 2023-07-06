@@ -9,7 +9,7 @@ class ExploreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const SearchScanBar(),
+      // appBar: const SearchScanBar(),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(
@@ -139,3 +139,4 @@ class ExploreScreen extends StatelessWidget {
     );
   }
 }
+
