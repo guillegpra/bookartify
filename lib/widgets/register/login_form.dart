@@ -1,3 +1,4 @@
+import 'package:bookartify/utils.dart';
 import 'package:bookartify/widgets/password_form_field.dart';
 import 'package:bookartify/widgets/register/register_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,20 +31,27 @@ class _LoginFormState extends State<LoginForm> {
                 margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
                 child: TextFormField(
                   decoration: InputDecoration(
-                      labelText: "Email",
-                      hintText: "Enter your email",
-                      fillColor: const Color(0xFFF5EFE1),
-                      filled: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none
-                      )
+                    labelText: "Email",
+                    hintText: "Enter your email",
+                    fillColor: const Color(0xFFF5EFE1),
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide.none
+                    )
                   ),
                   validator: (value) {
+                    // if it empty
                     if (value?.isEmpty ?? true) {
-                      return "Please, enter your email";
+                      return "Please, enter your email.";
                     }
-                    // Add more email validation if needed
+
+                    // if is a valid email address
+                    if (value != null && !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                        .hasMatch(value)) {
+                      return "Please, enter a valid email address.";
+                    }
+
                     return null;
                   },
                   onChanged: (value) {
@@ -95,7 +103,7 @@ Future signIn(BuildContext context, String email, String password) async {
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
   } on FirebaseAuthException catch (e) {
-    print(e);
+    Utils.showSnackBar(e.message);
   }
 
   // Hide dialog

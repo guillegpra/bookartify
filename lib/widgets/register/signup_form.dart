@@ -1,3 +1,4 @@
+import 'package:bookartify/utils.dart';
 import 'package:bookartify/widgets/password_form_field.dart';
 import 'package:bookartify/widgets/register/register_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -132,7 +133,7 @@ Future signUp(BuildContext context, String email, String password) async {
     await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
   } on FirebaseAuthException catch (e) {
-    print(e);
+    Utils.showSnackBar(e.message);
   }
 
   Navigator.pop(context);

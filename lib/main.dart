@@ -1,6 +1,7 @@
 import 'package:bookartify/auth_page.dart';
 import 'package:bookartify/home_page.dart';
 import 'package:bookartify/firebase_options.dart';
+import 'package:bookartify/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class Bookartify extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scaffoldMessengerKey: Utils.messengerKey,
       title: "BookARtify",
       theme: ThemeData(
         primarySwatch: Colors.amber,
