@@ -25,7 +25,7 @@ class Bookartify extends StatelessWidget {
     return MaterialApp(
       title: "BookARtify",
       theme: ThemeData(
-        primarySwatch: Colors.amber,
+        primarySwatch: Colors.brown,
         textTheme: GoogleFonts.poppinsTextTheme(
           Theme.of(context).textTheme,
         )
