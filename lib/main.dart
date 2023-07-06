@@ -1,6 +1,8 @@
 import 'package:bookartify/home_page.dart';
 import 'package:bookartify/login_page.dart';
 import 'package:bookartify/screens/art_screen.dart';
+import 'package:bookartify/screens/home_screen.dart';
+import 'package:bookartify/screens/search_screen.dart';
 import 'package:bookartify/signup_page.dart';
 import 'package:bookartify/firebase_options.dart';
 
@@ -26,12 +28,12 @@ class Bookartify extends StatelessWidget {
     return MaterialApp(
       title: "BookARtify",
       theme: ThemeData(
-        primarySwatch: Colors.amber,
+        primarySwatch: Colors.brown,
         textTheme: GoogleFonts.poppinsTextTheme(
           Theme.of(context).textTheme,
         )
       ),
-      home: HomePage(),
+      home: const SearchScreen(),
     );
   }
 }
