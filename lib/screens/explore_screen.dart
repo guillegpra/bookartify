@@ -3,7 +3,7 @@ import 'package:bookartify/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:bookartify/screens/viewmore_screen.dart';
-import 'package:bookartify/widgets/search_bar.dart';
+import 'package:bookartify/widgets/save_icon.dart';
 
 class ExploreScreen extends StatelessWidget {
   const ExploreScreen({Key? key}) : super(key: key);
@@ -17,15 +17,18 @@ class ExploreScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildCardSection('Fiction', context),
-            _buildCardSection('Fantasy', context),
+            _buildCardSection('Fiction', 'Art Work Title 1', 'Artist Name 1',
+                'images/forYouSample.jpg', context),
+            _buildCardSection('Fantasy', 'Art Work Title 2', 'Artist Name 2',
+                'images/forYouSample.jpg', context),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildCardSection(String genre, BuildContext context) {
+  Widget _buildCardSection(String genre, String artTitle, String artist,
+      String image, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -63,13 +66,13 @@ class ExploreScreen extends StatelessWidget {
                   ? List.generate(4, (index) {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: _buildCard(),
+                        child: _buildCard(artTitle, artist, image),
                       );
                     })
                   : List.generate(8, (index) {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: _buildCard(),
+                        child: _buildCard(artTitle, artist, image),
                       );
                     }),
             ),
@@ -83,9 +86,11 @@ class ExploreScreen extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ViewMoreScreen(
-                    genre: genre,
-                  )),
+                  MaterialPageRoute(
+                    builder: (context) => ViewMoreScreen(
+                      genre: genre,
+                    ),
+                  ),
                 );
               },
               child: const Text(
@@ -102,7 +107,7 @@ class ExploreScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCard() {
+  Widget _buildCard(String artTitle, String artist, String image) {
     return Card(
       color: const Color.fromRGBO(245, 239, 225, 1),
       child: SizedBox(
@@ -111,7 +116,7 @@ class ExploreScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image.asset(
-              'images/forYouSample.jpg',
+              image,
             ),
             Padding(
               padding:
@@ -121,17 +126,12 @@ class ExploreScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      'Art Work Title',
+                      artTitle,
                       style: GoogleFonts.dmSerifDisplay(fontSize: 18),
                     ),
                   ),
                   const SizedBox(width: 8.0),
-                  const Icon(
-                    Icons.bookmark_outline,
-                    color: Color.fromRGBO(55, 34, 19, 1),
-                    size: 24.0,
-                    semanticLabel: 'Text to announce in accessibility modes',
-                  ),
+                  SaveIcon(),
                 ],
               ),
             ),
@@ -139,7 +139,7 @@ class ExploreScreen extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
               child: Text(
-                'By artist name',
+                artist,
                 style: GoogleFonts.poppins(fontSize: 14, color: Colors.grey),
               ),
             ),

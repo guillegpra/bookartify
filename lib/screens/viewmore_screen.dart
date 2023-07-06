@@ -1,6 +1,9 @@
 import 'package:bookartify/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:bookartify/widgets/save_icon.dart';
+import 'package:bookartify/widgets/like_icon.dart';
+import 'package:bookartify/widgets/share_button.dart';
 
 class ViewMoreScreen extends StatelessWidget {
   final String genre;
@@ -65,29 +68,13 @@ class ViewMoreScreen extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(width: 8.0),
-                                const Icon(
-                                  Icons.favorite_outline,
-                                  color: Color.fromRGBO(55, 34, 19, 1),
-                                  size: 24.0,
-                                  semanticLabel:
-                                      'Text to announce in accessibility modes',
-                                ),
+                                LikeIcon(),
                                 const SizedBox(width: 8.0),
-                                const Icon(
-                                  Icons.bookmark_outline,
-                                  color: Color.fromRGBO(55, 34, 19, 1),
-                                  size: 24.0,
-                                  semanticLabel:
-                                      'Text to announce in accessibility modes',
-                                ),
+                                SaveIcon(),
                                 const SizedBox(width: 8.0),
-                                const Icon(
-                                  Icons.share_outlined,
-                                  color: Color.fromRGBO(55, 34, 19, 1),
-                                  size: 24.0,
-                                  semanticLabel:
-                                      'Text to announce in accessibility modes',
-                                ),
+                                ShareButton(onPressed: () {
+                                  // TODO: share functionality
+                                }),
                               ],
                             ),
                           ),
