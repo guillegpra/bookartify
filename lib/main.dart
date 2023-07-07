@@ -2,6 +2,7 @@ import 'package:bookartify/auth_page.dart';
 import 'package:bookartify/home_page.dart';
 import 'package:bookartify/firebase_options.dart';
 import 'package:bookartify/utils.dart';
+import 'package:bookartify/widgets/register/verify_email_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
@@ -40,7 +41,7 @@ class Bookartify extends StatelessWidget {
           }
           else if (snapshot.hasData) {
             // if user is logged in
-            return const HomePage();
+            return const VerifyEmailPage();
           }
           else {
             return const AuthPage();
