@@ -5,6 +5,8 @@ import 'package:bookartify/widgets/save_icon.dart';
 import 'package:bookartify/widgets/like_icon.dart';
 import 'package:bookartify/widgets/share_button.dart';
 
+import '../widgets/inactive_searchbar.dart';
+
 class ViewMoreScreen extends StatelessWidget {
   final String genre;
 
@@ -13,7 +15,7 @@ class ViewMoreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: const SearchScanBar(),
+      appBar:InactiveSearchBar() ,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
