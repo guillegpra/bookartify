@@ -1,5 +1,5 @@
 import 'package:bookartify/widgets/info_box.dart';
-import 'package:bookartify/widgets/save_icon.dart';
+import 'package:bookartify/widgets/icons_and_buttons/save_icon.dart';
 import 'package:bookartify/widgets/upload_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';

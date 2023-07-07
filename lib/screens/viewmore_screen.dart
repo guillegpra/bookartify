@@ -1,9 +1,9 @@
 import 'package:bookartify/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:bookartify/widgets/save_icon.dart';
-import 'package:bookartify/widgets/like_icon.dart';
-import 'package:bookartify/widgets/share_button.dart';
+import 'package:bookartify/widgets/icons/save_icon.dart';
+import 'package:bookartify/widgets/icons_and_buttons/like_icon.dart';
+import 'package:bookartify/widgets/icons/share_button.dart';
 
 import '../widgets/inactive_searchbar.dart';
 

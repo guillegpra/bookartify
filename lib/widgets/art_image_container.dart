@@ -1,8 +1,7 @@
-import 'package:bookartify/widgets/save_icon.dart';
+import 'package:bookartify/widgets/icons_and_buttons/save_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/variety_art.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class ArtImageContainer extends StatelessWidget {
   const ArtImageContainer({Key? key, required this.artwork}) : super(key: key);

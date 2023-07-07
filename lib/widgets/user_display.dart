@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:bookartify/widgets/share_profile_button.dart';
+import 'package:bookartify/widgets/icons_and_buttons/share_profile_button.dart';
 
 class UserDisplay extends StatelessWidget {
   final String username;

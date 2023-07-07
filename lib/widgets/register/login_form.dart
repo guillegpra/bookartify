@@ -1,5 +1,5 @@
 import 'package:bookartify/utils.dart';
-import 'package:bookartify/widgets/password_form_field.dart';
+import 'package:bookartify/widgets/register/password_form_field.dart';
 import 'package:bookartify/widgets/register/register_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

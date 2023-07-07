@@ -19,7 +19,7 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
       decoration: InputDecoration(
           labelText: "Password",
           hintText: "Enter a password",
-          fillColor: Color(0xFFF5EFE1),
+          fillColor: const Color(0xFFF5EFE1),
           filled: true,
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),

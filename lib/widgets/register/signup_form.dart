@@ -1,5 +1,5 @@
 import 'package:bookartify/utils.dart';
-import 'package:bookartify/widgets/password_form_field.dart';
+import 'package:bookartify/widgets/register/password_form_field.dart';
 import 'package:bookartify/widgets/register/register_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -39,10 +39,17 @@ class _SignUpFormState extends State<SignUpForm> {
                   )
               ),
               validator: (value) {
+                // if it empty
                 if (value?.isEmpty ?? true) {
-                  return "Please, enter your email";
+                  return "Please, enter your email.";
                 }
-                // Add more email validation if needed
+
+                // if is a valid email address
+                if (value != null && !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                    .hasMatch(value)) {
+                  return "Please, enter a valid email address.";
+                }
+
                 return null;
               },
               onChanged: (value) {
