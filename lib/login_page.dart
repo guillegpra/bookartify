@@ -1,10 +1,8 @@
-import 'package:bookartify/signup_page.dart';
 import 'package:bookartify/widgets/register/register_button.dart';
 import 'package:bookartify/widgets/divider_text.dart';
 import 'package:bookartify/widgets/register/login_form.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatelessWidget {
   final Function() onClickedCreate;

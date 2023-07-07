@@ -140,7 +140,7 @@ Future signUp(BuildContext context, String email, String password) async {
     await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
   } on FirebaseAuthException catch (e) {
-    Utils.showSnackBar(e.message);
+    Utils.showSnackBar(e.message, true);
   }
 
   Navigator.pop(context);

@@ -3,7 +3,7 @@ import 'package:bookartify/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:bookartify/screens/viewmore_screen.dart';
-import 'package:bookartify/widgets/icons/save_icon.dart';
+import 'package:bookartify/widgets/icons_and_buttons/save_icon.dart';
 
 import '../widgets/inactive_searchbar.dart';
 

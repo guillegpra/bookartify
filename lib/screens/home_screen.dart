@@ -1,10 +1,8 @@
-import 'package:bookartify/widgets/icons/save_icon.dart';
+import 'package:bookartify/widgets/icons_and_buttons/save_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:bookartify/widgets/icons/share_button.dart';
+import 'package:bookartify/widgets/icons_and_buttons/share_button.dart';
 import 'package:bookartify/widgets/icons_and_buttons/like_icon.dart';
-import 'package:bookartify/widgets/icons/save_icon.dart';
-import 'package:bookartify/screens/search_screen.dart'; 
 import 'package:bookartify/widgets/inactive_searchbar.dart'; 
 
 class HomeScreen extends StatelessWidget {
