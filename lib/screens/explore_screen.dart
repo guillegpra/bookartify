@@ -5,13 +5,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:bookartify/screens/viewmore_screen.dart';
 import 'package:bookartify/widgets/save_icon.dart';
 
+import '../widgets/inactive_searchbar.dart';
+
 class ExploreScreen extends StatelessWidget {
   const ExploreScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: const SearchScanBar(),
+      appBar: InactiveSearchBar(),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(
