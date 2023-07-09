@@ -45,6 +45,7 @@ dependencies:
   cloud_firestore: ^4.8.2
   http: ^1.0.0  
   rxdart: ^0.27.2
+  intl: ^0.17.0 
 
 dev_dependencies:
   flutter_test:
