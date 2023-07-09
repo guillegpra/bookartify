@@ -15,7 +15,7 @@ class SynopsisWidget extends StatelessWidget {
         child: Text(
           synopsis,
           style: GoogleFonts.poppins(fontSize: 14, color: Colors.black),
-          // textAlign: TextAlign.justify,
+          textAlign: TextAlign.start,
         ),
       ),
     );

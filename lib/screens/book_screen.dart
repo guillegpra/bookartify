@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:bookartify/is_tablet.dart';
 import 'package:bookartify/widgets/book_info.dart';
 import 'package:bookartify/widgets/book_info_tablet.dart';
@@ -8,9 +7,13 @@ import 'package:bookartify/widgets/keep_alive_wrapper.dart';
 import 'package:bookartify/widgets/synopsis_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../models/book_search.dart';
 
 class BookScreen extends StatefulWidget {
-  const BookScreen({super.key});
+   final Book book; // Variable to hold the book object
+
+  const BookScreen({Key? key, required this.book}) : super(key: key); // Updated constructor
+
 
   @override
   State<BookScreen> createState() => _BookScreenState();
@@ -53,11 +56,11 @@ class _BookScreenState extends State<BookScreen> {
             color: Colors.black
           ),
           onPressed: () {
-            print('To be worked!!');
+            Navigator.pop(context);
           },
         ),
         title: Text(
-          "Book Title",
+          widget.book.title, // Updated to use the title passed to BookScreen
           style: GoogleFonts.dmSerifDisplay(
               fontWeight: FontWeight.w500,
               letterSpacing: -0.7
@@ -73,19 +76,20 @@ class _BookScreenState extends State<BookScreen> {
           headerSliverBuilder: (context, _) {
             return [
               SliverToBoxAdapter(
-                child: !isTablet(context) ? const BookInfo() : const BookInfoTablet(),
+                child: !isTablet(context) ? BookInfo(book: widget.book) : BookInfoTablet(book: widget.book),
               ),
             ];
           },
           body: Column(
             children: <Widget>[
               TabBar(
-                  indicatorColor: Color(0xFF8A6245),
+                  indicatorColor: const Color(0xFF8A6245),
                   // labelStyle: GoogleFonts.poppins(),
                   tabs: [
-                    if (!isTablet(context)) Tab(text: 'Synopsis'),
-                    Tab(text: 'Bookart'),
-                    Tab(text: 'Covers'),
+                    if (!isTablet(context)) 
+                    const Tab(text: 'Synopsis'),
+                    const Tab(text: 'Bookart'),
+                    const Tab(text: 'Covers'),
                   ]
               ),
               Expanded(
@@ -93,9 +97,9 @@ class _BookScreenState extends State<BookScreen> {
                     children: [
                       // ------ Synopsis content ------
                       if (!isTablet(context))
-                        const KeepAliveWrapper(
+                         KeepAliveWrapper(
                           key: ValueKey(0),
-                          child: SynopsisWidget(synopsis: "The Seven Husbands of Evelyn Hugo tells the story of old Hollywood actor Evelyn Hugo, determined to secure an A-List spot in the industry by doing whatever it takes to get there. While attempting to complete her rise to stardom, she marries  seven husbands and outlives them all. Later in her life, Hugo then hires a lesser-known journalist to write her memoir and, for the first time in her decorated life, tells details and secrets about her love life leaving readers with no choice but to keep turning the pages.\n\nMonique Grant – the journalist hired by Hugo – goes on her own journey while learning about the actress and as the book goes on, Grant seeks to discover why she was chosen to document Hugo’s life. The reason is later revealed, in a twist leaving readers on edge.")
+                          child: SynopsisWidget(synopsis:widget.book.description)
                         ),
                       // ------ Covers content ------
                       KeepAliveWrapper(
@@ -117,4 +121,3 @@ class _BookScreenState extends State<BookScreen> {
     );
   }
 }
-
