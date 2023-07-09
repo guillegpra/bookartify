@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
     HomeScreen(),
     ExploreScreen(),
     UploadScreen(),
-    BookScreen(),
+    // BookScreen(),
     ProfileScreen()
   ];
 
