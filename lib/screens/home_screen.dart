@@ -4,9 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:bookartify/widgets/icons_and_buttons/share_button.dart';
 import 'package:bookartify/widgets/icons_and_buttons/like_icon.dart';
 import 'package:bookartify/widgets/inactive_searchbar.dart';
-import 'package:bookartify/widgets/icons_and_buttons/save_icon.dart';
-import 'package:bookartify/screens/search_screen.dart';
-import 'package:bookartify/widgets/inactive_searchbar.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -71,11 +68,11 @@ class HomeScreen extends StatelessWidget {
                     style: GoogleFonts.dmSerifDisplay(fontSize: 18),
                   ),
                 ),
-                SizedBox(width: 8.0),
-                LikeIcon(),
-                SizedBox(width: 8.0),
-                SaveIcon(),
-                SizedBox(width: 8.0),
+                const SizedBox(width: 8.0),
+                const LikeIcon(),
+                const SizedBox(width: 8.0),
+                const SaveIcon(),
+                const SizedBox(width: 8.0),
                 ShareButton(
                   onPressed: () {
                     // TODO: share functionality

@@ -59,17 +59,26 @@ class ViewMoreScreen extends StatelessWidget {
   }
 
   Widget _buildCard() {
-    final artTitle = 'Art Work Title';
-    final artist = 'Artist Name';
-    final image = 'images/forYouSample.jpg';
+    const artTitle = 'Art Work Title';
+    const artist = 'Artist Name';
+    const image = 'images/forYouSample.jpg';
 
     return Card(
       color: const Color.fromRGBO(245, 239, 225, 1),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.asset(
-            image,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10.0),
+              child: Image.asset(
+                image,
+              ),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -83,9 +92,9 @@ class ViewMoreScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 8.0),
-                LikeIcon(),
+                const LikeIcon(),
                 const SizedBox(width: 8.0),
-                SaveIcon(),
+                const SaveIcon(),
                 const SizedBox(width: 8.0),
                 ShareButton(
                   onPressed: () {
