@@ -1,5 +1,4 @@
 import 'package:bookartify/auth_page.dart';
-import 'package:bookartify/home_page.dart';
 import 'package:bookartify/firebase_options.dart';
 import 'package:bookartify/utils.dart';
 import 'package:bookartify/widgets/register/verify_email_page.dart';

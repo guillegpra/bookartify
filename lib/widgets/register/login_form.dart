@@ -1,4 +1,5 @@
 import 'package:bookartify/utils.dart';
+import 'package:bookartify/widgets/icons_and_buttons/loading_overlay.dart';
 import 'package:bookartify/widgets/register/forgot_password_page.dart';
 import 'package:bookartify/widgets/register/password_form_field.dart';
 import 'package:bookartify/widgets/register/register_button.dart';
@@ -110,11 +111,13 @@ class _LoginFormState extends State<LoginForm> {
 }
 
 Future signIn(BuildContext context, String email, String password) async {
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (context) => const Center(child: CircularProgressIndicator())
-  );
+  // showDialog(
+  //   context: context,
+  //   barrierDismissible: false,
+  //   builder: (context) => const Center(child: CircularProgressIndicator())
+  // );
+
+  LoadingOverlay.show(context);
 
   try {
     await FirebaseAuth.instance
@@ -123,6 +126,8 @@ Future signIn(BuildContext context, String email, String password) async {
     Utils.showSnackBar(e.message, true);
   }
 
-  // Hide dialog
-  Navigator.pop(context);
+  LoadingOverlay.hide();
+
+  // // Hide dialog
+  // Navigator.pop(context);
 }

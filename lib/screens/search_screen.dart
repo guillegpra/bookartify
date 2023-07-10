@@ -155,15 +155,15 @@
 //   }
 // }
 
-//Code with button
+// Code with button
 import 'dart:async';
+import 'package:bookartify/widgets/btn_search_result.dart';
+import 'package:bookartify/widgets/search_bar.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:bookartify/models/book_search.dart';
 import 'package:bookartify/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../widgets/btn_search_result.dart';
-import '../widgets/search_bar.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);

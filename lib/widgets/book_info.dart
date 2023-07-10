@@ -1,3 +1,4 @@
+import 'package:bookartify/models/book_search.dart';
 import 'package:bookartify/widgets/info_box.dart';
 import 'package:bookartify/widgets/icons_and_buttons/save_icon.dart';
 import 'package:intl/intl.dart';
@@ -5,7 +6,6 @@ import 'package:bookartify/widgets/upload_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../models/book_search.dart';
 
 class BookInfo extends StatelessWidget {
   final Book book;

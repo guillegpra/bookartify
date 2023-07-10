@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:bookartify/widgets/build_social_buttons.dart';
 
 class ShareButton extends StatelessWidget {
   final Function() onPressed;
@@ -23,35 +24,6 @@ class ShareButton extends StatelessWidget {
   }
 
   Widget buildShareOptions(BuildContext context) {
-    return Wrap(
-      children: [
-        ListTile(
-          leading: const Icon(Icons.camera_alt),
-          title: const Text('Save to Photos'),
-          onTap: () {
-            // Handle save to photos action
-            Navigator.pop(context);
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.share),
-          title: const Text('Share on Instagram'),
-          onTap: () {
-            // Handle share on Instagram action
-            Navigator.pop(context);
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.message),
-          title: const Text('Share on Messenger'),
-          onTap: () {
-            // Handle share on Messenger action
-            Navigator.pop(context);
-          },
-        ),
-
-        // Add more share options here
-      ],
-    );
+    return buildSocialButtons();
   }
 }

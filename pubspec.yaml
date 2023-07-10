@@ -80,6 +80,7 @@ flutter:
     - images/forYouSample.jpg
     - images/book_cover.jpg
     - images/search_placeholder_image.jpg
+    - images/ig_logo.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

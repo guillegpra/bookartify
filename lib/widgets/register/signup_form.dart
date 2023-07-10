@@ -1,4 +1,6 @@
+import 'package:bookartify/services/usernames_db.dart';
 import 'package:bookartify/utils.dart';
+import 'package:bookartify/widgets/icons_and_buttons/loading_overlay.dart';
 import 'package:bookartify/widgets/register/password_form_field.dart';
 import 'package:bookartify/widgets/register/register_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -74,10 +76,13 @@ class _SignUpFormState extends State<SignUpForm> {
                   )
               ),
               validator: (value) {
-                if (value?.isEmpty ?? true) {
+                if (value == null || value.isEmpty) {
                   return "Please, choose a username";
                 }
-                // Add more username validation if needed
+                if (!RegExp(r"^(?=.{3,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$")
+                    .hasMatch(value)) {
+                  return "Username must be between 3 and 20 characters and can only contain alphanumeric characters, underscore and dot.";
+                }
                 return null;
               },
               onChanged: (value) {
@@ -117,7 +122,7 @@ class _SignUpFormState extends State<SignUpForm> {
               onPressed: () {
                 if (_formKey.currentState?.validate() ?? false) {
                   // Perform the login operation or handle form submission
-                  signUp(context, _email, _password);
+                  signUp(context, _email, _password, _username);
                 }
               },
               buttonText: "Create an account",
@@ -129,20 +134,24 @@ class _SignUpFormState extends State<SignUpForm> {
   }
 }
 
-Future signUp(BuildContext context, String email, String password) async {
-  showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => const Center(child: CircularProgressIndicator())
-  );
+Future signUp(BuildContext context, String email, String password, String username) async {
+  if (!(await usernameAvailable(username))) {
+    Utils.showSnackBar("Username is already taken", true);
+    return;
+  }
+
+  LoadingOverlay.show(context);
 
   try {
-    await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email, password: password);
+    UserCredential user = await FirebaseAuth.instance
+      .createUserWithEmailAndPassword(email: email, password: password);
+
+    // add username to database
+    await addUsername(user.user!.uid, username);
   } on FirebaseAuthException catch (e) {
     Utils.showSnackBar(e.message, true);
   }
 
-  Navigator.pop(context);
+  LoadingOverlay.hide();
 }
 

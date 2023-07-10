@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:bookartify/is_tablet.dart';
 import 'package:bookartify/widgets/book_info.dart';
 import 'package:bookartify/widgets/book_info_tablet.dart';

@@ -1,10 +1,9 @@
+import 'package:bookartify/widgets/inactive_searchbar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:bookartify/widgets/icons_and_buttons/save_icon.dart';
 import 'package:bookartify/widgets/icons_and_buttons/like_icon.dart';
 import 'package:bookartify/widgets/icons_and_buttons/share_button.dart';
-
-import '../widgets/inactive_searchbar.dart';
 
 class ViewMoreScreen extends StatelessWidget {
   final String genre;
@@ -41,7 +40,7 @@ class ViewMoreScreen extends StatelessWidget {
           ),
           Flexible(
             child: Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: ListView.builder(
                 itemCount: 3,
                 itemBuilder: (context, index) {

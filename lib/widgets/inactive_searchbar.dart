@@ -1,7 +1,6 @@
+import 'package:bookartify/screens/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../screens/search_screen.dart';
 
 class InactiveSearchBar extends StatelessWidget implements PreferredSizeWidget {
   final TextEditingController _controller = TextEditingController(text: "");
