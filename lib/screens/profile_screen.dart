@@ -1,3 +1,4 @@
+import 'package:bookartify/services/usernames_db.dart';
 import 'package:bookartify/widgets/image_grid.dart';
 import 'package:bookartify/widgets/keep_alive_wrapper.dart';
 import 'package:bookartify/widgets/user_widget.dart';
@@ -15,11 +16,24 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateMixin,
     AutomaticKeepAliveClientMixin<ProfileScreen> {
   late TabController _tabController;
+  User? currentUser;
+  String _username = "";
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    currentUser = FirebaseAuth.instance.currentUser;
+    fetchUsername();
+  }
+
+  Future<void> fetchUsername() async {
+    if (currentUser != null) {
+      String? fetchedUsername = await getUsername(currentUser!.uid);
+      setState(() {
+        _username = fetchedUsername ?? "";
+      });
+    }
   }
 
   @override
@@ -62,7 +76,7 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
         backgroundColor: Colors.white,
         elevation: 0,
         title: Text(
-          "username",
+          _username.isNotEmpty ? _username : "username",
           style: GoogleFonts.dmSerifDisplay(
               fontWeight: FontWeight.bold,
           ),
@@ -113,10 +127,10 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
           // allows you to build a list of elements that would be scrolled away till the
           // body reached the top
           headerSliverBuilder: (context, _) {
-            return const [
+            return [
               SliverToBoxAdapter(
                 child: UserWidget(
-                  username: "username",
+                  username: _username.isNotEmpty ? _username : "username",
                 ),
               ),
             ];
