@@ -1,11 +1,9 @@
 import 'package:bookartify/is_tablet.dart';
-import 'package:bookartify/widgets/search_bar.dart';
+import 'package:bookartify/widgets/inactive_searchbar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:bookartify/screens/viewmore_screen.dart';
 import 'package:bookartify/widgets/icons_and_buttons/save_icon.dart';
-
-import '../widgets/inactive_searchbar.dart';
 
 class ExploreScreen extends StatelessWidget {
   const ExploreScreen({Key? key}) : super(key: key);

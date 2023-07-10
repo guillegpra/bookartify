@@ -1,10 +1,10 @@
+import 'package:bookartify/widgets/inactive_searchbar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:bookartify/widgets/icons_and_buttons/save_icon.dart';
 import 'package:bookartify/widgets/icons_and_buttons/like_icon.dart';
 import 'package:bookartify/widgets/icons_and_buttons/share_button.dart';
 
-import '../widgets/inactive_searchbar.dart';
 
 class ViewMoreScreen extends StatelessWidget {
   final String genre;
@@ -14,7 +14,7 @@ class ViewMoreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:InactiveSearchBar() ,
+      appBar: InactiveSearchBar() ,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
