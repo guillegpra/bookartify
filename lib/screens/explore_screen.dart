@@ -151,4 +151,3 @@ class ExploreScreen extends StatelessWidget {
     );
   }
 }
-

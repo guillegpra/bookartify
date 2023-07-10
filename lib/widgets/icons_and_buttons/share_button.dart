@@ -1,22 +1,6 @@
-/*import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-
-class ShareButton extends StatelessWidget {
-  final Function() onPressed;
-
-  const ShareButton({super.key, required this.onPressed});
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-        onPressed: onPressed,g
-        icon: Icon(Icons.share)
-    );
-  }
-  
-}*/
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 class ShareButton extends StatelessWidget {
   final Function() onPressed;
@@ -65,6 +49,7 @@ class ShareButton extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
+
         // Add more share options here
       ],
     );

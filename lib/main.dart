@@ -28,22 +28,21 @@ class Bookartify extends StatelessWidget {
       scaffoldMessengerKey: Utils.messengerKey,
       title: "BookARtify",
       theme: ThemeData(
-        primarySwatch: Colors.amber,
-        textTheme: GoogleFonts.poppinsTextTheme(
-          Theme.of(context).textTheme,
-        )
-      ),
+          primarySwatch: Colors.amber,
+          textTheme: GoogleFonts.poppinsTextTheme(
+            Theme.of(context).textTheme,
+          )),
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return const Center(child: Text("Something went wrong"),);
-          }
-          else if (snapshot.hasData) {
+            return const Center(
+              child: Text("Something went wrong"),
+            );
+          } else if (snapshot.hasData) {
             // if user is logged in
             return const VerifyEmailPage();
-          }
-          else {
+          } else {
             return const AuthPage();
           }
         },
