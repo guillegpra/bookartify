@@ -72,11 +72,11 @@ class HomeScreen extends StatelessWidget {
                                     style: GoogleFonts.dmSerifDisplay(fontSize: 18),
                                   ),
                                 ),
-                                SizedBox(width: 8.0),
-                                LikeIcon(),
-                                SizedBox(width: 8.0),
-                                SaveIcon(),
-                                SizedBox(width: 8.0),
+                                const SizedBox(width: 8.0),
+                                const LikeIcon(),
+                                const SizedBox(width: 8.0),
+                                const SaveIcon(),
+                                const SizedBox(width: 8.0),
                                 ShareButton(onPressed: () {
                                   // TODO: share functionality
                                 }),

@@ -41,20 +41,28 @@ class ViewMoreScreen extends StatelessWidget {
           ),
           Flexible(
             child: Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: ListView.builder(
                 itemCount: 3,
                 itemBuilder: (context, index) {
                   return Container(
-                    margin: const EdgeInsets.only(
-                        bottom: 16.0), // Add margin between cards
+                    margin: const EdgeInsets.only(bottom: 16.0), // Add margin between cards
                     child: Card(
                       color: const Color.fromRGBO(245, 239, 225, 1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Image.asset(
-                            'images/forYouSample.jpg',
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: Image.asset(
+                                'images/forYouSample.jpg',
+                              ),
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -69,9 +77,9 @@ class ViewMoreScreen extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(width: 8.0),
-                                LikeIcon(),
+                                const LikeIcon(),
                                 const SizedBox(width: 8.0),
-                                SaveIcon(),
+                                const SaveIcon(),
                                 const SizedBox(width: 8.0),
                                 ShareButton(onPressed: () {
                                   // TODO: share functionality

@@ -110,17 +110,26 @@ class ExploreScreen extends StatelessWidget {
   Widget _buildCard(String artTitle, String artist, String image) {
     return Card(
       color: const Color.fromRGBO(245, 239, 225, 1),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
       child: SizedBox(
-        width: 150.0, // Adjust the width of the card
+        width: 185.0, // Adjust the width of the card
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(
-              image,
+            Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(4.0),
+                child: Image.asset(
+                  image,
+                ),
+              ),
             ),
             Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -131,7 +140,7 @@ class ExploreScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 8.0),
-                  SaveIcon(),
+                  const SaveIcon(),
                 ],
               ),
             ),
