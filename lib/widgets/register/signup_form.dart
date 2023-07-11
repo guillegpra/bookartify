@@ -1,9 +1,6 @@
-import 'package:bookartify/services/usernames_db.dart';
-import 'package:bookartify/utils.dart';
-import 'package:bookartify/widgets/icons_and_buttons/loading_overlay.dart';
+import 'package:bookartify/services/register.dart';
 import 'package:bookartify/widgets/register/password_form_field.dart';
 import 'package:bookartify/widgets/register/register_button.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SignUpForm extends StatefulWidget {
@@ -132,26 +129,5 @@ class _SignUpFormState extends State<SignUpForm> {
       )
     );
   }
-}
-
-Future signUp(BuildContext context, String email, String password, String username) async {
-  if (!(await usernameAvailable(username))) {
-    Utils.showSnackBar("Username is already taken", true);
-    return;
-  }
-
-  LoadingOverlay.show(context);
-
-  try {
-    UserCredential user = await FirebaseAuth.instance
-      .createUserWithEmailAndPassword(email: email, password: password);
-
-    // add username to database
-    await addUsername(user.user!.uid, username);
-  } on FirebaseAuthException catch (e) {
-    Utils.showSnackBar(e.message, true);
-  }
-
-  LoadingOverlay.hide();
 }
 

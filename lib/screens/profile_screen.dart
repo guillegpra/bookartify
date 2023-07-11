@@ -1,3 +1,4 @@
+import 'package:bookartify/services/register.dart';
 import 'package:bookartify/services/usernames_db.dart';
 import 'package:bookartify/widgets/image_grid.dart';
 import 'package:bookartify/widgets/keep_alive_wrapper.dart';
@@ -122,7 +123,7 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                   break;
                 case "logout":
                   // TODO
-                  FirebaseAuth.instance.signOut();
+                  signOut(context);
                   break;
                 default:
                   print("Error");

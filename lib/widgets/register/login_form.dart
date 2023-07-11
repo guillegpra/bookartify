@@ -1,9 +1,7 @@
-import 'package:bookartify/utils.dart';
-import 'package:bookartify/widgets/icons_and_buttons/loading_overlay.dart';
+import 'package:bookartify/services/register.dart';
 import 'package:bookartify/widgets/register/forgot_password_page.dart';
 import 'package:bookartify/widgets/register/password_form_field.dart';
 import 'package:bookartify/widgets/register/register_button.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -108,26 +106,4 @@ class _LoginFormState extends State<LoginForm> {
       ),
     );
   }
-}
-
-Future signIn(BuildContext context, String email, String password) async {
-  // showDialog(
-  //   context: context,
-  //   barrierDismissible: false,
-  //   builder: (context) => const Center(child: CircularProgressIndicator())
-  // );
-
-  LoadingOverlay.show(context);
-
-  try {
-    await FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: email, password: password);
-  } on FirebaseAuthException catch (e) {
-    Utils.showSnackBar(e.message, true);
-  }
-
-  LoadingOverlay.hide();
-
-  // // Hide dialog
-  // Navigator.pop(context);
 }
