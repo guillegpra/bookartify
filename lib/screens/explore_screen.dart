@@ -1,5 +1,5 @@
 import 'package:bookartify/is_tablet.dart';
-import 'package:bookartify/widgets/inactive_searchbar.dart';
+import 'package:bookartify/widgets/search/inactive_searchbar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:bookartify/screens/viewmore_screen.dart';
