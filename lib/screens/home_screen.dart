@@ -22,8 +22,7 @@ class HomeScreen extends StatelessWidget {
                 itemCount: 3,
                 itemBuilder: (context, index) {
                   return Container(
-                    margin: const EdgeInsets.only(
-                        bottom: 16.0), // Add margin between cards
+                    margin: const EdgeInsets.only(bottom: 16.0), // Add margin between cards
                     child: _buildCard(),
                   );
                 },
@@ -36,9 +35,9 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildCard() {
-    final artTitle = 'Art Work Title';
-    final artist = 'Artist Name';
-    final image = 'images/forYouSample.jpg';
+    const artTitle = 'Art Work Title';
+    const artist = 'Artist Name';
+    const image = 'images/forYouSample.jpg';
 
     return Card(
       color: const Color.fromRGBO(245, 239, 225, 1),

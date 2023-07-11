@@ -18,16 +18,17 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
   late TabController _tabController;
   User? currentUser;
   String _username = "";
+  bool _showUsernameInAppBar = false;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
     currentUser = FirebaseAuth.instance.currentUser;
-    fetchUsername();
+    _fetchUsername();
   }
 
-  Future<void> fetchUsername() async {
+  Future<void> _fetchUsername() async {
     if (currentUser != null) {
       String? fetchedUsername = await getUsername(currentUser!.uid);
       setState(() {
@@ -44,6 +45,12 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
 
   @override
   bool get wantKeepAlive => true;
+
+  void _handleScroll(ScrollMetrics metrics) {
+    setState(() {
+      _showUsernameInAppBar = metrics.pixels > 0;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,12 +80,16 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
     return Scaffold(
       // Persistent AppBar that never scrolls
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey[50],
         elevation: 0,
-        title: Text(
-          _username.isNotEmpty ? _username : "username",
-          style: GoogleFonts.dmSerifDisplay(
-              fontWeight: FontWeight.bold,
+        title: AnimatedOpacity(
+          opacity: _showUsernameInAppBar ? 1.0 : 0.0,
+          duration: const Duration(milliseconds: 300),
+          child: Text(
+            _username.isNotEmpty ? _username : "username",
+            style: GoogleFonts.dmSerifDisplay(
+                fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         centerTitle: true,
@@ -135,39 +146,47 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
               ),
             ];
           },
-          body: const Column(
-            children: <Widget>[
-              TabBar(
-                  indicatorColor: Color(0xFF8A6245),
-                  // labelStyle: GoogleFonts.poppins(),
-                  tabs: [
-                    Tab(text: 'Bookart'),
-                    Tab(text: 'Covers'),
-                    Tab(text: 'Collections'),
-                  ]
-              ),
-              Expanded(
-                  child: TabBarView(
-                    children: [
-                      // ------ Bookart content ------
-                      KeepAliveWrapper(
-                          key: ValueKey(0),
-                          child: placeholderContent
-                      ),
-                      // ------ Covers content ------
-                      KeepAliveWrapper(
-                          key: ValueKey(1),
-                          child: placeholderContent
-                      ),
-                      // ------ Collections content ------
-                      KeepAliveWrapper(
-                          key: ValueKey(2),
-                          child: placeholderContent
-                      ),
-                    ],
-                  )
-              )
-            ],
+          body: NotificationListener<ScrollNotification>(
+            onNotification: (notification) {
+              if (notification is ScrollUpdateNotification) {
+                _handleScroll(notification.metrics); // show username in AppBar
+              }
+              return false;
+            },
+            child: const Column(
+              children: <Widget>[
+                TabBar(
+                    indicatorColor: Color(0xFF8A6245),
+                    // labelStyle: GoogleFonts.poppins(),
+                    tabs: [
+                      Tab(text: 'Bookart'),
+                      Tab(text: 'Covers'),
+                      Tab(text: 'Collections'),
+                    ]
+                ),
+                Expanded(
+                    child: TabBarView(
+                      children: [
+                        // ------ Bookart content ------
+                        KeepAliveWrapper(
+                            key: ValueKey(0),
+                            child: placeholderContent
+                        ),
+                        // ------ Covers content ------
+                        KeepAliveWrapper(
+                            key: ValueKey(1),
+                            child: placeholderContent
+                        ),
+                        // ------ Collections content ------
+                        KeepAliveWrapper(
+                            key: ValueKey(2),
+                            child: placeholderContent
+                        ),
+                      ],
+                    )
+                )
+              ],
+            ),
           ),
         ),
       ),

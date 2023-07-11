@@ -1,4 +1,5 @@
 import 'package:bookartify/is_tablet.dart';
+import 'package:bookartify/models/book_search.dart';
 import 'package:bookartify/widgets/book_info.dart';
 import 'package:bookartify/widgets/book_info_tablet.dart';
 import 'package:bookartify/widgets/image_grid.dart';
@@ -6,19 +7,25 @@ import 'package:bookartify/widgets/keep_alive_wrapper.dart';
 import 'package:bookartify/widgets/synopsis_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../models/book_search.dart';
 
 class BookScreen extends StatefulWidget {
-   final Book book; // Variable to hold the book object
+  final Book book; // Variable to hold the book object
 
   const BookScreen({Key? key, required this.book}) : super(key: key); // Updated constructor
-
 
   @override
   State<BookScreen> createState() => _BookScreenState();
 }
 
 class _BookScreenState extends State<BookScreen> {
+  bool _showTitleInAppBar = false;
+
+  void _handleScroll(ScrollMetrics metrics) {
+    setState(() {
+      _showTitleInAppBar = metrics.pixels > 0;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     const placeholderContent = ImageGrid(
@@ -58,11 +65,15 @@ class _BookScreenState extends State<BookScreen> {
             Navigator.pop(context);
           },
         ),
-        title: Text(
-          widget.book.title, // Updated to use the title passed to BookScreen
-          style: GoogleFonts.dmSerifDisplay(
-              fontWeight: FontWeight.w500,
-              letterSpacing: -0.7
+        title: AnimatedOpacity(
+          opacity: _showTitleInAppBar ? 1.0 : 0.0,
+          duration: const Duration(milliseconds: 300),
+          child: Text(
+            widget.book.title, // Updated to use the title passed to BookScreen
+            style: GoogleFonts.dmSerifDisplay(
+                fontWeight: FontWeight.w500,
+                letterSpacing: -0.7
+            ),
           ),
         ),
         centerTitle: true,
@@ -79,41 +90,49 @@ class _BookScreenState extends State<BookScreen> {
               ),
             ];
           },
-          body: Column(
-            children: <Widget>[
-              TabBar(
-                  indicatorColor: const Color(0xFF8A6245),
-                  // labelStyle: GoogleFonts.poppins(),
-                  tabs: [
-                    if (!isTablet(context)) 
-                    const Tab(text: 'Synopsis'),
-                    const Tab(text: 'Bookart'),
-                    const Tab(text: 'Covers'),
-                  ]
-              ),
-              Expanded(
-                  child: TabBarView(
-                    children: [
-                      // ------ Synopsis content ------
+          body: NotificationListener<ScrollNotification>(
+            onNotification: (notification) {
+              if (notification is ScrollUpdateNotification) {
+                _handleScroll(notification.metrics); // show username in AppBar
+              }
+              return false;
+            },
+            child: Column(
+              children: <Widget>[
+                TabBar(
+                    indicatorColor: const Color(0xFF8A6245),
+                    // labelStyle: GoogleFonts.poppins(),
+                    tabs: [
                       if (!isTablet(context))
-                         KeepAliveWrapper(
-                          key: ValueKey(0),
-                          child: SynopsisWidget(synopsis:widget.book.description)
+                      const Tab(text: 'Synopsis'),
+                      const Tab(text: 'Bookart'),
+                      const Tab(text: 'Covers'),
+                    ]
+                ),
+                Expanded(
+                    child: TabBarView(
+                      children: [
+                        // ------ Synopsis content ------
+                        if (!isTablet(context))
+                           KeepAliveWrapper(
+                            key: ValueKey(0),
+                            child: SynopsisWidget(synopsis:widget.book.description)
+                          ),
+                        // ------ Covers content ------
+                        KeepAliveWrapper(
+                          key: ValueKey(isTablet(context) ? 0 : 1),
+                          child: placeholderContent
                         ),
-                      // ------ Covers content ------
-                      KeepAliveWrapper(
-                        key: ValueKey(isTablet(context) ? 0 : 1),
-                        child: placeholderContent
-                      ),
-                      // ------ Collections content ------
-                      KeepAliveWrapper(
-                        key: ValueKey(isTablet(context) ? 1 : 2),
-                        child: placeholderContent
-                      ),
-                    ],
-                  )
-              )
-            ],
+                        // ------ Collections content ------
+                        KeepAliveWrapper(
+                          key: ValueKey(isTablet(context) ? 1 : 2),
+                          child: placeholderContent
+                        ),
+                      ],
+                    )
+                )
+              ],
+            ),
           ),
         ),
       ),
