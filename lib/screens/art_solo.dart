@@ -1,9 +1,9 @@
+import 'package:bookartify/widgets/art_gridview.dart';
+import 'package:bookartify/widgets/icons_and_buttons/like_icon.dart';
 import 'package:bookartify/widgets/icons_and_buttons/save_icon.dart';
+import 'package:bookartify/widgets/icons_and_buttons/share_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../widgets/art_gridview.dart';
-import '../widgets/icons_and_buttons/like_icon.dart';
-import '../widgets/icons_and_buttons/share_button.dart';
 
 class ArtSoloScreen extends StatelessWidget {
   const ArtSoloScreen({super.key});

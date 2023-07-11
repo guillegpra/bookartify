@@ -24,14 +24,14 @@ class _SearchScanBarState extends State<SearchScanBar> {
     super.initState();
     _controller.addListener(() {
       setState(
-          () {}); // rebuilds the widget on every text change to update the cross icon visibility
+        () {}); // rebuilds the widget on every text change to update the cross icon visibility
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[50],
       elevation: 0,
       title: Container(
         decoration: BoxDecoration(

@@ -157,8 +157,8 @@
 
 // Code with button
 import 'dart:async';
-import 'package:bookartify/widgets/btn_search_result.dart';
-import 'package:bookartify/widgets/search_bar.dart';
+import 'package:bookartify/widgets/search/btn_search_result.dart';
+import 'package:bookartify/widgets/search/search_bar.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:bookartify/models/book_search.dart';
 import 'package:bookartify/services/api_service.dart';

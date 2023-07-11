@@ -54,7 +54,7 @@ class _BookScreenState extends State<BookScreen> {
     return Scaffold(
       // Persistent AppBar that never scrolls
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey[50],
         elevation: 0,
         leading: IconButton(
           icon: const Icon(

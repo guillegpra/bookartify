@@ -1,7 +1,7 @@
 import 'package:bookartify/services/usernames_db.dart';
 import 'package:bookartify/widgets/image_grid.dart';
 import 'package:bookartify/widgets/keep_alive_wrapper.dart';
-import 'package:bookartify/widgets/user_widget.dart';
+import 'package:bookartify/widgets/profile/user_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

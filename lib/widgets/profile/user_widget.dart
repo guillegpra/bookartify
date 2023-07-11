@@ -1,5 +1,5 @@
-import 'package:bookartify/widgets/user_counter.dart';
-import 'package:bookartify/widgets/user_display.dart';
+import 'package:bookartify/widgets/profile/user_counter.dart';
+import 'package:bookartify/widgets/profile/user_display.dart';
 import 'package:flutter/material.dart';
 
 class UserWidget extends StatelessWidget {
