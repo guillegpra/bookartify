@@ -43,17 +43,11 @@ class ArtImageContainer extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(
-                        artwork.artistName,
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          color: const Color.fromARGB(255, 63, 63, 63),
-                        ),
-                      ),
+                     
                     ],
                   ),
                   const Padding(
-                    padding: EdgeInsets.fromLTRB(5, 5, 0, 5),
+                    padding: EdgeInsets.fromLTRB(5, 5,5, 5),
                     child: SaveIcon(),
                   ),
                 ],
