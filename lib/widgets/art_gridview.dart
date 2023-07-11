@@ -1,6 +1,7 @@
 import 'package:bookartify/data/dummy_art_data.dart';
 import 'package:bookartify/widgets/art_image_container.dart';
 import 'package:flutter/material.dart';
+
 class ArtGridView extends StatelessWidget {
   const ArtGridView({super.key});
 
