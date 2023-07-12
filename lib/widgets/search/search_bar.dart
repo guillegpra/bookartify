@@ -65,7 +65,7 @@ class _SearchScanBarState extends State<SearchScanBar> {
             border: InputBorder.none,
           ),
           onChanged: widget.onChanged,
-          autofocus: true, // TextField automatically focused
+          autofocus: false, // TextField automatically focused
         ),
       ),
       centerTitle: true,
