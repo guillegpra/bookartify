@@ -6,6 +6,22 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+int _usernameCounter = 1;
+
+Future<String> generateDefaultUsername() async {
+  String defaultUsername = "user_$_usernameCounter";
+  _usernameCounter++;
+
+  bool isAvailable = await usernameAvailable(defaultUsername);
+  while (!isAvailable) {
+    defaultUsername = "user$_usernameCounter";
+    _usernameCounter++;
+    isAvailable = await usernameAvailable(defaultUsername);
+  }
+
+  return defaultUsername;
+}
+
 Future<void> signIn(BuildContext context, String email, String password) async {
   LoadingOverlay.show(context);
 
@@ -56,6 +72,8 @@ Future<User?> signInWithGoogle(BuildContext context) async {
         await auth.signInWithCredential(credential);
 
         user = userCredential.user;
+        String defaultUsername = await generateDefaultUsername();
+        addUsername(user!.uid, defaultUsername);
       } on FirebaseAuthException catch (e) {
         if (e.code == "account-exists-with-different-credential") {
           // handle error here
@@ -97,8 +115,10 @@ Future<void> signUp(BuildContext context, String email, String password, String 
     UserCredential user = await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
 
+    String selectedUsername = username.isNotEmpty ? username : await generateDefaultUsername();
+
     // add username to database
-    await addUsername(user.user!.uid, username);
+    await addUsername(user.user!.uid, selectedUsername);
   } on FirebaseAuthException catch (e) {
     Utils.showSnackBar(e.message, true);
   }

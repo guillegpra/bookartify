@@ -79,7 +79,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
         elevation: 0,
         title: Text(
           "Verify email",
-          style: GoogleFonts.poppins(),
+          style: GoogleFonts.dmSerifDisplay(),
         ),
         centerTitle: true,
       ),
