@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-enum SocialMedia { facebook, twitter, pinterest, instagram }
+enum SocialMedia { facebook, twitter, pinterest }
 
 Widget buildSocialButtons() => Card(
       child: Row(
@@ -30,7 +30,7 @@ Widget buildSocialButtons() => Card(
               onClicked: () => share(SocialMedia.pinterest),
             ),
           ),
-          Expanded(
+          /*Expanded(
             child: InkWell(
               child: Container(
                 width: 45,
@@ -43,7 +43,7 @@ Widget buildSocialButtons() => Card(
               ),
               onTap: () => share(SocialMedia.instagram),
             ),
-          ),
+          ),*/
         ],
       ),
     );
@@ -51,7 +51,8 @@ Widget buildSocialButtons() => Card(
 Future share(SocialMedia socialPlatform) async {
   final subject = "Check out this artwork from BookARtify!";
   final text = "Check out this artwork from BookARtify!";
-  final urlShare = Uri.encodeComponent("image/fanart.jpg");
+  final urlShare = Uri.encodeComponent(
+      "https://i.pinimg.com/originals/a5/72/54/a572542b8b969a5d966570098990b330.jpg");
 
   final urls = {
     SocialMedia.facebook:
@@ -60,8 +61,8 @@ Future share(SocialMedia socialPlatform) async {
         'https://twitter.com/intent/tweet?text=$text&url=$urlShare',
     SocialMedia.pinterest:
         'https://www.pinterest.com/pin/create/button/?url=$urlShare&description=$text',
-    SocialMedia.instagram:
-        'https://www.instagram.com/create/broadcast/?url=$urlShare&caption=$text',
+    /*SocialMedia.instagram:
+        'https://www.instagram.com/create/broadcast/?url=$urlShare&caption=$text',*/
   };
 
   final url = Uri.parse(urls[socialPlatform]!);
