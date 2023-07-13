@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -69,6 +69,67 @@ Future share(SocialMedia socialPlatform) async {
 
   if (await canLaunchUrl(url)) {
     await launchUrl(url);
+  }
+}
+
+Widget buildSocialButton({
+  required IconData icon,
+  Color? color,
+  required VoidCallback onClicked,
+}) =>
+    InkWell(
+      child: Container(
+          width: 64,
+          height: 64,
+          child: Center(child: FaIcon(icon, color: color, size: 40))),
+      onTap: onClicked,
+    );*/
+
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:social_share/social_share.dart';
+
+enum SocialMedia { whatsapp, twitter }
+
+Widget buildSocialButtons() => Card(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            child: buildSocialButton(
+              icon: FontAwesomeIcons.whatsapp,
+              color: Color(0xFF25D366),
+              onClicked: () => share(SocialMedia.whatsapp),
+            ),
+          ),
+          Expanded(
+            child: buildSocialButton(
+              icon: FontAwesomeIcons.twitter,
+              color: Color(0xFF1da1f2),
+              onClicked: () => share(SocialMedia.twitter),
+            ),
+          ),
+        ],
+      ),
+    );
+
+Future<void> share(SocialMedia socialPlatform) async {
+  final text = "Check out this artwork from BookARtify!";
+  final imageLink =
+      "https://i.pinimg.com/originals/a5/72/54/a572542b8b969a5d966570098990b330.jpg";
+
+  switch (socialPlatform) {
+    case SocialMedia.whatsapp:
+      await SocialShare.shareWhatsapp(text);
+      break;
+    case SocialMedia.twitter:
+      await SocialShare.shareTwitter(
+        text,
+        url: imageLink,
+        trailingText: "cool!!",
+      );
+      break;
   }
 }
 
