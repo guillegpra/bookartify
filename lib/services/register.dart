@@ -72,8 +72,10 @@ Future<User?> signInWithGoogle(BuildContext context) async {
         await auth.signInWithCredential(credential);
 
         user = userCredential.user;
-        String defaultUsername = await generateDefaultUsername();
-        addUsername(user!.uid, defaultUsername);
+        if (getUsername(user!.uid) == null) {
+          String defaultUsername = await generateDefaultUsername();
+          addUsername(user!.uid, defaultUsername);
+        }
       } on FirebaseAuthException catch (e) {
         if (e.code == "account-exists-with-different-credential") {
           // handle error here
