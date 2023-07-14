@@ -71,8 +71,8 @@ class _BookScreenState extends State<BookScreen> {
           child: Text(
             widget.book.title, // Updated to use the title passed to BookScreen
             style: GoogleFonts.dmSerifDisplay(
-                fontWeight: FontWeight.w500,
-                letterSpacing: -0.7
+              fontWeight: FontWeight.w500,
+              letterSpacing: -0.7
             ),
           ),
         ),

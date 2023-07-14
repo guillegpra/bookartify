@@ -1,10 +1,10 @@
 import 'dart:async';
+import 'package:bookartify/widgets/search/search_bar.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:bookartify/models/book_search.dart';
 import 'package:bookartify/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../widgets/search_bar.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -68,8 +68,11 @@ class _SearchScreenState extends State<SearchScreen> {
                   final books = snapshot.data ?? [];
                   if (books.isEmpty) {
                     return Center(
-                        child: Text('No results found',
-                            style: GoogleFonts.poppins(fontSize: 18)));
+                      child: Text(
+                        'No results found',
+                        style: GoogleFonts.poppins(fontSize: 18)
+                      )
+                    );
                   } else {
                     return ListView.builder(
                       itemCount: books.length,
