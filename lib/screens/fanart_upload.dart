@@ -20,7 +20,6 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
   String? selectedBookTitle;
   String? selectedBookAuthor;
   TextEditingController _titleController = TextEditingController();
-  TextEditingController _artistController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
 
   @override
@@ -104,7 +103,6 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
         builder: (context) => ArtConfirmationPage(
           selectedImagePaths: _selectedImagePaths,
           title: _titleController.text,
-          artist: _artistController.text,
           description: _descriptionController.text,
           selectedBookTitle: selectedBookTitle,
           selectedBookAuthor: selectedBookAuthor,
@@ -215,14 +213,6 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
                 controller: _titleController,
                 decoration: InputDecoration(
                   labelText: 'Title',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 16),
-              TextFormField(
-                controller: _artistController,
-                decoration: InputDecoration(
-                  labelText: 'Artist',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -340,7 +330,6 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
 class ArtConfirmationPage extends StatelessWidget {
   final List<String> selectedImagePaths;
   final String title;
-  final String artist;
   final String description;
   final String? selectedBookTitle;
   final String? selectedBookAuthor;
@@ -348,7 +337,6 @@ class ArtConfirmationPage extends StatelessWidget {
   ArtConfirmationPage({
     required this.selectedImagePaths,
     required this.title,
-    required this.artist,
     required this.description,
     required this.selectedBookTitle,
     required this.selectedBookAuthor,
@@ -403,7 +391,6 @@ class ArtConfirmationPage extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Text('Title: $title'),
-              Text('Artist: $artist'),
               Text('Description: $description'),
               SizedBox(height: 16),
               Text(

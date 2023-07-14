@@ -47,7 +47,6 @@ dependencies:
   rxdart: ^0.27.2
   intl: ^0.17.0 
   image_gallery_saver: ^2.0.3
-  image_picker: ^1.0.0
   share_plus: ^7.0.2
   font_awesome_flutter: ^10.5.0
   social_share: ^2.3.1
