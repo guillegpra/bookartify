@@ -27,7 +27,6 @@ class _CoverUploadPageState extends State<CoverUploadPage> {
   String? selectedBookTitle;
   String? selectedBookAuthor;
   TextEditingController _titleController = TextEditingController();
-  TextEditingController _artistController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
 
   @override
@@ -114,7 +113,6 @@ class _CoverUploadPageState extends State<CoverUploadPage> {
           builder: (context) => ArtConfirmationPage(
             selectedImagePaths: _selectedImagePaths,
             title: _titleController.text,
-            artist: _artistController.text,
             description: _descriptionController.text,
             selectedBookTitle: selectedBookTitle,
             selectedBookAuthor: selectedBookAuthor,
@@ -240,14 +238,6 @@ class _CoverUploadPageState extends State<CoverUploadPage> {
               ),
               SizedBox(height: 16),
               TextFormField(
-                controller: _artistController,
-                decoration: InputDecoration(
-                  labelText: 'Artist',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 16),
-              TextFormField(
                 controller: _descriptionController,
                 decoration: InputDecoration(
                   labelText: 'Description',
@@ -360,7 +350,6 @@ class _CoverUploadPageState extends State<CoverUploadPage> {
 class ArtConfirmationPage extends StatelessWidget {
   final Map<String, String?> selectedImagePaths;
   final String title;
-  final String artist;
   final String description;
   final String? selectedBookTitle;
   final String? selectedBookAuthor;
@@ -368,7 +357,6 @@ class ArtConfirmationPage extends StatelessWidget {
   ArtConfirmationPage({
     required this.selectedImagePaths,
     required this.title,
-    required this.artist,
     required this.description,
     required this.selectedBookTitle,
     required this.selectedBookAuthor,
@@ -426,7 +414,6 @@ class ArtConfirmationPage extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Text('Title: $title'),
-              Text('Artist: $artist'),
               Text('Description: $description'),
               SizedBox(height: 16),
               Text(
