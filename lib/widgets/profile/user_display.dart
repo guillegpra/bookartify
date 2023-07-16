@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:bookartify/widgets/icons_and_buttons/share_profile_button.dart';
+import 'package:bookartify/services/user_bios_db.dart';
+import 'package:bookartify/widgets/profile/edit_profile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class UserDisplay extends StatelessWidget {
   final String username;
@@ -18,6 +21,8 @@ class UserDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final User? currentUser = FirebaseAuth.instance.currentUser;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -40,22 +45,40 @@ class UserDisplay extends StatelessWidget {
                 ))
           ],
         ),
-        SizedBox(
-          width: 200,
-          child: Text(
-            "lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            softWrap: false,
-            style: GoogleFonts.poppins(fontSize: 12),
-          ),
+        FutureBuilder<String?>(
+          future: currentUser != null ? getUserBio(currentUser.uid) : null,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              return Text('Error retrieving bio');
+            } else {
+              final bio = snapshot.data;
+              return SizedBox(
+                width: 200,
+                child: Text(
+                  bio ?? 'hi',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
+                  style: GoogleFonts.poppins(fontSize: 12),
+                ),
+              );
+            }
+          },
         ),
         // FollowButton(isFollowing: false),
         Row(
           children: [
             ElevatedButton(
                 onPressed: () {
-                  // TODO: take you to edit profile
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          EditProfileScreen(currentUser: currentUser),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFFF5EFE1),

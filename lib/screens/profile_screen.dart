@@ -3,6 +3,7 @@ import 'package:bookartify/services/usernames_db.dart';
 import 'package:bookartify/widgets/image_grid.dart';
 import 'package:bookartify/widgets/keep_alive_wrapper.dart';
 import 'package:bookartify/widgets/profile/user_widget.dart';
+import 'package:bookartify/widgets/profile/edit_profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,8 +15,10 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateMixin,
-    AutomaticKeepAliveClientMixin<ProfileScreen> {
+class _ProfileScreenState extends State<ProfileScreen>
+    with
+        TickerProviderStateMixin,
+        AutomaticKeepAliveClientMixin<ProfileScreen> {
   late TabController _tabController;
   User? currentUser;
   String _username = "";
@@ -89,7 +92,7 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
           child: Text(
             _username.isNotEmpty ? _username : "username",
             style: GoogleFonts.dmSerifDisplay(
-                fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),
@@ -116,7 +119,13 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
               // Handle selected option
               switch (value) {
                 case "edit":
-                  // TODO
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          EditProfileScreen(currentUser: currentUser),
+                    ),
+                  );
                   break;
                 case "change_pwd":
                   // TODO
@@ -163,29 +172,21 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                       Tab(text: 'Bookart'),
                       Tab(text: 'Covers'),
                       Tab(text: 'Collections'),
-                    ]
-                ),
+                    ]),
                 Expanded(
                     child: TabBarView(
-                      children: [
-                        // ------ Bookart content ------
-                        KeepAliveWrapper(
-                            key: ValueKey(0),
-                            child: placeholderContent
-                        ),
-                        // ------ Covers content ------
-                        KeepAliveWrapper(
-                            key: ValueKey(1),
-                            child: placeholderContent
-                        ),
-                        // ------ Collections content ------
-                        KeepAliveWrapper(
-                            key: ValueKey(2),
-                            child: placeholderContent
-                        ),
-                      ],
-                    )
-                )
+                  children: [
+                    // ------ Bookart content ------
+                    KeepAliveWrapper(
+                        key: ValueKey(0), child: placeholderContent),
+                    // ------ Covers content ------
+                    KeepAliveWrapper(
+                        key: ValueKey(1), child: placeholderContent),
+                    // ------ Collections content ------
+                    KeepAliveWrapper(
+                        key: ValueKey(2), child: placeholderContent),
+                  ],
+                ))
               ],
             ),
           ),
