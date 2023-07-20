@@ -89,26 +89,28 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:social_share/social_share.dart';
+import 'package:flutter/services.dart'; // Import the Flutter services for clipboard functionality
 
 enum SocialMedia { whatsapp, twitter }
 
 Widget buildSocialButtons() => Card(
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Expanded(
-            child: buildSocialButton(
-              icon: FontAwesomeIcons.whatsapp,
-              color: Color(0xFF25D366),
-              onClicked: () => share(SocialMedia.whatsapp),
-            ),
+          buildSocialButton(
+            icon: FontAwesomeIcons.whatsapp,
+            color: Color(0xFF25D366),
+            onClicked: () => share(SocialMedia.whatsapp),
           ),
-          Expanded(
-            child: buildSocialButton(
-              icon: FontAwesomeIcons.twitter,
-              color: Color(0xFF1da1f2),
-              onClicked: () => share(SocialMedia.twitter),
-            ),
+          buildSocialButton(
+            icon: FontAwesomeIcons.twitter,
+            color: Color(0xFF1da1f2),
+            onClicked: () => share(SocialMedia.twitter),
+          ),
+          // Add the Copy to Clipboard IconButton
+          IconButton(
+            icon: Icon(Icons.content_copy),
+            onPressed: () => copyToClipboard(),
           ),
         ],
       ),
@@ -127,10 +129,17 @@ Future<void> share(SocialMedia socialPlatform) async {
       await SocialShare.shareTwitter(
         text,
         url: imageLink,
-        trailingText: "cool!!",
+        hashtags: ["bookARtify"],
       );
       break;
   }
+}
+
+void copyToClipboard() {
+  final textToCopy =
+      "https://i.pinimg.com/originals/a5/72/54/a572542b8b969a5d966570098990b330.jpg";
+  Clipboard.setData(ClipboardData(text: textToCopy));
+  // You can show a snackbar or toast here to indicate that the link is copied.
 }
 
 Widget buildSocialButton({
