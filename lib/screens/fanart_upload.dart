@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:bookartify/models/book_search.dart';
 import 'package:bookartify/widgets/upload_book_selection.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'dart:io';
 
 class ArtUploadPage extends StatefulWidget {
@@ -59,7 +60,7 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
           lockAspectRatio: false,
         ),
         IOSUiSettings(
-          title: 'Cropper',
+          title: 'Crop Image',
         ),
         WebUiSettings(
           context: context,
@@ -116,8 +117,15 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xfffbf8f2),
-        centerTitle: true, // Change this line
-        title: Text('Upload Your Art Work'),
+        centerTitle: true,
+        title: Text(
+          'Upload Your Art Work',
+          style: GoogleFonts.dmSerifDisplay(
+            fontWeight: FontWeight.bold,
+            color: Color(0xff2f2f2f),
+            fontSize: 20,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(

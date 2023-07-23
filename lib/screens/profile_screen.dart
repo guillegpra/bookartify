@@ -1,5 +1,6 @@
 import 'package:bookartify/services/register.dart';
 import 'package:bookartify/services/usernames_db.dart';
+import 'package:bookartify/services/user_profile_pics_db.dart';
 import 'package:bookartify/widgets/image_grid.dart';
 import 'package:bookartify/widgets/keep_alive_wrapper.dart';
 import 'package:bookartify/widgets/profile/user_widget.dart';
@@ -22,6 +23,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   late TabController _tabController;
   User? currentUser;
   String _username = "";
+  String _profileImageUrl = ""; // New variable for profile image URL
   bool _showUsernameInAppBar = false;
 
   @override
@@ -30,6 +32,17 @@ class _ProfileScreenState extends State<ProfileScreen>
     _tabController = TabController(length: 3, vsync: this);
     currentUser = FirebaseAuth.instance.currentUser;
     _fetchUsername();
+    _fetchProfileImageUrl(); // Fetch profile image URL
+  }
+
+  Future<void> _fetchProfileImageUrl() async {
+    if (currentUser != null) {
+      String? fetchedImageUrl = await getUserProfilePic(
+          currentUser!.uid); // Use your function to get the profile pic
+      setState(() {
+        _profileImageUrl = fetchedImageUrl ?? "";
+      });
+    }
   }
 
   Future<void> _fetchUsername() async {
@@ -152,6 +165,8 @@ class _ProfileScreenState extends State<ProfileScreen>
               SliverToBoxAdapter(
                 child: UserWidget(
                   username: _username.isNotEmpty ? _username : "username",
+                  profileImageUrl:
+                      _profileImageUrl, // Pass the profile image URL
                 ),
               ),
             ];

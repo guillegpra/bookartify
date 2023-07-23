@@ -17,20 +17,14 @@ class _UploadScreenState extends State<UploadScreen> {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        elevation: 0,
-        centerTitle: true, // Change this line
-        automaticallyImplyLeading: false,
-        backgroundColor: const Color(0xfffbf8f2),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.zero,
-        ),
+        backgroundColor: Color(0xfffbf8f2),
+        centerTitle: true,
         title: Text(
           "Upload options",
           style: GoogleFonts.dmSerifDisplay(
-            fontWeight: FontWeight.w500,
-            fontStyle: FontStyle.normal,
+            fontWeight: FontWeight.bold,
+            color: Color(0xff2f2f2f),
             fontSize: 20,
-            color: const Color(0xff000000),
           ),
         ),
       ),

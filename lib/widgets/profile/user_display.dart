@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:bookartify/widgets/icons_and_buttons/share_profile_button.dart';
 import 'package:bookartify/services/user_bios_db.dart';
+import 'package:bookartify/services/user_goodreads_links_db.dart';
 import 'package:bookartify/widgets/profile/edit_profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -11,9 +12,22 @@ class UserDisplay extends StatelessWidget {
 
   const UserDisplay({super.key, required this.username});
 
-  Future<void> _launchUrl() async {
-    Uri url =
-        Uri.parse("https://www.goodreads.com/user/sign_in"); // TODO: change url
+  Future<void> _launchUrl(BuildContext context) async {
+    final User? currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser == null) return;
+
+    String? goodreadsUrl = await getUserGoodreadsUrl(currentUser.uid);
+    if (goodreadsUrl == null || goodreadsUrl.isEmpty) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EditProfileScreen(currentUser: currentUser),
+        ),
+      );
+      return;
+    }
+
+    Uri url = Uri.parse(goodreadsUrl);
     if (!await launchUrl(url)) {
       throw Exception("Could not lunch $url");
     }
@@ -36,7 +50,7 @@ class UserDisplay extends StatelessWidget {
             ),
             IconButton(
                 onPressed: () {
-                  _launchUrl();
+                  _launchUrl(context);
                 },
                 icon: Image.asset(
                   "images/goodreads_icon.png",
@@ -48,14 +62,12 @@ class UserDisplay extends StatelessWidget {
         FutureBuilder<String?>(
           future: currentUser != null ? getUserBio(currentUser.uid) : null,
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
-            } else if (snapshot.hasError) {
+            if (snapshot.hasError) {
               return Text('Error retrieving bio');
             } else {
               final bio = snapshot.data;
               return SizedBox(
-                width: 200,
+                width: 130,
                 child: Text(
                   bio ?? 'hi',
                   maxLines: 2,
@@ -67,7 +79,7 @@ class UserDisplay extends StatelessWidget {
             }
           },
         ),
-        // FollowButton(isFollowing: false),
+        SizedBox(height: 10), // FollowButton(isFollowing: false),
         Row(
           children: [
             ElevatedButton(

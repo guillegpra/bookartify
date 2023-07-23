@@ -18,8 +18,10 @@ class ProfileScreen2 extends StatefulWidget {
   State<ProfileScreen2> createState() => _ProfileScreen2State();
 }
 
-class _ProfileScreen2State extends State<ProfileScreen2> with TickerProviderStateMixin,
-    AutomaticKeepAliveClientMixin<ProfileScreen2> {
+class _ProfileScreen2State extends State<ProfileScreen2>
+    with
+        TickerProviderStateMixin,
+        AutomaticKeepAliveClientMixin<ProfileScreen2> {
   late TabController _tabController;
   User? currentUser;
   String _username = "";
@@ -72,7 +74,8 @@ class _ProfileScreen2State extends State<ProfileScreen2> with TickerProviderStat
 
     return FutureBuilder<ListResult>(
       future: storage.listArtByUser(currentUser!.uid),
-      builder: (BuildContext context, AsyncSnapshot<ListResult> listArtSnapshot) {
+      builder:
+          (BuildContext context, AsyncSnapshot<ListResult> listArtSnapshot) {
         if (listArtSnapshot.connectionState == ConnectionState.waiting) {
           // While waiting for the listArt data to load, show a loading indicator or placeholder
           return CircularProgressIndicator();
@@ -86,8 +89,10 @@ class _ProfileScreen2State extends State<ProfileScreen2> with TickerProviderStat
           final ListResult listArt = listArtSnapshot.data!;
           return FutureBuilder<List<String>>(
             future: titlesStorage.getArtArray(currentUser!.uid),
-            builder: (BuildContext context, AsyncSnapshot<List<String>> listTitlesSnapshot) {
-              if (listTitlesSnapshot.connectionState == ConnectionState.waiting) {
+            builder: (BuildContext context,
+                AsyncSnapshot<List<String>> listTitlesSnapshot) {
+              if (listTitlesSnapshot.connectionState ==
+                  ConnectionState.waiting) {
                 // While waiting for the listTitles data to load, show a loading indicator or placeholder
                 return CircularProgressIndicator();
               } else if (listTitlesSnapshot.hasError) {
@@ -99,7 +104,8 @@ class _ProfileScreen2State extends State<ProfileScreen2> with TickerProviderStat
               } else {
                 final List<String> listTitlesArt = listTitlesSnapshot.data!;
                 final placeholderContent = ImageGrid(
-                  imagePaths: List<String>.from(listArt.items.map((item) => item.name)),
+                  imagePaths:
+                      List<String>.from(listArt.items.map((item) => item.name)),
                   imageTitles: List<String>.from(listTitlesArt),
                 );
 
@@ -142,13 +148,13 @@ class _ProfileScreen2State extends State<ProfileScreen2> with TickerProviderStat
                           // Handle selected option
                           switch (value) {
                             case "edit":
-                            // TODO
+                              // TODO
                               break;
                             case "change_pwd":
-                            // TODO
+                              // TODO
                               break;
                             case "logout":
-                            // TODO
+                              // TODO
                               signOut(context);
                               break;
                             default:
@@ -168,7 +174,10 @@ class _ProfileScreen2State extends State<ProfileScreen2> with TickerProviderStat
                         return [
                           SliverToBoxAdapter(
                             child: UserWidget(
-                              username: _username.isNotEmpty ? _username : "username",
+                              username:
+                                  _username.isNotEmpty ? _username : "username",
+                              profileImageUrl:
+                                  "images/upload-images-placeholder.png", // Pass the profile image UR
                             ),
                           ),
                         ];
@@ -176,7 +185,8 @@ class _ProfileScreen2State extends State<ProfileScreen2> with TickerProviderStat
                       body: NotificationListener<ScrollNotification>(
                         onNotification: (notification) {
                           if (notification is ScrollUpdateNotification) {
-                            _handleScroll(notification.metrics); // show username in AppBar
+                            _handleScroll(notification
+                                .metrics); // show username in AppBar
                           }
                           return false;
                         },
@@ -189,29 +199,24 @@ class _ProfileScreen2State extends State<ProfileScreen2> with TickerProviderStat
                                   Tab(text: 'Bookart'),
                                   Tab(text: 'Covers'),
                                   Tab(text: 'Collections'),
-                                ]
-                            ),
+                                ]),
                             Expanded(
                                 child: TabBarView(
-                                  children: [
-                                    // ------ Bookart content ------
-                                    KeepAliveWrapper(
-                                        key: ValueKey(0),
-                                        child: placeholderContent
-                                    ),
-                                    // ------ Covers content ------
-                                    KeepAliveWrapper(
-                                        key: ValueKey(1),
-                                        child: placeholderContent
-                                    ),
-                                    // ------ Collections content ------
-                                    KeepAliveWrapper(
-                                        key: ValueKey(2),
-                                        child: placeholderContent
-                                    ),
-                                  ],
-                                )
-                            )
+                              children: [
+                                // ------ Bookart content ------
+                                KeepAliveWrapper(
+                                    key: ValueKey(0),
+                                    child: placeholderContent),
+                                // ------ Covers content ------
+                                KeepAliveWrapper(
+                                    key: ValueKey(1),
+                                    child: placeholderContent),
+                                // ------ Collections content ------
+                                KeepAliveWrapper(
+                                    key: ValueKey(2),
+                                    child: placeholderContent),
+                              ],
+                            ))
                           ],
                         ),
                       ),
@@ -224,6 +229,5 @@ class _ProfileScreen2State extends State<ProfileScreen2> with TickerProviderStat
         }
       },
     );
-
   }
 }
