@@ -22,7 +22,8 @@ class HomeScreen extends StatelessWidget {
                 itemCount: 3,
                 itemBuilder: (context, index) {
                   return Container(
-                    margin: const EdgeInsets.only(bottom: 16.0), // Add margin between cards
+                    margin: const EdgeInsets.only(
+                        bottom: 16.0), // Add margin between cards
                     child: _buildCard(),
                   );
                 },
