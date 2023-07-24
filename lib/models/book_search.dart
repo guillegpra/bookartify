@@ -1,4 +1,5 @@
 class Book {
+  final String id;
   final String title;
   final String author;
   final String thumbnailUrl;
@@ -6,8 +7,10 @@ class Book {
   final int pageCount;
   final String description; // added
 
+
   Book(
-      {required this.title,
+      {required this.id,
+      required this.title,
       required this.author,
       required this.thumbnailUrl,
       required this.publishedDate,
@@ -16,6 +19,7 @@ class Book {
 
   factory Book.fromJson(Map<String, dynamic> json) {
     return Book(
+      id: json['id'] ?? "Id not available",
       title: json['volumeInfo']['title'] ?? "Title not available",
       author: (json['volumeInfo']['authors'] != null &&
               json['volumeInfo']['authors'].isNotEmpty)
