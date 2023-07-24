@@ -100,7 +100,7 @@ class UserDisplay extends StatelessWidget {
                   "Edit profile",
                   style: GoogleFonts.poppins(color: Color(0xFF2F2F2F)),
                 )),
-            ShareProfileButton(onPressed: () {
+            ShareButton(onPressed: () {
               // TODO: share functionality
             })
           ],

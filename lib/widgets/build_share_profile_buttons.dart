@@ -9,20 +9,21 @@ enum SocialMedia {
   twitter,
 }
 
-Widget buildSocialButtons() => Card(
+Widget buildShareProfileButtons() => Card(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          buildSocialButton(
+          buildShareProfileButton(
             icon: FontAwesomeIcons.whatsapp,
             color: Color(0xFF25D366),
             onClicked: () => share(SocialMedia.whatsapp),
           ),
-          buildSocialButton(
+          buildShareProfileButton(
             icon: FontAwesomeIcons.twitter,
             color: Color(0xFF1da1f2),
             onClicked: () => share(SocialMedia.twitter),
           ),
+
           // Add the Copy to Clipboard IconButton
           Builder(
             builder: (context) => IconButton(
@@ -35,8 +36,8 @@ Widget buildSocialButtons() => Card(
     );
 
 Future<void> share(SocialMedia socialPlatform) async {
-  final text = "Check out this artwork from BookARtify!";
-  final imageLink =
+  final text = "Check out my profile on BookARtify!";
+  final profileLink =
       "https://i.pinimg.com/originals/a5/72/54/a572542b8b969a5d966570098990b330.jpg";
 
   switch (socialPlatform) {
@@ -46,7 +47,7 @@ Future<void> share(SocialMedia socialPlatform) async {
     case SocialMedia.twitter:
       await SocialShare.shareTwitter(
         text,
-        url: imageLink,
+        url: profileLink,
         hashtags: ["bookARtify"],
       );
       break;
@@ -58,7 +59,7 @@ void copyToClipboard(BuildContext context) {
       "https://i.pinimg.com/originals/a5/72/54/a572542b8b969a5d966570098990b330.jpg";
   Clipboard.setData(ClipboardData(text: textToCopy));
 
-  // Show a snackbar to indicate that the link is copied to the clipboard.
+  // Show a snackbar to indicate that the link is copied.
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text("Copied to clipboard!"),
@@ -67,7 +68,7 @@ void copyToClipboard(BuildContext context) {
   );
 }
 
-Widget buildSocialButton({
+Widget buildShareProfileButton({
   required IconData icon,
   Color? color,
   required VoidCallback onClicked,
