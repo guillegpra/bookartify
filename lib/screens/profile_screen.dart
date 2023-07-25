@@ -84,7 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   Future<void> _fetchBookmarks() async {
     if (currentUser != null) {
       List<dynamic> fetchedBookmarks =
-          await getBookmarksByUser(currentUser!.uid);
+      await getBookmarksByUser(currentUser!.uid);
       setState(() {
         _bookmarks = fetchedBookmarks ?? [];
       });
@@ -115,6 +115,16 @@ class _ProfileScreenState extends State<ProfileScreen>
     });
   }
 
+  Future<void> _reloadData() async {
+    // Fetch the data again and update the state
+    await _fetchUsername();
+    await _fetchProfileImageUrl();
+    await _fetchFollowersCount();
+    await _fetchBookart();
+    await _fetchCovers();
+    await _fetchBookmarks();
+  }
+
   @override
   Widget build(BuildContext context) {
     const placeholderContent = ImageGrid(
@@ -142,21 +152,21 @@ class _ProfileScreenState extends State<ProfileScreen>
 
     // Bookart
     List<String> bookartImageTitles =
-        _bookart.map((map) => map["title"].toString()).toList();
+    _bookart.map((map) => map["title"].toString()).toList();
     List<String> bookartImagePaths =
-        _bookart.map((map) => map["url"].toString()).toList();
+    _bookart.map((map) => map["url"].toString()).toList();
 
     // Covers
     List<String> coversImageTitles =
-        _covers.map((map) => map["title"].toString()).toList();
+    _covers.map((map) => map["title"].toString()).toList();
     List<String> coversImagePaths =
-        _covers.map((map) => map["url"].toString()).toList();
+    _covers.map((map) => map["url"].toString()).toList();
 
     // Collections
     List<String> bookmarksImageTitles =
-        _bookmarks.map((map) => map["title"].toString()).toList();
+    _bookmarks.map((map) => map["title"].toString()).toList();
     List<String> bookmarksImagePaths =
-        _bookmarks.map((map) => map["url"].toString()).toList();
+    _bookmarks.map((map) => map["url"].toString()).toList();
 
     return Scaffold(
       // Persistent AppBar that never scrolls
@@ -200,7 +210,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               // Handle selected option
               switch (value) {
                 case "followers":
-                  // TODO
+                // TODO
                   break;
                 case "edit":
                   Navigator.push(
@@ -212,10 +222,10 @@ class _ProfileScreenState extends State<ProfileScreen>
                   );
                   break;
                 case "change_pwd":
-                  // TODO
+                // TODO
                   break;
                 case "logout":
-                  // TODO
+                // TODO
                   signOut(context);
                   break;
                 default:
@@ -238,7 +248,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                   userId: currentUser!.uid,
                   username: _username.isNotEmpty ? _username : "username",
                   profileImageUrl:
-                      _profileImageUrl, // Pass the profile image URL
+                  _profileImageUrl, // Pass the profile image URL
                 ),
               ),
             ];
@@ -262,33 +272,42 @@ class _ProfileScreenState extends State<ProfileScreen>
                     ]),
                 Expanded(
                     child: TabBarView(
-                  children: [
-                    // ------ Bookart content ------
-                    KeepAliveWrapper(
-                      key: const ValueKey(0),
-                      child: ImageGrid(
-                        imagePaths: bookartImagePaths,
-                        imageTitles: bookartImageTitles,
-                      ),
-                    ),
-                    // ------ Covers content ------
-                    KeepAliveWrapper(
-                      key: const ValueKey(1),
-                      child: ImageGrid(
-                        imagePaths: coversImagePaths,
-                        imageTitles: coversImageTitles,
-                      ),
-                    ),
-                    // ------ Collections content ------
-                    KeepAliveWrapper(
-                      key: const ValueKey(2),
-                      child: ImageGrid(
-                        imagePaths: bookmarksImagePaths,
-                        imageTitles: bookmarksImageTitles,
-                      ),
-                    ),
-                  ],
-                ))
+                      children: [
+                        // ------ Bookart content ------
+                        RefreshIndicator(
+                          onRefresh: _reloadData,
+                          child: KeepAliveWrapper(
+                            key: const ValueKey(0),
+                            child: ImageGrid(
+                              imagePaths: bookartImagePaths,
+                              imageTitles: bookartImageTitles,
+                            ),
+                          ),
+                        ),
+                        // ------ Covers content ------
+                        RefreshIndicator(
+                          onRefresh: _reloadData,
+                          child: KeepAliveWrapper(
+                            key: const ValueKey(1),
+                            child: ImageGrid(
+                              imagePaths: coversImagePaths,
+                              imageTitles: coversImageTitles,
+                            ),
+                          ),
+                        ),
+                        // ------ Collections content ------
+                        RefreshIndicator(
+                          onRefresh: _reloadData,
+                          child: KeepAliveWrapper(
+                            key: const ValueKey(2),
+                            child: ImageGrid(
+                              imagePaths: bookmarksImagePaths,
+                              imageTitles: bookmarksImageTitles,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ))
               ],
             ),
           ),

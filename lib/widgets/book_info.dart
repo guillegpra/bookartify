@@ -26,6 +26,7 @@ class BookInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("--------------------------------------- ${book.id} ---------------------------------");
     return Container(
       margin: const EdgeInsets.only(bottom: 8.0, top: 8.0),
       child: Row(
