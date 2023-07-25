@@ -209,6 +209,10 @@ class _SearchScreenState extends State<SearchScreen> {
         onChanged: (value) {
           _searchSubject.add(value);
         },
+        onScan: (barcode) {
+          // Handle the barcode here
+          _searchSubject.add(barcode);
+        },
       ),
       body: _searchResult == null
           ? Center(
@@ -295,7 +299,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                             Container(
                                                 margin: const EdgeInsets.only(
                                                     top: 10),
-                                                child: SearchResultBtn(book: book)),
+                                                child: SearchResultBtn(
+                                                    book: book)),
                                           ],
                                         ),
                                       ),
