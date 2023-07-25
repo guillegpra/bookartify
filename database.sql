@@ -116,6 +116,7 @@ INSERT INTO follows_user (user_id, following_id) VALUES	("S5zT8izdcGWIena7LDy4gv
 INSERT INTO covers (title, book_id, user_id, url) VALUES ("Dune", "q_5WzQEACAAJ", "S5zT8izdcGWIena7LDy4gvGD3xj1", "https://firebasestorage.googleapis.com/v0/b/bookartify-idm.appspot.com/o/S5zT8izdcGWIena7LDy4gvGD3xj1%2Fcover%2Fdune.jpg?alt=media&token=c80c414c-dbdf-4262-ae8b-c35beeda4782");
 INSERT INTO art (title, book_id, user_id, url) VALUES ("Evelyn Hugo", "cPlBEAAAQBAJ", "S5zT8izdcGWIena7LDy4gvGD3xj1", "https://firebasestorage.googleapis.com/v0/b/bookartify-idm.appspot.com/o/S5zT8izdcGWIena7LDy4gvGD3xj1%2Fart%2Ffanart.jpg?alt=media&token=84f80be3-3f60-400d-8326-3ac807bd370a");
 INSERT INTO art (title, book_id, user_id, url) VALUES ("Harry's friendships", "nYKYzgEACAAJ", "S5zT8izdcGWIena7LDy4gvGD3xj1", "https://firebasestorage.googleapis.com/v0/b/bookartify-idm.appspot.com/o/S5zT8izdcGWIena7LDy4gvGD3xj1%2Fart%2Fharry_potter_2.jpg?alt=media&token=c1c33ee8-5b39-499b-93ed-b23fc7d28c26");
+INSERT INTO art (title, book_id, user_id, url) VALUES ("Marianne & Connell", "vrpPEAAAQBAJ", "0RQtZ8A8PZMEWgLtblFcgdYVL202", "https://firebasestorage.googleapis.com/v0/b/bookartify-idm.appspot.com/o/0RQtZ8A8PZMEWgLtblFcgdYVL202%2Fart%2Fnormal_people.jpg?alt=media&token=58946833-1167-4723-a062-c834f1477e0b");
 
 INSERT INTO bookmarks_cover (user_id, cover_id) VALUES ("S5zT8izdcGWIena7LDy4gvGD3xj1", 1);
 
@@ -129,6 +130,50 @@ SELECT 'cover' AS type, c.id, c.title, c.book_id, c.user_id, c.url, c.date_uploa
 FROM covers c
 JOIN bookmarks_cover bc ON c.id = bc.cover_id
 WHERE bc.user_id = "S5zT8izdcGWIena7LDy4gvGD3xj1";
+
+-- for you page
+SELECT *
+FROM (
+    SELECT art.id, art.title, art.book_id, art.user_id, art.url, art.date_upload
+    FROM art
+    INNER JOIN follows_user ON art.user_id = follows_user.following_id
+    WHERE follows_user.user_id = "S5zT8izdcGWIena7LDy4gvGD3xj1"
+    
+    UNION ALL
+    
+    SELECT covers.id, covers.title, covers.book_id, covers.user_id, covers.url, covers.date_upload
+    FROM covers
+    INNER JOIN follows_user ON covers.user_id = follows_user.following_id
+    WHERE follows_user.user_id = "S5zT8izdcGWIena7LDy4gvGD3xj1"
+    
+    UNION ALL
+    
+    SELECT art.id, art.title, art.book_id, art.user_id, art.url, art.date_upload
+    FROM art
+    WHERE art.user_id = "S5zT8izdcGWIena7LDy4gvGD3xj1"
+    
+    UNION ALL
+    
+    SELECT covers.id, covers.title, covers.book_id, covers.user_id, covers.url, covers.date_upload
+    FROM covers
+    WHERE covers.user_id = "S5zT8izdcGWIena7LDy4gvGD3xj1"
+    
+    UNION ALL
+    
+    SELECT art.id, art.title, art.book_id, art.user_id, art.url, art.date_upload
+    FROM art
+    INNER JOIN follows_book ON art.book_id = follows_book.following_id
+    WHERE follows_book.user_id = "S5zT8izdcGWIena7LDy4gvGD3xj1"
+    
+    UNION ALL
+    
+    SELECT covers.id, covers.title, covers.book_id, covers.user_id, covers.url, covers.date_upload
+    FROM covers
+    INNER JOIN follows_book ON covers.book_id = follows_book.following_id
+    WHERE follows_book.user_id = "S5zT8izdcGWIena7LDy4gvGD3xj1"
+) AS all_posts
+GROUP BY id
+ORDER BY date_upload DESC;
 
 -- get following
 SELECT GROUP_CONCAT(DISTINCT following_id) as following FROM follows_user WHERE user_id = "S5zT8izdcGWIena7LDy4gvGD3xj1"; -- list

@@ -233,3 +233,16 @@ Future<List<dynamic>> getBookmarksByUser(String userId) async {
     throw Exception("Failed to load bookmarks by user with id: $userId");
   }
 }
+
+/* ------------------ For You ------------------ */
+Future<List<dynamic>> getForYouByUser(String userId) async {
+  final http.Response response =
+  await http.get(Uri.parse("$baseUrl/user/$userId/home"));
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    return data as List<dynamic>;
+  } else {
+    throw Exception("Failed to load bookmarks by user with id: $userId");
+  }
+}
