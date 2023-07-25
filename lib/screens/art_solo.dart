@@ -6,10 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ArtSoloScreen extends StatelessWidget {
-  const ArtSoloScreen({super.key});
-  
+  final String imagePath;
+  final String imageTitle;
+
+  const ArtSoloScreen({
+    required this.imagePath,
+    required this.imageTitle,
+  });
+
   @override
-  Widget build(context) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -18,11 +24,12 @@ class ArtSoloScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            print('To be worked');
+            Navigator.pop(
+                context); // Go back to the previous screen when the back button is pressed
           },
         ),
         title: Text(
-          'Book Title',
+          imageTitle, // Display the image title in the app bar
           style: GoogleFonts.poppins(
             fontSize: 20,
             fontWeight: FontWeight.w500,
@@ -37,13 +44,13 @@ class ArtSoloScreen extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),
-                child: Image.asset(
-                  'images/fanart.jpg',
+                child: Image.network(
+                  imagePath, // Display the clicked image
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical:0, horizontal:5),
+              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(42),
@@ -60,12 +67,12 @@ class ArtSoloScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Artwork Title',
+                              imageTitle, // Display the image title
                               style: GoogleFonts.poppins(
                                   fontSize: 19, fontWeight: FontWeight.w500),
                             ),
                             Text(
-                              'By Artist Username',
+                              'By artist', // Display the artist name
                               style: GoogleFonts.poppins(
                                   fontSize: 14, fontWeight: FontWeight.w300),
                             ),
@@ -100,9 +107,11 @@ class ArtSoloScreen extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(15, 0, 10, 0),
                 child: Text(
-                  "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk.....",
+                  "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk.....",
                   style: GoogleFonts.poppins(
-                      fontSize: 18, fontWeight: FontWeight.w300, color: Colors.grey),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w300,
+                      color: Colors.grey),
                 ),
               ),
             ),
@@ -163,7 +172,6 @@ class ArtSoloScreen extends StatelessWidget {
                 ],
               ),
             ),
-           
             SizedBox(
               width: double.infinity,
               child: Padding(
@@ -176,10 +184,9 @@ class ArtSoloScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            const ArtGridView(),
+            // Replace the ArtGridView() with the relevant widgets to show more works if needed
           ],
         ),
-      
       ),
     );
   }

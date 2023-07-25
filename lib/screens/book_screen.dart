@@ -3,6 +3,7 @@ import 'package:bookartify/models/book_search.dart';
 import 'package:bookartify/widgets/book_info.dart';
 import 'package:bookartify/widgets/book_info_tablet.dart';
 import 'package:bookartify/widgets/image_grid.dart';
+import 'package:bookartify/widgets/icons_and_buttons/save_icon.dart';
 import 'package:bookartify/widgets/keep_alive_wrapper.dart';
 import 'package:bookartify/widgets/synopsis_widget.dart';
 import 'package:flutter/material.dart';
