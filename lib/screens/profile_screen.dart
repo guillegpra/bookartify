@@ -67,7 +67,7 @@ class _ProfileScreenState extends State<ProfileScreen>
     if (currentUser != null) {
       List<dynamic> fetchedBookart = await getArtByUser(currentUser!.uid);
       setState(() {
-        _bookart = fetchedBookart ?? [];
+        _bookart = fetchedBookart;
       });
     }
   }
@@ -76,7 +76,7 @@ class _ProfileScreenState extends State<ProfileScreen>
     if (currentUser != null) {
       List<dynamic> fetchedCovers = await getCoversByUser(currentUser!.uid);
       setState(() {
-        _covers = fetchedCovers ?? [];
+        _covers = fetchedCovers;
       });
     }
   }
@@ -86,7 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen>
       List<dynamic> fetchedBookmarks =
       await getBookmarksByUser(currentUser!.uid);
       setState(() {
-        _bookmarks = fetchedBookmarks ?? [];
+        _bookmarks = fetchedBookmarks;
       });
     }
   }
@@ -95,7 +95,7 @@ class _ProfileScreenState extends State<ProfileScreen>
     if (currentUser != null) {
       int fetchedCount = await getFollowersCountByUser(currentUser!.uid);
       setState(() {
-        _followers = fetchedCount ?? 0;
+        _followers = fetchedCount;
       });
     }
   }
@@ -127,24 +127,7 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   @override
   Widget build(BuildContext context) {
-    // Bookart
-    List<String> bookartImageTitles =
-    _bookart.map((map) => map["title"].toString()).toList();
-    List<String> bookartImagePaths =
-    _bookart.map((map) => map["url"].toString()).toList();
-
-    // Covers
-    List<String> coversImageTitles =
-    _covers.map((map) => map["title"].toString()).toList();
-    List<String> coversImagePaths =
-    _covers.map((map) => map["url"].toString()).toList();
-
-    // Collections
-    List<String> bookmarksImageTitles =
-    _bookmarks.map((map) => map["title"].toString()).toList();
-    List<String> bookmarksImagePaths =
-    _bookmarks.map((map) => map["url"].toString()).toList();
-
+    super.build(context);
     return Scaffold(
       // Persistent AppBar that never scrolls
       appBar: AppBar(
