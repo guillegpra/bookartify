@@ -1,3 +1,4 @@
+import 'package:bookartify/services/database_api.dart';
 import 'package:bookartify/services/register.dart';
 import 'package:bookartify/services/usernames_db.dart';
 import 'package:bookartify/services/user_profile_pics_db.dart';
@@ -24,6 +25,10 @@ class _ProfileScreenState extends State<ProfileScreen>
   User? currentUser;
   String _username = "";
   String _profileImageUrl = ""; // New variable for profile image URL
+  List<dynamic> _bookart = [];
+  List<dynamic> _covers = [];
+  List<dynamic> _bookmarks = [];
+  int _followers = 0;
   bool _showUsernameInAppBar = false;
 
   @override
@@ -33,6 +38,10 @@ class _ProfileScreenState extends State<ProfileScreen>
     currentUser = FirebaseAuth.instance.currentUser;
     _fetchUsername();
     _fetchProfileImageUrl(); // Fetch profile image URL
+    _fetchFollowersCount();
+    _fetchBookart();
+    _fetchCovers();
+    _fetchBookmarks();
   }
 
   Future<void> _fetchProfileImageUrl() async {
@@ -50,6 +59,42 @@ class _ProfileScreenState extends State<ProfileScreen>
       String? fetchedUsername = await getUsername(currentUser!.uid);
       setState(() {
         _username = fetchedUsername ?? "";
+      });
+    }
+  }
+
+  Future<void> _fetchBookart() async {
+    if (currentUser != null) {
+      List<dynamic> fetchedBookart = await getArtByUser(currentUser!.uid);
+      setState(() {
+        _bookart = fetchedBookart ?? [];
+      });
+    }
+  }
+
+  Future<void> _fetchCovers() async {
+    if (currentUser != null) {
+      List<dynamic> fetchedCovers = await getCoversByUser(currentUser!.uid);
+      setState(() {
+        _covers = fetchedCovers ?? [];
+      });
+    }
+  }
+
+  Future<void> _fetchBookmarks() async {
+    if (currentUser != null) {
+      List<dynamic> fetchedBookmarks = await getBookmarksByUser(currentUser!.uid);
+      setState(() {
+        _bookmarks = fetchedBookmarks ?? [];
+      });
+    }
+  }
+
+  Future<void> _fetchFollowersCount() async {
+    if (currentUser != null) {
+      int fetchedCount = await getFollowersCountByUser(currentUser!.uid);
+      setState(() {
+        _followers = fetchedCount ?? 0;
       });
     }
   }
@@ -94,6 +139,18 @@ class _ProfileScreenState extends State<ProfileScreen>
       ],
     );
 
+    // Bookart
+    List<String> bookartImageTitles = _bookart.map((map) => map["title"].toString()).toList();
+    List<String> bookartImagePaths = _bookart.map((map) => map["url"].toString()).toList();
+
+    // Covers
+    List<String> coversImageTitles = _covers.map((map) => map["title"].toString()).toList();
+    List<String> coversImagePaths = _covers.map((map) => map["url"].toString()).toList();
+
+    // Collections
+    List<String> bookmarksImageTitles = _bookmarks.map((map) => map["title"].toString()).toList();
+    List<String> bookmarksImagePaths = _bookmarks.map((map) => map["url"].toString()).toList();
+
     return Scaffold(
       // Persistent AppBar that never scrolls
       appBar: AppBar(
@@ -114,6 +171,10 @@ class _ProfileScreenState extends State<ProfileScreen>
           PopupMenuButton(
             itemBuilder: (BuildContext context) {
               return [
+                PopupMenuItem(
+                  value: "followers",
+                  child: Text("Followers: $_followers"),
+                ),
                 const PopupMenuItem(
                   value: "edit",
                   child: Text("Edit profile"),
@@ -131,12 +192,15 @@ class _ProfileScreenState extends State<ProfileScreen>
             onSelected: (value) {
               // Handle selected option
               switch (value) {
+                case "followers":
+                  // TODO
+                  break;
                 case "edit":
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) =>
-                          EditProfileScreen(currentUser: currentUser),
+                        EditProfileScreen(currentUser: currentUser),
                     ),
                   );
                   break;
@@ -164,6 +228,7 @@ class _ProfileScreenState extends State<ProfileScreen>
             return [
               SliverToBoxAdapter(
                 child: UserWidget(
+                  userId: currentUser!.uid,
                   username: _username.isNotEmpty ? _username : "username",
                   profileImageUrl:
                       _profileImageUrl, // Pass the profile image URL
@@ -178,9 +243,9 @@ class _ProfileScreenState extends State<ProfileScreen>
               }
               return false;
             },
-            child: const Column(
+            child: Column(
               children: <Widget>[
-                TabBar(
+                const TabBar(
                     indicatorColor: Color(0xFF8A6245),
                     // labelStyle: GoogleFonts.poppins(),
                     tabs: [
@@ -193,13 +258,28 @@ class _ProfileScreenState extends State<ProfileScreen>
                   children: [
                     // ------ Bookart content ------
                     KeepAliveWrapper(
-                        key: ValueKey(0), child: placeholderContent),
+                        key: const ValueKey(0),
+                        child: ImageGrid(
+                          imagePaths: bookartImagePaths,
+                          imageTitles: bookartImageTitles,
+                        ),
+                    ),
                     // ------ Covers content ------
                     KeepAliveWrapper(
-                        key: ValueKey(1), child: placeholderContent),
+                        key: const ValueKey(1),
+                        child: ImageGrid(
+                          imagePaths: coversImagePaths,
+                          imageTitles: coversImageTitles,
+                        ),
+                    ),
                     // ------ Collections content ------
                     KeepAliveWrapper(
-                        key: ValueKey(2), child: placeholderContent),
+                        key: const ValueKey(2),
+                        child: ImageGrid(
+                          imagePaths: bookmarksImagePaths,
+                          imageTitles: bookmarksImageTitles,
+                        ),
+                    ),
                   ],
                 ))
               ],
