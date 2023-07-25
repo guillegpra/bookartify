@@ -127,29 +127,6 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   @override
   Widget build(BuildContext context) {
-    const placeholderContent = ImageGrid(
-      imagePaths: [
-        "images/fanart.jpg",
-        "images/fanart.jpg",
-        "images/fanart.jpg",
-        "images/fanart.jpg",
-        "images/fanart.jpg",
-        "images/fanart.jpg",
-        "images/fanart.jpg",
-        "images/fanart.jpg",
-      ],
-      imageTitles: [
-        "Evelyn Hugo",
-        "Evelyn Hugo",
-        "Evelyn Hugo",
-        "Evelyn Hugo",
-        "Evelyn Hugo",
-        "Evelyn Hugo",
-        "Evelyn Hugo",
-        "Evelyn Hugo",
-      ],
-    );
-
     // Bookart
     List<String> bookartImageTitles =
     _bookart.map((map) => map["title"].toString()).toList();
@@ -279,8 +256,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                           child: KeepAliveWrapper(
                             key: const ValueKey(0),
                             child: ImageGrid(
-                              imagePaths: bookartImagePaths,
-                              imageTitles: bookartImageTitles,
+                              imagePaths: _bookart.map((map) => map["url"].toString()).toList(),
+                              imageTitles: _bookart.map((map) => map["title"].toString()).toList(),
                             ),
                           ),
                         ),
@@ -290,8 +267,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                           child: KeepAliveWrapper(
                             key: const ValueKey(1),
                             child: ImageGrid(
-                              imagePaths: coversImagePaths,
-                              imageTitles: coversImageTitles,
+                              imagePaths: _covers.map((map) => map["url"].toString()).toList(),
+                              imageTitles: _covers.map((map) => map["title"].toString()).toList(),
                             ),
                           ),
                         ),
@@ -301,8 +278,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                           child: KeepAliveWrapper(
                             key: const ValueKey(2),
                             child: ImageGrid(
-                              imagePaths: bookmarksImagePaths,
-                              imageTitles: bookmarksImageTitles,
+                              imagePaths: _bookmarks.map((map) => map["url"].toString()).toList(),
+                              imageTitles: _bookmarks.map((map) => map["title"].toString()).toList(),
                             ),
                           ),
                         ),
