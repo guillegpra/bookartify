@@ -6,7 +6,7 @@ const String baseUrl = "https://bookartify.scss.tcd.ie";
 /* ------------------ Art ------------------ */
 Future<List<dynamic>> getArtByUser(String userId) async {
   final http.Response response =
-    await http.get(Uri.parse("$baseUrl/user/$userId/art"));
+      await http.get(Uri.parse("$baseUrl/user/$userId/art"));
 
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);
@@ -18,7 +18,7 @@ Future<List<dynamic>> getArtByUser(String userId) async {
 
 Future<List<dynamic>> getArtByBook(int bookId) async {
   final http.Response response =
-  await http.get(Uri.parse("$baseUrl/book/$bookId/art"));
+      await http.get(Uri.parse("$baseUrl/book/$bookId/art"));
 
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);
@@ -30,7 +30,7 @@ Future<List<dynamic>> getArtByBook(int bookId) async {
 
 Future<Map<String, int>> getArtCountForUser(String userId) async {
   final http.Response response =
-    await http.get(Uri.parse("$baseUrl/user/$userId/art/count"));
+      await http.get(Uri.parse("$baseUrl/user/$userId/art/count"));
 
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);
@@ -40,8 +40,8 @@ Future<Map<String, int>> getArtCountForUser(String userId) async {
   }
 }
 
-Future<void> uploadArt(String userId, String title, String bookId,
-    String imageUrl) async {
+Future<void> uploadArt(
+    String userId, String title, String bookId, String imageUrl) async {
   final url = Uri.parse("$baseUrl/art/upload");
 
   final body = jsonEncode({
@@ -55,7 +55,8 @@ Future<void> uploadArt(String userId, String title, String bookId,
     "Content-Type": "application/json",
   };
 
-  final http.Response response = await http.post(url, headers: headers, body: body);
+  final http.Response response =
+      await http.post(url, headers: headers, body: body);
 
   if (response.statusCode == 201) {
     print("Artwork uploaded successfully");
@@ -67,7 +68,7 @@ Future<void> uploadArt(String userId, String title, String bookId,
 /* ------------------ Covers ------------------ */
 Future<List<dynamic>> getCoversByUser(String userId) async {
   final http.Response response =
-  await http.get(Uri.parse("$baseUrl/user/$userId/covers"));
+      await http.get(Uri.parse("$baseUrl/user/$userId/covers"));
 
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);
@@ -79,7 +80,7 @@ Future<List<dynamic>> getCoversByUser(String userId) async {
 
 Future<List<dynamic>> getCoversByBook(int bookId) async {
   final http.Response response =
-  await http.get(Uri.parse("$baseUrl/book/$bookId/covers"));
+      await http.get(Uri.parse("$baseUrl/book/$bookId/covers"));
 
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);
@@ -91,7 +92,7 @@ Future<List<dynamic>> getCoversByBook(int bookId) async {
 
 Future<Map<String, int>> getCoversCountForUser(String userId) async {
   final http.Response response =
-  await http.get(Uri.parse("$baseUrl/user/$userId/covers/count"));
+      await http.get(Uri.parse("$baseUrl/user/$userId/covers/count"));
 
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);
@@ -101,8 +102,8 @@ Future<Map<String, int>> getCoversCountForUser(String userId) async {
   }
 }
 
-Future<void> uploadCover(String userId, String title, String bookId,
-    String imageUrl) async {
+Future<void> uploadCover(
+    String userId, String title, String bookId, String imageUrl) async {
   final url = Uri.parse("$baseUrl/covers/upload");
 
   final headers = {
@@ -117,7 +118,7 @@ Future<void> uploadCover(String userId, String title, String bookId,
   });
 
   final http.Response response =
-    await http.post(url, headers: headers, body: body);
+      await http.post(url, headers: headers, body: body);
 
   if (response.statusCode == 201) {
     print("Cover uploaded successfully");
@@ -140,7 +141,7 @@ Future<void> followUser(String userId, String followingId) async {
   });
 
   final http.Response response =
-    await http.post(url, headers: headers, body: body);
+      await http.post(url, headers: headers, body: body);
 
   if (response.statusCode == 201) {
     print("User followed successfully");
@@ -174,7 +175,7 @@ Future<void> followBook(String userId, String followingId) async {
   });
 
   final http.Response response =
-    await http.post(url, headers: headers, body: body);
+      await http.post(url, headers: headers, body: body);
 
   if (response.statusCode == 201) {
     print("Book followed successfully");

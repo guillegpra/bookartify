@@ -3,25 +3,27 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:social_share/social_share.dart';
 import 'package:flutter/services.dart'; // Import the Flutter services for clipboard functionality
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart'; // Import url_launcher package
 
 enum SocialMedia {
   whatsapp,
   twitter,
 }
 
-Widget buildSocialButtons() => Card(
+Widget buildSocialButtons(BuildContext context) => Card(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           buildSocialButton(
             icon: FontAwesomeIcons.whatsapp,
             color: Color(0xFF25D366),
-            onClicked: () => share(SocialMedia.whatsapp),
+            onClicked: () => share(context, SocialMedia.whatsapp),
           ),
           buildSocialButton(
             icon: FontAwesomeIcons.twitter,
             color: Color(0xFF1da1f2),
-            onClicked: () => share(SocialMedia.twitter),
+            onClicked: () => share(context, SocialMedia.twitter),
           ),
           // Add the Copy to Clipboard IconButton
           Builder(
@@ -34,14 +36,26 @@ Widget buildSocialButtons() => Card(
       ),
     );
 
-Future<void> share(SocialMedia socialPlatform) async {
+Future<void> share(BuildContext context, SocialMedia socialPlatform) async {
   final text = "Check out this artwork from BookARtify!";
   final imageLink =
       "https://i.pinimg.com/originals/a5/72/54/a572542b8b969a5d966570098990b330.jpg";
 
   switch (socialPlatform) {
     case SocialMedia.whatsapp:
-      await SocialShare.shareWhatsapp(text);
+      bool canLaunchWhatsApp =
+          await canLaunchUrlString("whatsapp://send?text=");
+      if (canLaunchWhatsApp) {
+        await launchUrlString("whatsapp://send?text=$text");
+      } else {
+        // Show a message to the user indicating that WhatsApp is not installed.
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("WhatsApp is not installed on your device."),
+            duration: Duration(seconds: 2), // Adjust the duration as needed
+          ),
+        );
+      }
       break;
     case SocialMedia.twitter:
       await SocialShare.shareTwitter(

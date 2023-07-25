@@ -23,6 +23,6 @@ class ShareButton extends StatelessWidget {
   }
 
   Widget buildShareOptions(BuildContext context) {
-    return buildShareProfileButtons();
+    return buildShareProfileButtons(context);
   }
 }

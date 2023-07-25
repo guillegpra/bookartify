@@ -7,11 +7,13 @@ import 'package:bookartify/widgets/keep_alive_wrapper.dart';
 import 'package:bookartify/widgets/synopsis_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class BookScreen extends StatefulWidget {
-  final Book book; // Variable to hold the book object
+  final Book book;
 
-  const BookScreen({Key? key, required this.book}) : super(key: key); // Updated constructor
+  const BookScreen({Key? key, required this.book}) : super(key: key);
 
   @override
   State<BookScreen> createState() => _BookScreenState();
@@ -26,41 +28,43 @@ class _BookScreenState extends State<BookScreen> {
     });
   }
 
+  Future<List<dynamic>> getArtByBook(String bookId) async {
+    final http.Response response = await http
+        .get(Uri.parse("https://bookartify.scss.tcd.ie/book/$bookId/art"));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return data as List<dynamic>;
+    } else {
+      throw Exception("Failed to load art for book with id: $bookId");
+    }
+  }
+
+  Future<List<dynamic>> getCoversByBook(String bookId) async {
+    final http.Response response = await http
+        .get(Uri.parse("https://bookartify.scss.tcd.ie/book/$bookId/covers"));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return data as List<dynamic>;
+    } else {
+      throw Exception("Failed to load covers for book with id: $bookId");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     const placeholderContent = ImageGrid(
-      imagePaths: [
-        "images/fanart.jpg",
-        "images/fanart.jpg",
-        "images/fanart.jpg",
-        "images/fanart.jpg",
-        "images/fanart.jpg",
-        "images/fanart.jpg",
-        "images/fanart.jpg",
-        "images/fanart.jpg",
-      ],
-      imageTitles: [
-        "Evelyn Hugo",
-        "Evelyn Hugo",
-        "Evelyn Hugo",
-        "Evelyn Hugo",
-        "Evelyn Hugo",
-        "Evelyn Hugo",
-        "Evelyn Hugo",
-        "Evelyn Hugo",
-      ],
+      imagePaths: [],
+      imageTitles: [],
     );
 
     return Scaffold(
-      // Persistent AppBar that never scrolls
       appBar: AppBar(
         backgroundColor: Colors.grey[50],
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.black
-          ),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -69,11 +73,9 @@ class _BookScreenState extends State<BookScreen> {
           opacity: _showTitleInAppBar ? 1.0 : 0.0,
           duration: const Duration(milliseconds: 300),
           child: Text(
-            widget.book.title, // Updated to use the title passed to BookScreen
+            widget.book.title,
             style: GoogleFonts.dmSerifDisplay(
-              fontWeight: FontWeight.w500,
-              letterSpacing: -0.7
-            ),
+                fontWeight: FontWeight.w500, letterSpacing: -0.7),
           ),
         ),
         centerTitle: true,
@@ -81,56 +83,112 @@ class _BookScreenState extends State<BookScreen> {
       body: DefaultTabController(
         length: isTablet(context) ? 2 : 3,
         child: NestedScrollView(
-          // allows you to build a list of elements that would be scrolled away till the
-          // body reached the top
           headerSliverBuilder: (context, _) {
             return [
               SliverToBoxAdapter(
-                child: !isTablet(context) ? BookInfo(book: widget.book) : BookInfoTablet(book: widget.book),
+                child: !isTablet(context)
+                    ? BookInfo(book: widget.book)
+                    : BookInfoTablet(book: widget.book),
               ),
             ];
           },
           body: NotificationListener<ScrollNotification>(
             onNotification: (notification) {
               if (notification is ScrollUpdateNotification) {
-                _handleScroll(notification.metrics); // show username in AppBar
+                _handleScroll(notification.metrics);
               }
               return false;
             },
             child: Column(
               children: <Widget>[
                 TabBar(
-                    indicatorColor: const Color(0xFF8A6245),
-                    // labelStyle: GoogleFonts.poppins(),
-                    tabs: [
-                      if (!isTablet(context))
-                      const Tab(text: 'Synopsis'),
-                      const Tab(text: 'Bookart'),
-                      const Tab(text: 'Covers'),
-                    ]
+                  indicatorColor: const Color(0xFF8A6245),
+                  tabs: [
+                    if (!isTablet(context)) const Tab(text: 'Synopsis'),
+                    const Tab(text: 'Bookart'),
+                    const Tab(text: 'Covers'),
+                  ],
                 ),
                 Expanded(
-                    child: TabBarView(
-                      children: [
-                        // ------ Synopsis content ------
-                        if (!isTablet(context))
-                           KeepAliveWrapper(
-                            key: ValueKey(0),
-                            child: SynopsisWidget(synopsis:widget.book.description)
-                          ),
-                        // ------ Covers content ------
+                  child: TabBarView(
+                    children: [
+                      // ------ Synopsis content ------
+                      if (!isTablet(context))
                         KeepAliveWrapper(
-                          key: ValueKey(isTablet(context) ? 0 : 1),
-                          child: placeholderContent
+                          key: ValueKey(0),
+                          child:
+                              SynopsisWidget(synopsis: widget.book.description),
                         ),
-                        // ------ Collections content ------
-                        KeepAliveWrapper(
-                          key: ValueKey(isTablet(context) ? 1 : 2),
-                          child: placeholderContent
+                      // ------ Covers content ------
+                      KeepAliveWrapper(
+                        key: ValueKey(isTablet(context) ? 0 : 1),
+                        child: FutureBuilder<List<dynamic>>(
+                          future: getArtByBook(widget.book.id),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Center(
+                                  child: Text("Error: ${snapshot.error}"));
+                            } else {
+                              final List<dynamic> artworkData =
+                                  snapshot.data ?? [];
+                              if (artworkData.isEmpty) {
+                                return Center(
+                                    child: Text("No art for this book yet"));
+                              } else {
+                                return ImageGrid(
+                                  imagePaths: artworkData
+                                      .map((artwork) =>
+                                          artwork["imageUrl"] as String)
+                                      .toList(),
+                                  imageTitles: artworkData
+                                      .map((artwork) =>
+                                          artwork["title"] as String)
+                                      .toList(),
+                                );
+                              }
+                            }
+                          },
                         ),
-                      ],
-                    )
-                )
+                      ),
+                      // ------ Collections content ------
+                      KeepAliveWrapper(
+                        key: ValueKey(isTablet(context) ? 1 : 2),
+                        child: FutureBuilder<List<dynamic>>(
+                          future: getCoversByBook(widget.book.id),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Center(
+                                  child: Text("Error: ${snapshot.error}"));
+                            } else {
+                              final List<dynamic> coversData =
+                                  snapshot.data ?? [];
+                              if (coversData.isEmpty) {
+                                return Center(
+                                    child: Text("No covers for this book yet"));
+                              } else {
+                                return ImageGrid(
+                                  imagePaths: coversData
+                                      .map((cover) =>
+                                          cover["imageUrl"] as String)
+                                      .toList(),
+                                  imageTitles: coversData
+                                      .map((cover) => cover["title"] as String)
+                                      .toList(),
+                                );
+                              }
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
