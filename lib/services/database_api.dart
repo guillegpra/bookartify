@@ -10,6 +10,7 @@ Future<List<dynamic>> getArtByUser(String userId) async {
 
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);
+    print(data.toString());
     return data as List<dynamic>;
   } else {
     throw Exception("Failed to load art by user with id: $userId");
@@ -28,7 +29,7 @@ Future<List<dynamic>> getArtByBook(int bookId) async {
   }
 }
 
-Future<Map<String, int>> getArtCountForUser(String userId) async {
+Future<int> getArtCountByUser(String userId) async {
   final http.Response response =
       await http.get(Uri.parse("$baseUrl/user/$userId/art/count"));
 
@@ -90,7 +91,7 @@ Future<List<dynamic>> getCoversByBook(int bookId) async {
   }
 }
 
-Future<Map<String, int>> getCoversCountForUser(String userId) async {
+Future<int> getCoversCountByUser(String userId) async {
   final http.Response response =
       await http.get(Uri.parse("$baseUrl/user/$userId/covers/count"));
 
@@ -193,5 +194,42 @@ Future<void> unfollowBook(String userId, String followingId) async {
     print("User unfollowed successfully");
   } else {
     throw Exception("Failed to unfollow user");
+  }
+}
+
+Future<int> getFollowersCountByUser(String userId) async {
+  final http.Response response =
+      await http.get(Uri.parse("$baseUrl/user/$userId/followers/count"));
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    return data["followers"];
+  } else {
+    throw Exception("Failed to load followers count");
+  }
+}
+
+Future<int> getFollowingCountByUser(String userId) async {
+  final http.Response response =
+      await http.get(Uri.parse("$baseUrl/user/$userId/following/count"));
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    return data["following"];
+  } else {
+    throw Exception("Failed to load following count");
+  }
+}
+
+/* ------------------ Bookmarks ------------------ */
+Future<List<dynamic>> getBookmarksByUser(String userId) async {
+  final http.Response response =
+      await http.get(Uri.parse("$baseUrl/user/$userId/bookmarks"));
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    return data as List<dynamic>;
+  } else {
+    throw Exception("Failed to load bookmarks by user with id: $userId");
   }
 }
