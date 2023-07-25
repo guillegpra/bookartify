@@ -83,7 +83,8 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   Future<void> _fetchBookmarks() async {
     if (currentUser != null) {
-      List<dynamic> fetchedBookmarks = await getBookmarksByUser(currentUser!.uid);
+      List<dynamic> fetchedBookmarks =
+          await getBookmarksByUser(currentUser!.uid);
       setState(() {
         _bookmarks = fetchedBookmarks ?? [];
       });
@@ -140,16 +141,22 @@ class _ProfileScreenState extends State<ProfileScreen>
     );
 
     // Bookart
-    List<String> bookartImageTitles = _bookart.map((map) => map["title"].toString()).toList();
-    List<String> bookartImagePaths = _bookart.map((map) => map["url"].toString()).toList();
+    List<String> bookartImageTitles =
+        _bookart.map((map) => map["title"].toString()).toList();
+    List<String> bookartImagePaths =
+        _bookart.map((map) => map["url"].toString()).toList();
 
     // Covers
-    List<String> coversImageTitles = _covers.map((map) => map["title"].toString()).toList();
-    List<String> coversImagePaths = _covers.map((map) => map["url"].toString()).toList();
+    List<String> coversImageTitles =
+        _covers.map((map) => map["title"].toString()).toList();
+    List<String> coversImagePaths =
+        _covers.map((map) => map["url"].toString()).toList();
 
     // Collections
-    List<String> bookmarksImageTitles = _bookmarks.map((map) => map["title"].toString()).toList();
-    List<String> bookmarksImagePaths = _bookmarks.map((map) => map["url"].toString()).toList();
+    List<String> bookmarksImageTitles =
+        _bookmarks.map((map) => map["title"].toString()).toList();
+    List<String> bookmarksImagePaths =
+        _bookmarks.map((map) => map["url"].toString()).toList();
 
     return Scaffold(
       // Persistent AppBar that never scrolls
@@ -200,7 +207,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                     context,
                     MaterialPageRoute(
                       builder: (context) =>
-                        EditProfileScreen(currentUser: currentUser),
+                          EditProfileScreen(currentUser: currentUser),
                     ),
                   );
                   break;
@@ -258,27 +265,27 @@ class _ProfileScreenState extends State<ProfileScreen>
                   children: [
                     // ------ Bookart content ------
                     KeepAliveWrapper(
-                        key: const ValueKey(0),
-                        child: ImageGrid(
-                          imagePaths: bookartImagePaths,
-                          imageTitles: bookartImageTitles,
-                        ),
+                      key: const ValueKey(0),
+                      child: ImageGrid(
+                        imagePaths: bookartImagePaths,
+                        imageTitles: bookartImageTitles,
+                      ),
                     ),
                     // ------ Covers content ------
                     KeepAliveWrapper(
-                        key: const ValueKey(1),
-                        child: ImageGrid(
-                          imagePaths: coversImagePaths,
-                          imageTitles: coversImageTitles,
-                        ),
+                      key: const ValueKey(1),
+                      child: ImageGrid(
+                        imagePaths: coversImagePaths,
+                        imageTitles: coversImageTitles,
+                      ),
                     ),
                     // ------ Collections content ------
                     KeepAliveWrapper(
-                        key: const ValueKey(2),
-                        child: ImageGrid(
-                          imagePaths: bookmarksImagePaths,
-                          imageTitles: bookmarksImageTitles,
-                        ),
+                      key: const ValueKey(2),
+                      child: ImageGrid(
+                        imagePaths: bookmarksImagePaths,
+                        imageTitles: bookmarksImageTitles,
+                      ),
                     ),
                   ],
                 ))

@@ -141,11 +141,11 @@ class _BookScreenState extends State<BookScreen> {
                                 return ImageGrid(
                                   imagePaths: artworkData
                                       .map((artwork) =>
-                                          artwork["imageUrl"] as String)
+                                          artwork["url"].toString())
                                       .toList(),
                                   imageTitles: artworkData
                                       .map((artwork) =>
-                                          artwork["title"] as String)
+                                          artwork["title"].toString())
                                       .toList(),
                                 );
                               }
@@ -174,11 +174,10 @@ class _BookScreenState extends State<BookScreen> {
                               } else {
                                 return ImageGrid(
                                   imagePaths: coversData
-                                      .map((cover) =>
-                                          cover["imageUrl"] as String)
+                                      .map((cover) => cover["url"].toString())
                                       .toList(),
                                   imageTitles: coversData
-                                      .map((cover) => cover["title"] as String)
+                                      .map((cover) => cover["title"].toString())
                                       .toList(),
                                 );
                               }
