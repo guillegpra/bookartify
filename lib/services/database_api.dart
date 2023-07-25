@@ -221,7 +221,145 @@ Future<int> getFollowingCountByUser(String userId) async {
   }
 }
 
+/* ------------------ Likes ------------------ */
+Future<void> likeArt(String userId, String artId) async {
+  final url = Uri.parse("$baseUrl/like_art");
+
+  final headers = {
+    "Content-Type": "application/json",
+  };
+
+  final body = jsonEncode({
+    "userId": userId,
+    "artId": artId,
+  });
+
+  final http.Response response =
+  await http.post(url, headers: headers, body: body);
+
+  if (response.statusCode == 201) {
+    print("Artwork liked successfully");
+  } else {
+    throw Exception("Failed to like artwork");
+  }
+}
+
+Future<void> likeCover(String userId, String coverId) async {
+  final url = Uri.parse("$baseUrl/like_cover");
+
+  final headers = {
+    "Content-Type": "application/json",
+  };
+
+  final body = jsonEncode({
+    "userId": userId,
+    "coverId": coverId,
+  });
+
+  final http.Response response =
+    await http.post(url, headers: headers, body: body);
+
+  if (response.statusCode == 201) {
+    print("Cover liked successfully");
+  } else {
+    throw Exception("Failed to like cover");
+  }
+}
+
+Future<void> unlikeArt(String userId, String artId) async {
+  final url = Uri.parse("$baseUrl/unlike_art/$userId/$artId");
+
+  final http.Response response = await http.delete(url);
+
+  if (response.statusCode == 201) {
+    print("Artwork unliked successfully");
+  } else {
+    throw Exception("Failed to unlike artwork");
+  }
+}
+
+Future<void> unlikeCover(String userId, String coverId) async {
+  final url = Uri.parse("$baseUrl/unlike_cover/$userId/$coverId");
+
+  final http.Response response = await http.delete(url);
+
+  if (response.statusCode == 201) {
+    print("Cover unliked successfully");
+  } else {
+    throw Exception("Failed to unlike cover");
+  }
+}
+
 /* ------------------ Bookmarks ------------------ */
+Future<void> bookmarkArt(String userId, String artId) async {
+  final url = Uri.parse("$baseUrl/bookmark_art");
+
+  final headers = {
+    "Content-Type": "application/json",
+  };
+
+  final body = jsonEncode({
+    "userId": userId,
+    "artId": artId,
+  });
+
+  final http.Response response =
+    await http.post(url, headers: headers, body: body);
+
+  if (response.statusCode == 201) {
+    print("Artwork liked successfully");
+  } else {
+    throw Exception("Failed to like artwork");
+  }
+}
+
+Future<void> bookmarkCover(String userId, String coverId) async {
+  final url = Uri.parse("$baseUrl/bookmark_cover");
+
+  final headers = {
+    "Content-Type": "application/json",
+  };
+
+  final body = jsonEncode({
+    "userId": userId,
+    "coverId": coverId,
+  });
+
+  final http.Response response =
+    await http.post(url, headers: headers, body: body);
+
+  if (response.statusCode == 201) {
+    print("Cover liked successfully");
+  } else {
+    throw Exception("Failed to like cover");
+  }
+}
+
+Future<void> unbookmarkArt(String userId, String artId) async {
+  final url = Uri.parse("$baseUrl/unbookmark_art/$userId/$artId");
+
+  final http.Response response = await http.delete(url);
+
+  if (response.statusCode == 201) {
+    print("Removed bookmark from artwork successfully");
+  } else {
+    throw Exception("Failed to remove bookmark from artwork");
+  }
+}
+
+Future<void> unbookmarkCover(String userId, String coverId) async {
+  final url = Uri.parse("$baseUrl/unbookmark_cover/$userId/$coverId");
+
+  final http.Response response = await http.delete(url);
+
+  if (response.statusCode == 201) {
+    print("Removed bookmark from cover successfully");
+  } else {
+    throw Exception("Failed to remove bookmark from cover");
+  }
+}
+
+
 Future<List<dynamic>> getBookmarksByUser(String userId) async {
   final http.Response response =
       await http.get(Uri.parse("$baseUrl/user/$userId/bookmarks"));
