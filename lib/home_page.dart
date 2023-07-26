@@ -1,6 +1,5 @@
 import 'package:bookartify/screens/explore_screen.dart';
 import 'package:bookartify/screens/home_screen.dart';
-import 'package:bookartify/screens/home_screen2.dart';
 import 'package:bookartify/screens/profile_screen.dart';
 import 'package:bookartify/screens/search_screen.dart';
 import 'package:bookartify/screens/upload_screen.dart';
@@ -31,7 +30,7 @@ class _HomePageState extends State<HomePage> {
   };
 
   final List<Widget> _pages = const <Widget> [
-    HomeScreen2(),
+    HomeScreen(),
     ExploreScreen(),
     UploadScreen(),
     // BookScreen(),

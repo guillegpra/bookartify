@@ -1,4 +1,3 @@
-import 'package:bookartify/services/api_service.dart';
 import 'package:bookartify/widgets/icons_and_buttons/like_icon.dart';
 import 'package:bookartify/widgets/icons_and_buttons/save_icon.dart';
 import 'package:bookartify/widgets/icons_and_buttons/share_button.dart';
@@ -11,7 +10,7 @@ class ArtSoloScreen extends StatelessWidget {
   final String imageTitle;
   final Book book;
 
-  const ArtSoloScreen({
+  const ArtSoloScreen({super.key,
     required this.imagePath,
     required this.imageTitle,
     required this.book,
@@ -128,7 +127,7 @@ class ArtSoloScreen extends StatelessWidget {
                               style: GoogleFonts.dmSerifDisplay(
                                   fontSize: 19, fontWeight: FontWeight.w600),
                             ),
-                            SizedBox(height: 5),
+                            const SizedBox(height: 5),
                             Text(
                               book.title,
                               style: GoogleFonts.poppins(
@@ -137,7 +136,7 @@ class ArtSoloScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(width: 20), // Add spacing between the columns
+                      const SizedBox(width: 20), // Add spacing between the columns
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -147,7 +146,7 @@ class ArtSoloScreen extends StatelessWidget {
                               style: GoogleFonts.dmSerifDisplay(
                                   fontSize: 19, fontWeight: FontWeight.w600),
                             ),
-                            SizedBox(height: 5),
+                            const SizedBox(height: 5),
                             Text(
                               book.author,
                               style: GoogleFonts.poppins(
@@ -173,7 +172,7 @@ class ArtSoloScreen extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Text(
                       "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk",
                       style: GoogleFonts.poppins(
