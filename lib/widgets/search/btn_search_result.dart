@@ -25,7 +25,7 @@ class SearchResultBtn extends StatelessWidget {
     // Navigate to `BookScreen` on button press
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => BookScreen(book:book)), // Pass the `title` of the `Book` object to `BookScreen`
+      MaterialPageRoute(builder: (context) => BookScreen(book: book)), // Pass the `title` of the `Book` object to `BookScreen`
     );
   }
 }

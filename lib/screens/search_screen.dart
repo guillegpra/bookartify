@@ -282,25 +282,30 @@ class _SearchScreenState extends State<SearchScreen> {
                                         margin: const EdgeInsets.only(left: 10),
                                         child: Column(
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               book.title,
                                               style: GoogleFonts.poppins(
-                                                  fontSize: 17.0,
-                                                  color: const Color.fromARGB(
-                                                      255, 78, 54, 46)),
+                                                fontSize: 17.0,
+                                                color: const Color.fromARGB(
+                                                    255, 78, 54, 46)
+                                              ),
                                             ),
                                             Text(
                                               book.author,
                                               style: const TextStyle(
-                                                  fontSize: 14.0),
+                                                fontSize: 14.0
+                                              ),
                                             ),
                                             Container(
                                                 margin: const EdgeInsets.only(
-                                                    top: 10),
+                                                  top: 10
+                                                ),
                                                 child: SearchResultBtn(
-                                                    book: book)),
+                                                  book: book
+                                                )
+                                            ),
                                           ],
                                         ),
                                       ),
