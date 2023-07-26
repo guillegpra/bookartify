@@ -29,4 +29,19 @@ class ApiService {
       throw Exception('Failed to load books');
     }
   }
+
+  Future<Book> getBookFromId(String bookId) async {
+    final response = await http.get(
+      Uri.parse(
+        "https://www.googleapis.com/books/v1/volumes/$bookId"
+      )
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      return Book.fromJson(data);
+    } else {
+      throw Exception("Failed to load book information");
+    }
+  }
 }
