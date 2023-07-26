@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:html/parser.dart';
 
 class SynopsisWidget extends StatelessWidget {
   final String synopsis;
@@ -13,7 +14,7 @@ class SynopsisWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Text(
-          synopsis,
+          parseFragment(synopsis).text ?? "",
           style: GoogleFonts.poppins(fontSize: 14, color: Colors.black),
           textAlign: TextAlign.start,
         ),

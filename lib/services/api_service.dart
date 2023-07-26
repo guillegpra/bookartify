@@ -8,7 +8,7 @@ class ApiService {
   Future<List<Book>> fetchBooks(String query) async {
     final response = await http.get(
       Uri.parse(
-          'https://www.googleapis.com/books/v1/volumes?q=$query&key=$_apiKey'),
+        'https://www.googleapis.com/books/v1/volumes?q=$query&key=$_apiKey'),
     );
 
     // // Printing the response body for debugging purposes
@@ -33,12 +33,14 @@ class ApiService {
   Future<Book> getBookFromId(String bookId) async {
     final response = await http.get(
       Uri.parse(
-        "https://www.googleapis.com/books/v1/volumes/$bookId"
+        "https://www.googleapis.com/books/v1/volumes/$bookId?key=$_apiKey"
       )
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> data = jsonDecode(response.body);
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      print("data obtained from google");
+      print(data);
       return Book.fromJson(data);
     } else {
       throw Exception("Failed to load book information");

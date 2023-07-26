@@ -1,6 +1,10 @@
+import 'package:bookartify/models/book_search.dart';
+import 'package:bookartify/screens/book_screen.dart';
+import 'package:bookartify/services/api_service.dart';
 import 'package:bookartify/services/database_api.dart';
 import 'package:bookartify/widgets/icons_and_buttons/save_icon.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:bookartify/widgets/icons_and_buttons/share_button.dart';
@@ -16,7 +20,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   User? currentUser;
+  final _apiService = ApiService();
   List<dynamic> _forYou = [];
+  List<Book> _books = [];
 
   @override
   void initState() {
@@ -29,9 +35,28 @@ class _HomeScreenState extends State<HomeScreen> {
     if (currentUser != null) {
       List<dynamic> fetchedForYou = await getForYouByUser(currentUser!.uid);
       setState(() {
-        _forYou = fetchedForYou ?? [];
+        _forYou = fetchedForYou;
       });
+
+      await _fetchBooksForYou();
     }
+  }
+
+  Future<void> _fetchBooksForYou() async {
+    List<Book> books = [];
+
+    for (var item in _forYou) {
+      String bookId = item["book_id"].toString();
+      Book? book = await _apiService.getBookFromId(bookId);
+      if (book != null) {
+        print(book.description);
+        books.add(book);
+      }
+    }
+
+    setState(() {
+      _books = books;
+    });
   }
 
   Future<void> _reloadData() async {
@@ -87,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
@@ -111,10 +136,52 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.fromLTRB(10.0, 8.0, 10.0, 1.0),
                               child: Text(
                                 'By ${_forYou[index]["user_id"].toString()}',
-                                style: GoogleFonts.poppins(fontSize: 14, color: Colors.grey),
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w500
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(10.0, 1.0, 10.0, 10.0),
+                              child: RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: 'For ',
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 15,
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: _books.isNotEmpty ? _books[index].title : "",
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 15,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500,
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                      // Add the onTap callback here
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () async {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => BookScreen(
+                                                book: _books[index],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
