@@ -55,12 +55,6 @@ class _BookScreenState extends State<BookScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const placeholderContent = ImageGrid(
-      imagePaths: [],
-      imageTitles: [],
-      bookIds: [],
-    );
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey[50],
@@ -77,7 +71,7 @@ class _BookScreenState extends State<BookScreen> {
           child: Text(
             widget.book.title,
             style: GoogleFonts.dmSerifDisplay(
-                fontWeight: FontWeight.w500, letterSpacing: -0.7),
+              fontWeight: FontWeight.w500, letterSpacing: -0.7),
           ),
         ),
         centerTitle: true,
@@ -117,9 +111,9 @@ class _BookScreenState extends State<BookScreen> {
                       // ------ Synopsis content ------
                       if (!isTablet(context))
                         KeepAliveWrapper(
-                          key: ValueKey(0),
+                          key: const ValueKey(0),
                           child:
-                              SynopsisWidget(synopsis: widget.book.description),
+                            SynopsisWidget(synopsis: widget.book.description),
                         ),
                       // ------ Covers content ------
                       KeepAliveWrapper(
@@ -129,7 +123,7 @@ class _BookScreenState extends State<BookScreen> {
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
+                              return const Center(child: CircularProgressIndicator());
                             } else if (snapshot.hasError) {
                               return Center(
                                   child: Text("Error: ${snapshot.error}"));
@@ -137,8 +131,9 @@ class _BookScreenState extends State<BookScreen> {
                               final List<dynamic> artworkData =
                                   snapshot.data ?? [];
                               if (artworkData.isEmpty) {
-                                return Center(
-                                    child: Text("No art for this book yet"));
+                                return const Center(
+                                  child: Text("No art for this book yet")
+                                );
                               } else {
                                 return ImageGrid(
                                   imagePaths: artworkData
@@ -167,7 +162,7 @@ class _BookScreenState extends State<BookScreen> {
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
+                              return const Center(child: CircularProgressIndicator());
                             } else if (snapshot.hasError) {
                               return Center(
                                   child: Text("Error: ${snapshot.error}"));
@@ -175,7 +170,7 @@ class _BookScreenState extends State<BookScreen> {
                               final List<dynamic> coversData =
                                   snapshot.data ?? [];
                               if (coversData.isEmpty) {
-                                return Center(
+                                return const Center(
                                     child: Text("No covers for this book yet"));
                               } else {
                                 return ImageGrid(

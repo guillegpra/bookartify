@@ -1,6 +1,6 @@
 import 'package:bookartify/models/book_search.dart';
 import 'package:bookartify/screens/book_screen.dart';
-import 'package:bookartify/services/api_service.dart';
+import 'package:bookartify/services/google_books_api.dart';
 import 'package:bookartify/services/database_api.dart';
 import 'package:bookartify/widgets/icons_and_buttons/save_icon.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,7 +20,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   User? currentUser;
-  final _apiService = ApiService();
+  final _googleBooksAPI = GoogleBooksApi();
   List<dynamic> _forYou = [];
   List<Book> _books = [];
 
@@ -47,9 +47,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     for (var item in _forYou) {
       String bookId = item["book_id"].toString();
-      Book? book = await _apiService.getBookFromId(bookId);
+      Book? book = await _googleBooksAPI.getBookFromId(bookId);
       if (book != null) {
-        print(book.description);
         books.add(book);
       }
     }

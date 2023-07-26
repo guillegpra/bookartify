@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:bookartify/models/book_search.dart';
 
-class ApiService {
+class GoogleBooksApi {
   final String _apiKey =
       'AIzaSyBfpzEdp3h9U1S7qyPKpIBj9u_vAggtLjg'; // BookArtify Google Books API key
 
@@ -37,8 +37,6 @@ class ApiService {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
-      print("data obtained from google");
-      print(data);
       return Book.fromJson(data);
     } else {
       throw Exception("Failed to load book information");

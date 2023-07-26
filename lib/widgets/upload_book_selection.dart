@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:bookartify/widgets/search/search_bar.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:bookartify/models/book_search.dart';
-import 'package:bookartify/services/api_service.dart';
+import 'package:bookartify/services/google_books_api.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -15,7 +15,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   Future<List<Book>>? _searchResult;
-  final _apiService = ApiService();
+  final _apiService = GoogleBooksApi();
   final PublishSubject<String> _searchSubject = PublishSubject<String>();
   Timer? _debounce;
 
