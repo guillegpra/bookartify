@@ -1,5 +1,6 @@
 import 'package:bookartify/models/book_search.dart';
 import 'package:bookartify/screens/book_screen.dart';
+import 'package:bookartify/screens/profile_screen.dart';
 import 'package:bookartify/services/google_books_api.dart';
 import 'package:bookartify/services/database_api.dart';
 import 'package:bookartify/services/usernames_db.dart';
@@ -177,15 +178,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                       // Add the onTap callback here
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () async {
-                                          // Navigator.push(
-                                          //   context,
-                                          //   MaterialPageRoute(
-                                          //     builder: (context) => BookScreen(
-                                          //       book: _books[index],
-                                          //     ),
-                                          //   ),
-                                          // );
-                                          print("clicked");
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => ProfileScreen(
+                                                userId: _forYou[index]["user_id"].toString(),
+                                              ),
+                                            ),
+                                          );
                                           // TODO
                                         },
                                     ),

@@ -63,7 +63,7 @@ class UserDisplay extends StatelessWidget {
           future: currentUser != null ? getUserBio(currentUser.uid) : null,
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              return Text('Error retrieving bio');
+              return const Text('Error retrieving bio');
             } else {
               final bio = snapshot.data;
               return SizedBox(
@@ -79,7 +79,7 @@ class UserDisplay extends StatelessWidget {
             }
           },
         ),
-        SizedBox(height: 10), // FollowButton(isFollowing: false),
+        const SizedBox(height: 10), // FollowButton(isFollowing: false),
         Row(
           children: [
             ElevatedButton(
@@ -93,12 +93,12 @@ class UserDisplay extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFF5EFE1),
+                    backgroundColor: const Color(0xFFF5EFE1),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0))),
                 child: Text(
                   "Edit profile",
-                  style: GoogleFonts.poppins(color: Color(0xFF2F2F2F)),
+                  style: GoogleFonts.poppins(color: const Color(0xFF2F2F2F)),
                 )),
             ShareButton(onPressed: () {
               // TODO: share functionality

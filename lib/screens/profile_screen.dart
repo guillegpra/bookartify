@@ -11,7 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  final String userId;
+  const ProfileScreen({super.key, required this.userId});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -45,59 +46,47 @@ class _ProfileScreenState extends State<ProfileScreen>
   }
 
   Future<void> _fetchProfileImageUrl() async {
-    if (currentUser != null) {
-      String? fetchedImageUrl = await getUserProfilePic(
-          currentUser!.uid); // Use your function to get the profile pic
-      setState(() {
-        _profileImageUrl = fetchedImageUrl ?? "";
-      });
-    }
+    String? fetchedImageUrl = await getUserProfilePic(
+        widget.userId); // Use your function to get the profile pic
+    setState(() {
+      _profileImageUrl = fetchedImageUrl ?? "";
+    });
   }
 
   Future<void> _fetchUsername() async {
-    if (currentUser != null) {
-      String? fetchedUsername = await getUsername(currentUser!.uid);
-      setState(() {
-        _username = fetchedUsername ?? "";
-      });
-    }
+    String? fetchedUsername = await getUsername(widget.userId);
+    setState(() {
+      _username = fetchedUsername ?? "";
+    });
   }
 
   Future<void> _fetchBookart() async {
-    if (currentUser != null) {
-      List<dynamic> fetchedBookart = await getArtByUser(currentUser!.uid);
-      setState(() {
-        _bookart = fetchedBookart;
-      });
-    }
+    List<dynamic> fetchedBookart = await getArtByUser(widget.userId);
+    setState(() {
+      _bookart = fetchedBookart;
+    });
   }
 
   Future<void> _fetchCovers() async {
-    if (currentUser != null) {
-      List<dynamic> fetchedCovers = await getCoversByUser(currentUser!.uid);
-      setState(() {
-        _covers = fetchedCovers;
-      });
-    }
+    List<dynamic> fetchedCovers = await getCoversByUser(widget.userId);
+    setState(() {
+      _covers = fetchedCovers;
+    });
   }
 
   Future<void> _fetchBookmarks() async {
-    if (currentUser != null) {
-      List<dynamic> fetchedBookmarks =
-          await getBookmarksByUser(currentUser!.uid);
-      setState(() {
-        _bookmarks = fetchedBookmarks;
-      });
-    }
+    List<dynamic> fetchedBookmarks =
+    await getBookmarksByUser(widget.userId);
+    setState(() {
+      _bookmarks = fetchedBookmarks;
+    });
   }
 
   Future<void> _fetchFollowersCount() async {
-    if (currentUser != null) {
-      int fetchedCount = await getFollowersCountByUser(currentUser!.uid);
-      setState(() {
-        _followers = fetchedCount;
-      });
-    }
+    int fetchedCount = await getFollowersCountByUser(widget.userId);
+    setState(() {
+      _followers = fetchedCount;
+    });
   }
 
   @override
@@ -145,54 +134,57 @@ class _ProfileScreenState extends State<ProfileScreen>
         ),
         centerTitle: true,
         actions: [
-          PopupMenuButton(
-            itemBuilder: (BuildContext context) {
-              return [
-                PopupMenuItem(
-                  value: "followers",
-                  child: Text("Followers: $_followers"),
-                ),
-                const PopupMenuItem(
-                  value: "edit",
-                  child: Text("Edit profile"),
-                ),
-                const PopupMenuItem(
-                  value: "change_pwd",
-                  child: Text("Change password"),
-                ),
-                const PopupMenuItem(
-                  value: "logout",
-                  child: Text("Logout"),
-                ),
-              ];
-            },
-            onSelected: (value) {
-              // Handle selected option
-              switch (value) {
-                case "followers":
-                  // TODO
-                  break;
-                case "edit":
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
+          Visibility(
+            visible: widget.userId == currentUser!.uid,
+            child: PopupMenuButton(
+              itemBuilder: (BuildContext context) {
+                return [
+                  PopupMenuItem(
+                    value: "followers",
+                    child: Text("Followers: $_followers"),
+                  ),
+                  const PopupMenuItem(
+                    value: "edit",
+                    child: Text("Edit profile"),
+                  ),
+                  const PopupMenuItem(
+                    value: "change_pwd",
+                    child: Text("Change password"),
+                  ),
+                  const PopupMenuItem(
+                    value: "logout",
+                    child: Text("Logout"),
+                  ),
+                ];
+              },
+              onSelected: (value) {
+                // Handle selected option
+                switch (value) {
+                  case "followers":
+                    // TODO
+                    break;
+                  case "edit":
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
                           EditProfileScreen(currentUser: currentUser),
-                    ),
-                  );
-                  break;
-                case "change_pwd":
-                  // TODO
-                  break;
-                case "logout":
-                  // TODO
-                  signOut(context);
-                  break;
-                default:
-                  print("Error");
-              }
-            },
-            icon: const Icon(Icons.more_vert),
+                      ),
+                    );
+                    break;
+                  case "change_pwd":
+                    // TODO
+                    break;
+                  case "logout":
+                    // TODO
+                    signOut(context);
+                    break;
+                  default:
+                    print("Error");
+                }
+              },
+              icon: const Icon(Icons.more_vert),
+            ),
           ),
         ],
       ),
@@ -205,10 +197,10 @@ class _ProfileScreenState extends State<ProfileScreen>
             return [
               SliverToBoxAdapter(
                 child: UserWidget(
-                  userId: currentUser!.uid,
+                  userId: widget.userId,
                   username: _username.isNotEmpty ? _username : "username",
                   profileImageUrl:
-                      _profileImageUrl, // Pass the profile image URL
+                    _profileImageUrl, // Pass the profile image URL
                 ),
               ),
             ];

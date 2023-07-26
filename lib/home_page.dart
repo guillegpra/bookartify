@@ -16,7 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   // -------------- User info --------------
-  final user = FirebaseAuth.instance.currentUser!;
+  final User user = FirebaseAuth.instance.currentUser!;
 
   // -------------- Navigation bar --------------
   int _currentIndex = 0;
@@ -29,12 +29,12 @@ class _HomePageState extends State<HomePage> {
     4: GlobalKey<NavigatorState>(),
   };
 
-  final List<Widget> _pages = const <Widget> [
+  final List<Widget> _pages = <Widget> [
     HomeScreen(),
     ExploreScreen(),
     UploadScreen(),
     // BookScreen(),
-    ProfileScreen()
+    ProfileScreen(userId: FirebaseAuth.instance.currentUser!.uid,)
   ];
 
   // buildNavigator() {
@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
     Navigator(
         key: GlobalKey<NavigatorState>(),
         onGenerateRoute: (RouteSettings settings) {
-          return MaterialPageRoute(builder: (_) => const ProfileScreen());
+          return MaterialPageRoute(builder: (_) => ProfileScreen(userId: FirebaseAuth.instance.currentUser!.uid,));
         }
     ),
   ];
