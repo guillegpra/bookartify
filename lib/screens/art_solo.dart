@@ -1,16 +1,20 @@
+import 'package:bookartify/services/api_service.dart';
 import 'package:bookartify/widgets/icons_and_buttons/like_icon.dart';
 import 'package:bookartify/widgets/icons_and_buttons/save_icon.dart';
 import 'package:bookartify/widgets/icons_and_buttons/share_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:bookartify/models/book_search.dart';
 
 class ArtSoloScreen extends StatelessWidget {
   final String imagePath;
   final String imageTitle;
+  final Book book;
 
   const ArtSoloScreen({
     required this.imagePath,
     required this.imageTitle,
+    required this.book,
   });
 
   @override
@@ -70,16 +74,12 @@ class ArtSoloScreen extends StatelessWidget {
                               Text(
                                 imageTitle, // Display the image title
                                 style: GoogleFonts.dmSerifDisplay(
-                                  fontSize: 19,
-                                  fontWeight: FontWeight.w600
-                                ),
+                                    fontSize: 19, fontWeight: FontWeight.w600),
                               ),
                               Text(
                                 'By artist', // Display the artist name
                                 style: GoogleFonts.poppins(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w300
-                                ),
+                                    fontSize: 15, fontWeight: FontWeight.w300),
                               ),
                             ],
                           ),
@@ -107,19 +107,85 @@ class ArtSoloScreen extends StatelessWidget {
               const SizedBox(
                 height: 5,
               ),
-              SizedBox(
-                width: double.infinity,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 10, 0),
-                  child: Text(
-                    "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk.....",
-                    style: GoogleFonts.poppins(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w300,
-                        color: Colors.grey),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(70, 192, 162, 73),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start, // Align children to the top
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Book Title:",
+                              style: GoogleFonts.dmSerifDisplay(
+                                  fontSize: 19, fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              book.title,
+                              style: GoogleFonts.poppins(
+                                  fontSize: 15, fontWeight: FontWeight.w300),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: 20), // Add spacing between the columns
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Author:",
+                              style: GoogleFonts.dmSerifDisplay(
+                                  fontSize: 19, fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              book.author,
+                              style: GoogleFonts.poppins(
+                                  fontSize: 15, fontWeight: FontWeight.w300),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
+
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 0, 10, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Description",
+                      style: GoogleFonts.poppins(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk",
+                      style: GoogleFonts.poppins(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w300,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: Row(
@@ -134,8 +200,8 @@ class ArtSoloScreen extends StatelessWidget {
                             255, 192, 162, 73), // background color
                         foregroundColor: Colors.black, // text color
                         shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(5), // button's corner radius
+                          borderRadius: BorderRadius.circular(
+                              5), // button's corner radius
                         ),
                       ),
                       child: Padding(
@@ -158,8 +224,8 @@ class ArtSoloScreen extends StatelessWidget {
                         backgroundColor: const Color.fromARGB(255, 47, 47, 47),
                         foregroundColor: Colors.white, // text color
                         shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(5), // button's corner radius
+                          borderRadius: BorderRadius.circular(
+                              5), // button's corner radius
                         ),
                       ),
                       child: Padding(

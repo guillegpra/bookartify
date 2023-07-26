@@ -58,6 +58,7 @@ class _BookScreenState extends State<BookScreen> {
     const placeholderContent = ImageGrid(
       imagePaths: [],
       imageTitles: [],
+      bookIds: [],
     );
 
     return Scaffold(
@@ -148,6 +149,10 @@ class _BookScreenState extends State<BookScreen> {
                                       .map((artwork) =>
                                           artwork["title"].toString())
                                       .toList(),
+                                  bookIds: artworkData
+                                      .map((artwork) =>
+                                          artwork["book_id"].toString())
+                                      .toList(),
                                 );
                               }
                             }
@@ -179,6 +184,10 @@ class _BookScreenState extends State<BookScreen> {
                                       .toList(),
                                   imageTitles: coversData
                                       .map((cover) => cover["title"].toString())
+                                      .toList(),
+                                  bookIds: coversData
+                                      .map((cover) =>
+                                          cover["book_id"].toString())
                                       .toList(),
                                 );
                               }
