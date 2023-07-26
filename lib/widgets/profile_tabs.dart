@@ -1,4 +1,4 @@
-import 'package:bookartify/widgets/image_grid.dart';
+/*import 'package:bookartify/widgets/image_grid.dart';
 import 'package:flutter/material.dart';
 
 class ProfileTabs extends StatefulWidget {
@@ -28,29 +28,7 @@ class _ProfileTabsState extends State<ProfileTabs> with TickerProviderStateMixin
   Widget build(BuildContext context) {
     super.build(context);
 
-    const placeholderContent = ImageGrid(
-      imagePaths: [
-        "images/fanart.jpg",
-        "images/fanart.jpg",
-        "images/fanart.jpg",
-        "images/fanart.jpg",
-        "images/fanart.jpg",
-        "images/fanart.jpg",
-        "images/fanart.jpg",
-        "images/fanart.jpg",
-      ],
-      imageTitles: [
-        "Evelyn Hugo",
-        "Evelyn Hugo",
-        "Evelyn Hugo",
-        "Evelyn Hugo",
-        "Evelyn Hugo",
-        "Evelyn Hugo",
-        "Evelyn Hugo",
-        "Evelyn Hugo",
-      ],
-    );
-
+   
     return Column(
       children: [
         TabBar(
@@ -110,4 +88,4 @@ class _KeepAliveWrapperState extends State<KeepAliveWrapper>
 
     return widget.child;
   }
-}
+}*/

@@ -84,7 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   Future<void> _fetchBookmarks() async {
     if (currentUser != null) {
       List<dynamic> fetchedBookmarks =
-      await getBookmarksByUser(currentUser!.uid);
+          await getBookmarksByUser(currentUser!.uid);
       setState(() {
         _bookmarks = fetchedBookmarks;
       });
@@ -170,7 +170,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               // Handle selected option
               switch (value) {
                 case "followers":
-                // TODO
+                  // TODO
                   break;
                 case "edit":
                   Navigator.push(
@@ -182,10 +182,10 @@ class _ProfileScreenState extends State<ProfileScreen>
                   );
                   break;
                 case "change_pwd":
-                // TODO
+                  // TODO
                   break;
                 case "logout":
-                // TODO
+                  // TODO
                   signOut(context);
                   break;
                 default:
@@ -208,7 +208,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                   userId: currentUser!.uid,
                   username: _username.isNotEmpty ? _username : "username",
                   profileImageUrl:
-                  _profileImageUrl, // Pass the profile image URL
+                      _profileImageUrl, // Pass the profile image URL
                 ),
               ),
             ];
@@ -232,42 +232,63 @@ class _ProfileScreenState extends State<ProfileScreen>
                     ]),
                 Expanded(
                     child: TabBarView(
-                      children: [
-                        // ------ Bookart content ------
-                        RefreshIndicator(
-                          onRefresh: _reloadData,
-                          child: KeepAliveWrapper(
-                            key: const ValueKey(0),
-                            child: ImageGrid(
-                              imagePaths: _bookart.map((map) => map["url"].toString()).toList(),
-                              imageTitles: _bookart.map((map) => map["title"].toString()).toList(),
-                            ),
-                          ),
+                  children: [
+                    // ------ Bookart content ------
+                    RefreshIndicator(
+                      onRefresh: _reloadData,
+                      child: KeepAliveWrapper(
+                        key: const ValueKey(0),
+                        child: ImageGrid(
+                          imagePaths: _bookart
+                              .map((map) => map["url"].toString())
+                              .toList(),
+                          imageTitles: _bookart
+                              .map((map) => map["title"].toString())
+                              .toList(),
+                          bookIds: _bookart
+                              .map((map) => map["book_id"].toString())
+                              .toList(),
                         ),
-                        // ------ Covers content ------
-                        RefreshIndicator(
-                          onRefresh: _reloadData,
-                          child: KeepAliveWrapper(
-                            key: const ValueKey(1),
-                            child: ImageGrid(
-                              imagePaths: _covers.map((map) => map["url"].toString()).toList(),
-                              imageTitles: _covers.map((map) => map["title"].toString()).toList(),
-                            ),
-                          ),
+                      ),
+                    ),
+                    // ------ Covers content ------
+                    RefreshIndicator(
+                      onRefresh: _reloadData,
+                      child: KeepAliveWrapper(
+                        key: const ValueKey(1),
+                        child: ImageGrid(
+                          imagePaths: _covers
+                              .map((map) => map["url"].toString())
+                              .toList(),
+                          imageTitles: _covers
+                              .map((map) => map["title"].toString())
+                              .toList(),
+                          bookIds: _bookart
+                              .map((map) => map["book_id"].toString())
+                              .toList(),
                         ),
-                        // ------ Collections content ------
-                        RefreshIndicator(
-                          onRefresh: _reloadData,
-                          child: KeepAliveWrapper(
-                            key: const ValueKey(2),
-                            child: ImageGrid(
-                              imagePaths: _bookmarks.map((map) => map["url"].toString()).toList(),
-                              imageTitles: _bookmarks.map((map) => map["title"].toString()).toList(),
-                            ),
-                          ),
+                      ),
+                    ),
+                    // ------ Collections content ------
+                    RefreshIndicator(
+                      onRefresh: _reloadData,
+                      child: KeepAliveWrapper(
+                        key: const ValueKey(2),
+                        child: ImageGrid(
+                          imagePaths: _bookmarks
+                              .map((map) => map["url"].toString())
+                              .toList(),
+                          imageTitles: _bookmarks
+                              .map((map) => map["title"].toString())
+                              .toList(),
+                          bookIds: _bookart
+                              .map((map) => map["book_id"].toString())
+                              .toList(),
                         ),
-                      ],
-                    ))
+                      ),
+                    ),
+                  ],
+                ))
               ],
             ),
           ),

@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:bookartify/models/book_search.dart'; 
+import 'package:bookartify/models/book_search.dart';
 
 class ApiService {
-  final String _apiKey = 'AIzaSyBfpzEdp3h9U1S7qyPKpIBj9u_vAggtLjg'; // BookArtify Google Books API key
+  final String _apiKey =
+      'AIzaSyBfpzEdp3h9U1S7qyPKpIBj9u_vAggtLjg'; // BookArtify Google Books API key
 
   Future<List<Book>> fetchBooks(String query) async {
     final response = await http.get(
@@ -31,11 +32,8 @@ class ApiService {
   }
 
   Future<Book> getBookFromId(String bookId) async {
-    final response = await http.get(
-      Uri.parse(
-        "https://www.googleapis.com/books/v1/volumes/$bookId"
-      )
-    );
+    final response = await http
+        .get(Uri.parse("https://www.googleapis.com/books/v1/volumes/$bookId"));
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body);

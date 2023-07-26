@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:bookartify/is_tablet.dart';
 import 'package:bookartify/widgets/post_widget.dart';
-import 'package:bookartify/screens/art_solo.dart';
 
 class ImageGrid extends StatelessWidget {
   final List<String> _imagePaths;
   final List<String> _imageTitles;
+  final List<String> _bookIds;
 
   const ImageGrid({
     Key? key,
     required List<String> imagePaths,
     required List<String> imageTitles,
+    required List<String> bookIds,
   })  : _imageTitles = imageTitles,
         _imagePaths = imagePaths,
+        _bookIds = bookIds,
         super(key: key);
 
   @override
@@ -27,23 +29,10 @@ class ImageGrid extends StatelessWidget {
         childAspectRatio: 0.85, // Adjust this value for desired aspect ratio
       ),
       itemBuilder: (BuildContext context, int index) {
-        return GestureDetector(
-          onTap: () {
-            // Navigate to the detail screen when an image is tapped
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ArtSoloScreen(
-                  imagePath: _imagePaths[index],
-                  imageTitle: _imageTitles[index],
-                ),
-              ),
-            );
-          },
-          child: PostWidget(
-            path: _imagePaths[index],
-            title: _imageTitles[index],
-          ),
+        return PostWidget(
+          path: _imagePaths[index],
+          title: _imageTitles[index],
+          bookId: _bookIds[index],
         );
       },
     );
