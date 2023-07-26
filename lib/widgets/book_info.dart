@@ -38,8 +38,9 @@ class BookInfo extends StatelessWidget {
               padding: const EdgeInsets.only(left: 15),
               child: Container(
                   decoration: BoxDecoration(
-                      color: const Color(0xFFF5EFE1),
-                      borderRadius: BorderRadius.circular(10)),
+                    color: const Color(0xFFF5EFE1),
+                    borderRadius: BorderRadius.circular(10)
+                  ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: book.thumbnailUrl.isNotEmpty
