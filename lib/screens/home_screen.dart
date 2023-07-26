@@ -1,7 +1,9 @@
 import 'package:bookartify/models/book_search.dart';
 import 'package:bookartify/screens/book_screen.dart';
-import 'package:bookartify/services/api_service.dart';
+import 'package:bookartify/screens/profile_screen.dart';
+import 'package:bookartify/services/google_books_api.dart';
 import 'package:bookartify/services/database_api.dart';
+import 'package:bookartify/services/usernames_db.dart';
 import 'package:bookartify/widgets/icons_and_buttons/save_icon.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
@@ -20,9 +22,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   User? currentUser;
-  final _apiService = ApiService();
+  final _googleBooksAPI = GoogleBooksApi();
   List<dynamic> _forYou = [];
   List<Book> _books = [];
+  List<String> _usernames = [];
 
   @override
   void initState() {
@@ -39,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
 
       await _fetchBooksForYou();
+      await _fetchUsernamesForYou();
     }
   }
 
@@ -47,15 +51,30 @@ class _HomeScreenState extends State<HomeScreen> {
 
     for (var item in _forYou) {
       String bookId = item["book_id"].toString();
-      Book? book = await _apiService.getBookFromId(bookId);
+      Book? book = await _googleBooksAPI.getBookFromId(bookId);
       if (book != null) {
-        print(book.description);
         books.add(book);
       }
     }
 
     setState(() {
       _books = books;
+    });
+  }
+
+  Future<void> _fetchUsernamesForYou() async {
+    List<String> usernames = [];
+
+    for (var item in _forYou) {
+      String userId = item["user_id"].toString();
+      String? username = await getUsername(userId);
+      if (username != null) {
+        usernames.add(username);
+      }
+    }
+
+    setState(() {
+      _usernames = usernames;
     });
   }
 
@@ -136,13 +155,41 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(10.0, 8.0, 10.0, 1.0),
-                              child: Text(
-                                'By ${_forYou[index]["user_id"].toString()}',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 14,
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.w500
+                              padding: const EdgeInsets.fromLTRB(10.0, 1.0, 10.0, 1.0),
+                              child: RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: 'By ',
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 15,
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: _usernames.isNotEmpty ? _usernames[index] : "",
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 15,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500,
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                      // Add the onTap callback here
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () async {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => ProfileScreen(
+                                                userId: _forYou[index]["user_id"].toString(),
+                                              ),
+                                            ),
+                                          );
+                                          // TODO
+                                        },
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -169,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                       // Add the onTap callback here
                                       recognizer: TapGestureRecognizer()
-                                        ..onTap = () async {
+                                        ..onTap = () {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(

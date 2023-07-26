@@ -1,4 +1,3 @@
-import 'package:bookartify/services/api_service.dart';
 import 'package:bookartify/widgets/icons_and_buttons/like_icon.dart';
 import 'package:bookartify/widgets/icons_and_buttons/save_icon.dart';
 import 'package:bookartify/widgets/icons_and_buttons/share_button.dart';
@@ -15,7 +14,8 @@ class ArtSoloScreen extends StatelessWidget {
   final String userId;
 
   const ArtSoloScreen(
-      {required this.imagePath,
+      {super.key,
+      required this.imagePath,
       required this.imageTitle,
       required this.book,
       required this.userId});
@@ -153,7 +153,7 @@ class ArtSoloScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 5),
                             Text(
                               book.title,
                               style: GoogleFonts.poppins(
@@ -187,7 +187,7 @@ class ArtSoloScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 5),
                             Text(
                               book.author,
                               style: GoogleFonts.poppins(
@@ -215,7 +215,7 @@ class ArtSoloScreen extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Text(
                       "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk",
                       style: GoogleFonts.poppins(

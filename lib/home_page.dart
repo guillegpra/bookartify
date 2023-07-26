@@ -1,6 +1,5 @@
 import 'package:bookartify/screens/explore_screen.dart';
 import 'package:bookartify/screens/home_screen.dart';
-import 'package:bookartify/screens/home_screen2.dart';
 import 'package:bookartify/screens/profile_screen.dart';
 import 'package:bookartify/screens/search_screen.dart';
 import 'package:bookartify/screens/upload_screen.dart';
@@ -17,7 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   // -------------- User info --------------
-  final user = FirebaseAuth.instance.currentUser!;
+  final User user = FirebaseAuth.instance.currentUser!;
 
   // -------------- Navigation bar --------------
   int _currentIndex = 0;
@@ -30,12 +29,12 @@ class _HomePageState extends State<HomePage> {
     4: GlobalKey<NavigatorState>(),
   };
 
-  final List<Widget> _pages = const <Widget> [
-    HomeScreen2(),
+  final List<Widget> _pages = <Widget> [
+    HomeScreen(),
     ExploreScreen(),
     UploadScreen(),
     // BookScreen(),
-    ProfileScreen()
+    ProfileScreen(userId: FirebaseAuth.instance.currentUser!.uid,)
   ];
 
   // buildNavigator() {
@@ -75,7 +74,7 @@ class _HomePageState extends State<HomePage> {
     Navigator(
         key: GlobalKey<NavigatorState>(),
         onGenerateRoute: (RouteSettings settings) {
-          return MaterialPageRoute(builder: (_) => const ProfileScreen());
+          return MaterialPageRoute(builder: (_) => ProfileScreen(userId: FirebaseAuth.instance.currentUser!.uid,));
         }
     ),
   ];

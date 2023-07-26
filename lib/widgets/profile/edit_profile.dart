@@ -45,12 +45,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     if (pickedImage != null) {
       final croppedImage = await ImageCropper().cropImage(
         sourcePath: pickedImage.path,
-        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
         cropStyle: CropStyle.circle,
         uiSettings: [
           AndroidUiSettings(
             toolbarTitle: 'Crop Image',
-            toolbarColor: Color(0xFFBFA054),
+            toolbarColor: const Color(0xFFBFA054),
             toolbarWidgetColor: Colors.white,
             initAspectRatio: CropAspectRatioPreset.original,
             lockAspectRatio: false,
@@ -190,7 +190,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           // Show a success message or navigate to another page
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => ProfileScreen()),
+            MaterialPageRoute(builder: (context) =>
+              ProfileScreen(userId: widget.currentUser!.uid)
+            ),
           );
         } else {
           // No changes were made
@@ -217,13 +219,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xfffbf8f2),
+        backgroundColor: const Color(0xfffbf8f2),
         centerTitle: true,
         title: Text(
           'Edit Profile',
           style: GoogleFonts.dmSerifDisplay(
             fontWeight: FontWeight.bold,
-            color: Color(0xff2f2f2f),
+            color: const Color(0xff2f2f2f),
             fontSize: 20,
           ),
         ),
@@ -234,7 +236,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               'Save',
               style: GoogleFonts.dmSerifDisplay(
                 fontWeight: FontWeight.bold,
-                color: Color(0xff2f2f2f),
+                color: const Color(0xff2f2f2f),
                 fontSize: 18,
               ),
             ),
@@ -242,7 +244,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -257,7 +259,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: Color(0xff2f2f2f),
+                            color: const Color(0xff2f2f2f),
                             width: 2.0, // Width of the border
                           ),
                         ),
@@ -275,7 +277,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: Color(0xff2f2f2f),
+                            color: const Color(0xff2f2f2f),
                             width: 2.0, // Width of the border
                           ),
                         ),
@@ -288,18 +290,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           ),
                         ),
                       ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     MaterialButton(
                       onPressed: () => _selectImage(ImageSource.gallery),
-                      color: Color(0xff2f2f2f),
+                      color: const Color(0xff2f2f2f),
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
-                        side: BorderSide(color: Color(0x85808080), width: 1),
+                        side: const BorderSide(color: Color(0x85808080), width: 1),
                       ),
                       padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-                      child: Text(
+                          const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                      textColor: const Color(0xffe3d4b5),
+                      height: 40,
+                      minWidth: 140,
+                      child: const Text(
                         "Change Picture",
                         style: TextStyle(
                           fontSize: 14,
@@ -307,67 +312,64 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           fontStyle: FontStyle.normal,
                         ),
                       ),
-                      textColor: Color(0xffe3d4b5),
-                      height: 40,
-                      minWidth: 140,
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                   ],
                 ),
               ),
-              Text(
+              const Text(
                 'Username',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextField(
                 controller: _usernameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Enter your username',
                   border: OutlineInputBorder(
                     borderSide:
-                        const BorderSide(color: Color(0x85808080), width: 2.0),
+                        BorderSide(color: Color(0x85808080), width: 2.0),
                   ),
                 ),
               ),
-              SizedBox(height: 16),
-              Text(
+              const SizedBox(height: 16),
+              const Text(
                 'Bio',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextField(
                 controller: _bioController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Enter your bio',
                   border: OutlineInputBorder(
                     borderSide:
-                        const BorderSide(color: Color(0x85808080), width: 2.0),
+                        BorderSide(color: Color(0x85808080), width: 2.0),
                   ),
                 ),
               ),
-              SizedBox(height: 16),
-              Text(
+              const SizedBox(height: 16),
+              const Text(
                 'Goodreads Profile',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextField(
                 controller: _goodreadsUrlController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Enter your Goodreads profile link',
                   border: OutlineInputBorder(
                     borderSide:
-                        const BorderSide(color: Color(0x85808080), width: 2.0),
+                        BorderSide(color: Color(0x85808080), width: 2.0),
                   ),
                 ),
               ),

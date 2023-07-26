@@ -1,5 +1,5 @@
 import 'package:bookartify/is_tablet.dart';
-import 'package:bookartify/services/api_service.dart';
+import 'package:bookartify/services/google_books_api.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:bookartify/screens/art_solo.dart';
@@ -24,14 +24,14 @@ class PostWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Book>(
-      future: ApiService().getBookFromId(bookId),
+      future: GoogleBooksApi().getBookFromId(bookId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // While waiting for the future to complete, show a loading indicator.
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
           // If there's an error in fetching the book data, show an error message.
-          return Text('Error loading book data');
+          return const Text('Error loading book data');
         } else if (snapshot.hasData) {
           // If the future is complete and data is available, build the UI.
           Book book = snapshot.data!;
