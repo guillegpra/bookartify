@@ -5,17 +5,20 @@ import 'package:bookartify/widgets/icons_and_buttons/share_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:bookartify/models/book_search.dart';
+import 'package:bookartify/services/usernames_db.dart';
+import 'package:bookartify/screens/book_screen.dart';
 
 class ArtSoloScreen extends StatelessWidget {
   final String imagePath;
   final String imageTitle;
   final Book book;
+  final String userId;
 
-  const ArtSoloScreen({
-    required this.imagePath,
-    required this.imageTitle,
-    required this.book,
-  });
+  const ArtSoloScreen(
+      {required this.imagePath,
+      required this.imageTitle,
+      required this.book,
+      required this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -76,10 +79,25 @@ class ArtSoloScreen extends StatelessWidget {
                                 style: GoogleFonts.dmSerifDisplay(
                                     fontSize: 19, fontWeight: FontWeight.w600),
                               ),
-                              Text(
-                                'By artist', // Display the artist name
-                                style: GoogleFonts.poppins(
-                                    fontSize: 15, fontWeight: FontWeight.w300),
+                              FutureBuilder<String?>(
+                                future: getUsername(userId),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return CircularProgressIndicator(); // Show a loading indicator while fetching the username.
+                                  } else if (snapshot.hasError) {
+                                    return Text('Error: ${snapshot.error}');
+                                  } else {
+                                    final username = snapshot.data;
+                                    return Text(
+                                      'By ${username ?? 'Unknown Artist'}', // Display the fetched username or 'Unknown Artist' if username is null.
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    );
+                                  }
+                                },
                               ),
                             ],
                           ),
@@ -109,55 +127,79 @@ class ArtSoloScreen extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(70, 192, 162, 73),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start, // Align children to the top
-                    children: [
-                      Expanded(
+                child: Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment.spaceEvenly, // Added this line
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          // Navigate to BookScreen with the corresponding bookId
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => BookScreen(book: book),
+                            ),
+                          );
+                        },
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
                               "Book Title:",
                               style: GoogleFonts.dmSerifDisplay(
-                                  fontSize: 19, fontWeight: FontWeight.w600),
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                            SizedBox(height: 5),
+                            SizedBox(height: 10),
                             Text(
                               book.title,
                               style: GoogleFonts.poppins(
-                                  fontSize: 15, fontWeight: FontWeight.w300),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w300,
+                              ),
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(width: 20), // Add spacing between the columns
-                      Expanded(
+                    ),
+                    SizedBox(width: 20),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          // Navigate to BookScreen with the corresponding bookId
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => BookScreen(book: book),
+                            ),
+                          );
+                        },
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
                               "Author:",
                               style: GoogleFonts.dmSerifDisplay(
-                                  fontSize: 19, fontWeight: FontWeight.w600),
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                            SizedBox(height: 5),
+                            SizedBox(height: 10),
                             Text(
                               book.author,
                               style: GoogleFonts.poppins(
-                                  fontSize: 15, fontWeight: FontWeight.w300),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w300,
+                              ),
                             ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
 
@@ -243,18 +285,8 @@ class ArtSoloScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(
-                width: double.infinity,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 18.0),
-                  child: Text(
-                    "View more works....",
-                    style: GoogleFonts.poppins(
-                        fontSize: 16, fontWeight: FontWeight.w500),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10),
+
+              const SizedBox(height: 5),
               // Replace the ArtGridView() with the relevant widgets to show more works if needed
             ],
           ),

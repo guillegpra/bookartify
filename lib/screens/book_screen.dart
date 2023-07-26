@@ -59,6 +59,7 @@ class _BookScreenState extends State<BookScreen> {
       imagePaths: [],
       imageTitles: [],
       bookIds: [],
+      userIds: [],
     );
 
     return Scaffold(
@@ -153,6 +154,10 @@ class _BookScreenState extends State<BookScreen> {
                                       .map((artwork) =>
                                           artwork["book_id"].toString())
                                       .toList(),
+                                  userIds: artworkData
+                                      .map((artwork) =>
+                                          artwork["user_id"].toString())
+                                      .toList(),
                                 );
                               }
                             }
@@ -188,6 +193,10 @@ class _BookScreenState extends State<BookScreen> {
                                   bookIds: coversData
                                       .map((cover) =>
                                           cover["book_id"].toString())
+                                      .toList(),
+                                  userIds: coversData
+                                      .map((cover) =>
+                                          cover["user_id"].toString())
                                       .toList(),
                                 );
                               }

@@ -42,7 +42,7 @@ class Bookartify extends StatelessWidget {
             // if user is logged in
             return const VerifyEmailPage();
           } else {
-            return const AuthPage();
+            return const AuthPage(); 
           }
         },
       ),

@@ -248,6 +248,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                           bookIds: _bookart
                               .map((map) => map["book_id"].toString())
                               .toList(),
+                          userIds: _bookart
+                              .map((map) => map["user_id"].toString())
+                              .toList(),
                         ),
                       ),
                     ),
@@ -263,8 +266,11 @@ class _ProfileScreenState extends State<ProfileScreen>
                           imageTitles: _covers
                               .map((map) => map["title"].toString())
                               .toList(),
-                          bookIds: _bookart
+                          bookIds: _covers
                               .map((map) => map["book_id"].toString())
+                              .toList(),
+                          userIds: _covers
+                              .map((map) => map["user_id"].toString())
                               .toList(),
                         ),
                       ),
@@ -281,8 +287,11 @@ class _ProfileScreenState extends State<ProfileScreen>
                           imageTitles: _bookmarks
                               .map((map) => map["title"].toString())
                               .toList(),
-                          bookIds: _bookart
+                          bookIds: _bookmarks
                               .map((map) => map["book_id"].toString())
+                              .toList(),
+                          userIds: _bookmarks
+                              .map((map) => map["user_id"].toString())
                               .toList(),
                         ),
                       ),

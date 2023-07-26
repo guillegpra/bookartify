@@ -6,15 +6,18 @@ class ImageGrid extends StatelessWidget {
   final List<String> _imagePaths;
   final List<String> _imageTitles;
   final List<String> _bookIds;
+  final List<String> _userIds;
 
-  const ImageGrid({
-    Key? key,
-    required List<String> imagePaths,
-    required List<String> imageTitles,
-    required List<String> bookIds,
-  })  : _imageTitles = imageTitles,
+  const ImageGrid(
+      {Key? key,
+      required List<String> imagePaths,
+      required List<String> imageTitles,
+      required List<String> bookIds,
+      required List<String> userIds})
+      : _imageTitles = imageTitles,
         _imagePaths = imagePaths,
         _bookIds = bookIds,
+        _userIds = userIds,
         super(key: key);
 
   @override
@@ -33,6 +36,7 @@ class ImageGrid extends StatelessWidget {
           path: _imagePaths[index],
           title: _imageTitles[index],
           bookId: _bookIds[index],
+          userId: _userIds[index],
         );
       },
     );

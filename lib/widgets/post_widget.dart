@@ -10,14 +10,16 @@ class PostWidget extends StatelessWidget {
   final String path;
   final String title;
   final String bookId;
+  final String userId;
 
-  const PostWidget({
-    Key? key,
-    /* required this.width, */
-    required this.path,
-    required this.title,
-    required this.bookId,
-  }) : super(key: key);
+  const PostWidget(
+      {Key? key,
+      /* required this.width, */
+      required this.path,
+      required this.title,
+      required this.bookId,
+      required this.userId})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +41,10 @@ class PostWidget extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ArtSoloScreen(
-                    imagePath: path,
-                    imageTitle: title,
-                    book: book,
-                  ),
+                      imagePath: path,
+                      imageTitle: title,
+                      book: book,
+                      userId: userId),
                 ),
               );
             },
