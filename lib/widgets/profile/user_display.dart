@@ -1,16 +1,18 @@
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:bookartify/widgets/icons_and_buttons/share_profile_button.dart';
 import 'package:bookartify/services/user_bios_db.dart';
 import 'package:bookartify/services/user_goodreads_links_db.dart';
 import 'package:bookartify/widgets/profile/edit_profile.dart';
+import 'package:bookartify/widgets/icons_and_buttons/follow_button.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class UserDisplay extends StatelessWidget {
+  final String userId;
   final String username;
 
-  const UserDisplay({super.key, required this.username});
+  const UserDisplay({super.key, required this.userId, required this.username});
 
   Future<void> _launchUrl(BuildContext context) async {
     final User? currentUser = FirebaseAuth.instance.currentUser;
@@ -82,24 +84,31 @@ class UserDisplay extends StatelessWidget {
         const SizedBox(height: 10), // FollowButton(isFollowing: false),
         Row(
           children: [
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
+            Visibility(
+              visible: userId != FirebaseAuth.instance.currentUser!.uid,
+              child: FollowButton(isFollowing: true)
+            ),
+            Visibility(
+              visible: userId == FirebaseAuth.instance.currentUser!.uid,
+              child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
                           EditProfileScreen(currentUser: currentUser),
-                    ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFF5EFE1),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0))),
-                child: Text(
-                  "Edit profile",
-                  style: GoogleFonts.poppins(color: const Color(0xFF2F2F2F)),
-                )),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFF5EFE1),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0))),
+                  child: Text(
+                    "Edit profile",
+                    style: GoogleFonts.poppins(color: const Color(0xFF2F2F2F)),
+                  )),
+            ),
             ShareButton(onPressed: () {
               // TODO: share functionality
             })
