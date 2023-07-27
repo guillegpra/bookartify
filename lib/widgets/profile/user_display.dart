@@ -99,7 +99,10 @@ class UserDisplay extends StatelessWidget {
                     return Text("Error: ${snapshot.error}");
                   } else {
                     bool isFollowing = snapshot.data ?? false;
-                    return FollowButton(isFollowing: isFollowing);
+                    return FollowButton(
+                      userId: userId,
+                      isFollowing: isFollowing,
+                    );
                   }
                 },
               ),

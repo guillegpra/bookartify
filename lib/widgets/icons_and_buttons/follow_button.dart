@@ -1,10 +1,14 @@
+import 'package:bookartify/services/database_api.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class FollowButton extends StatefulWidget {
   final bool isFollowing;
+  final String userId;
   
-  const FollowButton({super.key, required this.isFollowing});
+  const FollowButton({super.key, required this.userId,
+    required this.isFollowing});
 
   @override
   State<FollowButton> createState() => _FollowButtonState();
@@ -15,12 +19,15 @@ class _FollowButtonState extends State<FollowButton> {
   
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _isFollowing = widget.isFollowing;
   }
   
-  void _toggleFollowing() {
+  void _toggleFollowing() async {
+    String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+    _isFollowing ? await unfollowUser(currentUserId, widget.userId)
+        : await followUser(currentUserId, widget.userId);
+
     setState(() {
       _isFollowing = !_isFollowing;
     });
@@ -31,7 +38,7 @@ class _FollowButtonState extends State<FollowButton> {
     return ElevatedButton(
       onPressed: _toggleFollowing, 
       style: ElevatedButton.styleFrom(
-        backgroundColor: _isFollowing ? Color(0xFFF5EFE1) : Color(0xFFBFA054),
+        backgroundColor: _isFollowing ? const Color(0xFFF5EFE1) : const Color(0xFFBFA054),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0)
         )
@@ -39,7 +46,7 @@ class _FollowButtonState extends State<FollowButton> {
       child: Text(
         _isFollowing ? "Following" : "Follow",
         style: GoogleFonts.poppins(
-          color: Color(0xFF2F2F2F)
+          color: const Color(0xFF2F2F2F)
         ),
       )
     );
