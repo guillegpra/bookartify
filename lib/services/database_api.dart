@@ -156,7 +156,7 @@ Future<void> unfollowUser(String userId, String followingId) async {
 
   final http.Response response = await http.delete(url);
 
-  if (response.statusCode == 201) {
+  if (response.statusCode == 200) {
     print("User unfollowed successfully");
   } else {
     throw Exception("Failed to unfollow user");
@@ -193,7 +193,7 @@ Future<void> unfollowBook(String userId, String followingId) async {
   final http.Response response = await http.delete(url);
 
   if (response.statusCode == 200) {
-    print("Book unfollowed successfully");
+    print("User unfollowed successfully");
   } else {
     print("Failed to unfollow book. Status code: ${response.statusCode}");
     throw Exception("Failed to unfollow book");
