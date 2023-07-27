@@ -42,7 +42,7 @@ Future<int> getArtCountByUser(String userId) async {
 }
 
 Future<void> uploadArt(
-    String userId, String title, String bookId, String imageUrl) async {
+    String userId, String title, String description, String bookId, String imageUrl) async {
   final url = Uri.parse("$baseUrl/art/upload");
 
   final body = jsonEncode({
@@ -104,7 +104,7 @@ Future<int> getCoversCountByUser(String userId) async {
 }
 
 Future<void> uploadCover(
-    String userId, String title, String bookId, String imageUrl) async {
+    String userId, String title, String description, String bookId, String imageUrl) async {
   final url = Uri.parse("$baseUrl/covers/upload");
 
   final headers = {
@@ -218,6 +218,30 @@ Future<int> getFollowingCountByUser(String userId) async {
     return data["following"];
   } else {
     throw Exception("Failed to load following count");
+  }
+}
+
+Future<bool> isFollowingUser(String userId, String followingId) async {
+  final http.Response response = await
+    http.get(Uri.parse("$baseUrl/check_follow/user?user_id=$userId&following_id=$followingId"));
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    return data["isFollowing"];
+  } else {
+    throw Exception("Failed to check follow status");
+  }
+}
+
+Future<bool> isFollowingBook(String userId, String followingId) async {
+  final http.Response response = await
+    http.get(Uri.parse("$baseUrl/check_follow/book?user_id=$userId&following_id=$followingId"));
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    return data["isFollowing"];
+  } else {
+    throw Exception("Failed to check follow status");
   }
 }
 

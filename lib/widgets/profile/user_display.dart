@@ -1,3 +1,4 @@
+import 'package:bookartify/services/database_api.dart';
 import 'package:bookartify/widgets/icons_and_buttons/share_profile_button.dart';
 import 'package:bookartify/services/user_bios_db.dart';
 import 'package:bookartify/services/user_goodreads_links_db.dart';
@@ -17,6 +18,9 @@ class UserDisplay extends StatelessWidget {
   Future<void> _launchUrl(BuildContext context) async {
     final User? currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser == null) return;
+
+    // final bool isFollowing = await isFollowingUser(currentUser!.uid, userId);
+    // print("isFollowing: $isFollowing");
 
     String? goodreadsUrl = await getUserGoodreadsUrl(currentUser.uid);
     if (goodreadsUrl == null || goodreadsUrl.isEmpty) {
@@ -71,7 +75,7 @@ class UserDisplay extends StatelessWidget {
               return SizedBox(
                 width: 130,
                 child: Text(
-                  bio ?? 'hi',
+                  bio ?? 'Hi there!',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   softWrap: false,
@@ -85,11 +89,23 @@ class UserDisplay extends StatelessWidget {
         Row(
           children: [
             Visibility(
-              visible: userId != FirebaseAuth.instance.currentUser!.uid,
-              child: FollowButton(isFollowing: true)
+              visible: userId != currentUser!.uid,
+              child: FutureBuilder<bool>(
+                future: isFollowingUser(currentUser!.uid, userId),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text("Error: ${snapshot.error}");
+                  } else {
+                    bool isFollowing = snapshot.data ?? false;
+                    return FollowButton(isFollowing: isFollowing);
+                  }
+                },
+              ),
             ),
             Visibility(
-              visible: userId == FirebaseAuth.instance.currentUser!.uid,
+              visible: userId == currentUser!.uid,
               child: ElevatedButton(
                   onPressed: () {
                     Navigator.push(
