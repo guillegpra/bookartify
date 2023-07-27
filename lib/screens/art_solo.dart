@@ -7,6 +7,8 @@ import 'package:bookartify/models/book_search.dart';
 import 'package:bookartify/services/usernames_db.dart';
 import 'package:bookartify/screens/book_screen.dart';
 import 'package:bookartify/screens/profile_screen.dart';
+import 'package:bookartify/services/database_api.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ArtSoloScreen extends StatelessWidget {
   final String imagePath;

@@ -6,25 +6,27 @@ import 'package:bookartify/screens/art_solo.dart';
 import 'package:bookartify/models/book_search.dart';
 
 class PostWidget extends StatelessWidget {
-  // final double width;
-  final String path;
-  final String title;
-  final String bookId;
-  final String userId;
+  // final String path;
+  // final String title;
+  // final String bookId;
+  // final String userId;
+  final dynamic post;
 
-  const PostWidget(
-      {Key? key,
-      /* required this.width, */
-      required this.path,
-      required this.title,
-      required this.bookId,
-      required this.userId})
-      : super(key: key);
+  // const PostWidget(
+  //     {Key? key,
+  //     /* required this.width, */
+  //     required this.path,
+  //     required this.title,
+  //     required this.bookId,
+  //     required this.userId})
+  //     : super(key: key);
+
+  const PostWidget({Key? key, required this.post}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Book>(
-      future: GoogleBooksApi().getBookFromId(bookId),
+      future: GoogleBooksApi().getBookFromId(post["book_id"]),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // While waiting for the future to complete, show a loading indicator.
@@ -41,10 +43,10 @@ class PostWidget extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ArtSoloScreen(
-                      imagePath: path,
-                      imageTitle: title,
+                      imagePath: post["url"],
+                      imageTitle: post["title"],
                       book: book,
-                      userId: userId),
+                      userId: post["user_id"]),
                 ),
               );
             },
@@ -67,7 +69,7 @@ class PostWidget extends StatelessWidget {
                       child: AspectRatio(
                         aspectRatio: 1.0,
                         child: Image.network(
-                          path,
+                          post["url"],
                           fit: BoxFit.cover,
                           loadingBuilder: (BuildContext context, Widget child,
                               ImageChunkEvent? loadingProgress) {
@@ -87,7 +89,7 @@ class PostWidget extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      title,
+                      post["title"],
                       style: GoogleFonts.dmSerifDisplay(
                           fontSize: !isTablet(context) ? 16 : 20,
                           fontWeight: FontWeight.bold),

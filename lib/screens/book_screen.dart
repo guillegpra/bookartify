@@ -55,13 +55,6 @@ class _BookScreenState extends State<BookScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const placeholderContent = ImageGrid(
-      imagePaths: [],
-      imageTitles: [],
-      bookIds: [],
-      userIds: [],
-    );
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey[50],
@@ -143,22 +136,23 @@ class _BookScreenState extends State<BookScreen> {
                                     child: Text("No art for this book yet"));
                               } else {
                                 return ImageGrid(
-                                  imagePaths: artworkData
-                                      .map((artwork) =>
-                                          artwork["url"].toString())
-                                      .toList(),
-                                  imageTitles: artworkData
-                                      .map((artwork) =>
-                                          artwork["title"].toString())
-                                      .toList(),
-                                  bookIds: artworkData
-                                      .map((artwork) =>
-                                          artwork["book_id"].toString())
-                                      .toList(),
-                                  userIds: artworkData
-                                      .map((artwork) =>
-                                          artwork["user_id"].toString())
-                                      .toList(),
+                                  posts: artworkData,
+                                  // imagePaths: artworkData
+                                  //     .map((artwork) =>
+                                  //         artwork["url"].toString())
+                                  //     .toList(),
+                                  // imageTitles: artworkData
+                                  //     .map((artwork) =>
+                                  //         artwork["title"].toString())
+                                  //     .toList(),
+                                  // bookIds: artworkData
+                                  //     .map((artwork) =>
+                                  //         artwork["book_id"].toString())
+                                  //     .toList(),
+                                  // userIds: artworkData
+                                  //     .map((artwork) =>
+                                  //         artwork["user_id"].toString())
+                                  //     .toList(),
                                 );
                               }
                             }
@@ -186,20 +180,21 @@ class _BookScreenState extends State<BookScreen> {
                                     child: Text("No covers for this book yet"));
                               } else {
                                 return ImageGrid(
-                                  imagePaths: coversData
-                                      .map((cover) => cover["url"].toString())
-                                      .toList(),
-                                  imageTitles: coversData
-                                      .map((cover) => cover["title"].toString())
-                                      .toList(),
-                                  bookIds: coversData
-                                      .map((cover) =>
-                                          cover["book_id"].toString())
-                                      .toList(),
-                                  userIds: coversData
-                                      .map((cover) =>
-                                          cover["user_id"].toString())
-                                      .toList(),
+                                  posts: coversData,
+                                  // imagePaths: coversData
+                                  //     .map((cover) => cover["url"].toString())
+                                  //     .toList(),
+                                  // imageTitles: coversData
+                                  //     .map((cover) => cover["title"].toString())
+                                  //     .toList(),
+                                  // bookIds: coversData
+                                  //     .map((cover) =>
+                                  //         cover["book_id"].toString())
+                                  //     .toList(),
+                                  // userIds: coversData
+                                  //     .map((cover) =>
+                                  //         cover["user_id"].toString())
+                                  //     .toList(),
                                 );
                               }
                             }

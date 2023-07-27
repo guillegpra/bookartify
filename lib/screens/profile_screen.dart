@@ -75,8 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   }
 
   Future<void> _fetchBookmarks() async {
-    List<dynamic> fetchedBookmarks =
-    await getBookmarksByUser(widget.userId);
+    List<dynamic> fetchedBookmarks = await getBookmarksByUser(widget.userId);
     setState(() {
       _bookmarks = fetchedBookmarks;
     });
@@ -168,7 +167,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                          EditProfileScreen(currentUser: currentUser),
+                            EditProfileScreen(currentUser: currentUser),
                       ),
                     );
                     break;
@@ -200,7 +199,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                   userId: widget.userId,
                   username: _username.isNotEmpty ? _username : "username",
                   profileImageUrl:
-                    _profileImageUrl, // Pass the profile image URL
+                      _profileImageUrl, // Pass the profile image URL
                 ),
               ),
             ];
@@ -231,18 +230,19 @@ class _ProfileScreenState extends State<ProfileScreen>
                       child: KeepAliveWrapper(
                         key: const ValueKey(0),
                         child: ImageGrid(
-                          imagePaths: _bookart
-                              .map((map) => map["url"].toString())
-                              .toList(),
-                          imageTitles: _bookart
-                              .map((map) => map["title"].toString())
-                              .toList(),
-                          bookIds: _bookart
-                              .map((map) => map["book_id"].toString())
-                              .toList(),
-                          userIds: _bookart
-                              .map((map) => map["user_id"].toString())
-                              .toList(),
+                          posts: _bookart,
+                          // imagePaths: _bookart
+                          //     .map((map) => map["url"].toString())
+                          //     .toList(),
+                          // imageTitles: _bookart
+                          //     .map((map) => map["title"].toString())
+                          //     .toList(),
+                          // bookIds: _bookart
+                          //     .map((map) => map["book_id"].toString())
+                          //     .toList(),
+                          // userIds: _bookart
+                          //     .map((map) => map["user_id"].toString())
+                          //     .toList(),
                         ),
                       ),
                     ),
@@ -252,18 +252,19 @@ class _ProfileScreenState extends State<ProfileScreen>
                       child: KeepAliveWrapper(
                         key: const ValueKey(1),
                         child: ImageGrid(
-                          imagePaths: _covers
-                              .map((map) => map["url"].toString())
-                              .toList(),
-                          imageTitles: _covers
-                              .map((map) => map["title"].toString())
-                              .toList(),
-                          bookIds: _covers
-                              .map((map) => map["book_id"].toString())
-                              .toList(),
-                          userIds: _covers
-                              .map((map) => map["user_id"].toString())
-                              .toList(),
+                          posts: _covers,
+                          // imagePaths: _covers
+                          //     .map((map) => map["url"].toString())
+                          //     .toList(),
+                          // imageTitles: _covers
+                          //     .map((map) => map["title"].toString())
+                          //     .toList(),
+                          // bookIds: _covers
+                          //     .map((map) => map["book_id"].toString())
+                          //     .toList(),
+                          // userIds: _covers
+                          //     .map((map) => map["user_id"].toString())
+                          //     .toList(),
                         ),
                       ),
                     ),
@@ -273,18 +274,19 @@ class _ProfileScreenState extends State<ProfileScreen>
                       child: KeepAliveWrapper(
                         key: const ValueKey(2),
                         child: ImageGrid(
-                          imagePaths: _bookmarks
-                              .map((map) => map["url"].toString())
-                              .toList(),
-                          imageTitles: _bookmarks
-                              .map((map) => map["title"].toString())
-                              .toList(),
-                          bookIds: _bookmarks
-                              .map((map) => map["book_id"].toString())
-                              .toList(),
-                          userIds: _bookmarks
-                              .map((map) => map["user_id"].toString())
-                              .toList(),
+                          posts: _bookmarks,
+                          // imagePaths: _bookmarks
+                          //     .map((map) => map["url"].toString())
+                          //     .toList(),
+                          // imageTitles: _bookmarks
+                          //     .map((map) => map["title"].toString())
+                          //     .toList(),
+                          // bookIds: _bookmarks
+                          //     .map((map) => map["book_id"].toString())
+                          //     .toList(),
+                          // userIds: _bookmarks
+                          //     .map((map) => map["user_id"].toString())
+                          //     .toList(),
                         ),
                       ),
                     ),
