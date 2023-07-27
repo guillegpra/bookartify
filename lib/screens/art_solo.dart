@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:bookartify/models/book_search.dart';
 import 'package:bookartify/services/usernames_db.dart';
 import 'package:bookartify/screens/book_screen.dart';
+import 'package:bookartify/screens/profile_screen.dart';
 
 class ArtSoloScreen extends StatelessWidget {
   final String imagePath;
@@ -13,15 +14,28 @@ class ArtSoloScreen extends StatelessWidget {
   final Book book;
   final String userId;
 
-  const ArtSoloScreen(
-      {super.key,
-      required this.imagePath,
-      required this.imageTitle,
-      required this.book,
-      required this.userId});
+  const ArtSoloScreen({
+    Key? key,
+    required this.imagePath,
+    required this.imageTitle,
+    required this.book,
+    required this.userId,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Future<void> _navigateToUserProfile() async {
+      final username = await getUsername(userId);
+      if (username != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProfileScreen(userId: userId),
+          ),
+        );
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey[50],
@@ -30,14 +44,12 @@ class ArtSoloScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(
-                context); // Go back to the previous screen when the back button is pressed
+            Navigator.pop(context);
           },
         ),
         title: Text(
-          imageTitle, // Display the image title in the app bar
+          imageTitle,
           style: GoogleFonts.dmSerifDisplay(
-            // fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -53,7 +65,7 @@ class ArtSoloScreen extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15),
                   child: Image.network(
-                    imagePath, // Display the clicked image
+                    imagePath,
                   ),
                 ),
               ),
@@ -75,7 +87,7 @@ class ArtSoloScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                imageTitle, // Display the image title
+                                imageTitle,
                                 style: GoogleFonts.dmSerifDisplay(
                                     fontSize: 19, fontWeight: FontWeight.w600),
                               ),
@@ -84,16 +96,20 @@ class ArtSoloScreen extends StatelessWidget {
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
-                                    return CircularProgressIndicator(); // Show a loading indicator while fetching the username.
+                                    return CircularProgressIndicator();
                                   } else if (snapshot.hasError) {
                                     return Text('Error: ${snapshot.error}');
                                   } else {
                                     final username = snapshot.data;
-                                    return Text(
-                                      'By ${username ?? 'Unknown Artist'}', // Display the fetched username or 'Unknown Artist' if username is null.
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w300,
+                                    return GestureDetector(
+                                      onTap: _navigateToUserProfile,
+                                      child: Text(
+                                        'By ${username ?? 'Unknown Artist'}',
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w300,
+                                          decoration: TextDecoration.underline,
+                                        ),
                                       ),
                                     );
                                   }
@@ -110,7 +126,6 @@ class ArtSoloScreen extends StatelessWidget {
                               const LikeIcon(),
                               const SizedBox(width: 10),
                               const SaveIcon(),
-                              // const SizedBox(width: 20),
                               ShareButton(
                                 onPressed: () {},
                               ),
@@ -128,14 +143,12 @@ class ArtSoloScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment.spaceEvenly, // Added this line
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          // Navigate to BookScreen with the corresponding bookId
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -169,7 +182,6 @@ class ArtSoloScreen extends StatelessWidget {
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          // Navigate to BookScreen with the corresponding bookId
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -202,7 +214,6 @@ class ArtSoloScreen extends StatelessWidget {
                   ],
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.fromLTRB(15, 0, 10, 0),
                 child: Column(
@@ -227,7 +238,6 @@ class ArtSoloScreen extends StatelessWidget {
                   ],
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: Row(
@@ -238,12 +248,11 @@ class ArtSoloScreen extends StatelessWidget {
                         print("Button pressed!");
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(
-                            255, 192, 162, 73), // background color
-                        foregroundColor: Colors.black, // text color
+                        backgroundColor:
+                            const Color.fromARGB(255, 192, 162, 73),
+                        foregroundColor: Colors.black,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                              5), // button's corner radius
+                          borderRadius: BorderRadius.circular(5),
                         ),
                       ),
                       child: Padding(
@@ -264,10 +273,9 @@ class ArtSoloScreen extends StatelessWidget {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromARGB(255, 47, 47, 47),
-                        foregroundColor: Colors.white, // text color
+                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                              5), // button's corner radius
+                          borderRadius: BorderRadius.circular(5),
                         ),
                       ),
                       child: Padding(
@@ -285,9 +293,7 @@ class ArtSoloScreen extends StatelessWidget {
                   ],
                 ),
               ),
-
               const SizedBox(height: 5),
-              // Replace the ArtGridView() with the relevant widgets to show more works if needed
             ],
           ),
         ),

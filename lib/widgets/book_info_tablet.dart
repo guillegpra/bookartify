@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class BookInfoTablet extends StatefulWidget {
   final Book book;
@@ -17,6 +18,7 @@ class BookInfoTablet extends StatefulWidget {
 
 class _BookInfoTabletState extends State<BookInfoTablet> {
   bool isBookSaved = false;
+  final currentUser = FirebaseAuth.instance.currentUser;
 
   String formatDate(String date) {
     if (date.length == 10) {

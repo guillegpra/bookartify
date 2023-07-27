@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:bookartify/services/database_api.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class BookInfo extends StatefulWidget {
   final Book book;
@@ -17,6 +19,33 @@ class BookInfo extends StatefulWidget {
 
 class _BookInfoState extends State<BookInfo> {
   bool isBookSaved = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkIfBookSaved();
+  }
+
+  void _checkIfBookSaved() async {
+    // Get the current user's ID
+    String currentUserID = FirebaseAuth.instance.currentUser!.uid;
+
+    // Get the book ID
+    String bookID =
+        widget.book.id; // Assuming the Book class has a property 'id'
+
+    // Call the function to check if the user is following the book
+    try {
+      bool isFollowing = await isFollowingBook(currentUserID, bookID);
+
+      setState(() {
+        isBookSaved = isFollowing;
+      });
+    } catch (e) {
+      // Handle any errors that occur during the operation
+      print("Error checking if book is saved: $e");
+    }
+  }
 
   String formatDate(String date) {
     if (date.length == 10) {
@@ -31,10 +60,41 @@ class _BookInfoState extends State<BookInfo> {
     }
   }
 
+  void _toggleSaveBook() async {
+    // Get the current user's ID
+    String currentUserID = FirebaseAuth.instance.currentUser!.uid;
+
+    // Get the book ID
+    String bookID =
+        widget.book.id; // Assuming the Book class has a property 'id'
+
+    try {
+      if (isBookSaved) {
+        // If the book is saved, unfollow it
+        await unfollowBook(currentUserID, bookID);
+        print("Unfollowed book response: Success");
+      } else {
+        // If the book is not saved, follow it
+        await followBook(currentUserID, bookID);
+        print("Followed book response: Success");
+      }
+
+      // Toggle the icon state after successful follow/unfollow
+      setState(() {
+        isBookSaved = !isBookSaved;
+      });
+    } catch (e) {
+      // Handle any errors that occur during the operation
+      print("Error saving/unfollowing book: $e");
+      // Revert the 'isBookSaved' state to its original value if an error occurs
+      setState(() {
+        isBookSaved = !isBookSaved;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    print(
-        "--------------------------------------- ${widget.book.id} ---------------------------------");
     return Container(
       margin: const EdgeInsets.only(bottom: 8.0, top: 8.0),
       child: Row(
@@ -101,11 +161,7 @@ class _BookInfoState extends State<BookInfo> {
                         padding:
                             EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                         child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isBookSaved = !isBookSaved;
-                            });
-                          },
+                          onTap: _toggleSaveBook,
                           child: Icon(
                             isBookSaved ? Icons.check : Icons.add,
                             size: 30,
@@ -173,6 +229,8 @@ class _BookInfoState extends State<BookInfo> {
     );
   }
 }
+
+
 
 
 
