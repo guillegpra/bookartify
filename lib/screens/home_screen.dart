@@ -96,228 +96,271 @@ class _HomeScreenState extends State<HomeScreen> {
                       return Center(child: Text("Error: ${snapshot.error}"));
                     } else {
                       List<dynamic> posts = snapshot.data ?? [];
-                      return RefreshIndicator(
-                        onRefresh: _fetchForYou,
-                        child: ListView.builder(
-                          itemCount: posts.length,
-                          itemBuilder: (context, index) {
-                            if (posts.isEmpty) {
-                              return const Text(
-                                  "No posts yet. Follow books and users on the Explore page.");
-                            } else {
-                              return Card(
-                                color: const Color.fromRGBO(245, 239, 225, 1),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: Image.network(
-                                          posts[index]["url"].toString(),
-                                          loadingBuilder: (BuildContext context,
-                                              Widget child,
-                                              ImageChunkEvent?
-                                                  loadingProgress) {
-                                            if (loadingProgress == null)
-                                              return child;
-                                            return Center(
-                                              child: CircularProgressIndicator(
-                                                value: loadingProgress
-                                                            .expectedTotalBytes !=
-                                                        null
-                                                    ? loadingProgress
-                                                            .cumulativeBytesLoaded /
-                                                        loadingProgress
-                                                            .expectedTotalBytes!
-                                                    : null,
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 8.0, horizontal: 10.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          Expanded(
-                                            child: Text(
-                                              posts[index]["title"].toString(),
-                                              style: GoogleFonts.dmSerifDisplay(
-                                                  fontSize: 18),
+                      return FutureBuilder(
+                        future: _fetchUsernamesForYou(posts),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else if (snapshot.hasError) {
+                            return Center(
+                                child: Text("Error: ${snapshot.error}"));
+                          } else {
+                            List<String> usernames = snapshot.data ?? [];
+                            return FutureBuilder(
+                              future: _fetchBooksForYou(posts),
+                              builder: (context, snapshot) {
+                                List<Book> books = snapshot.data ?? [];
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                } else if (snapshot.hasError) {
+                                  return Center(
+                                    child: Text("Error: ${snapshot.error}"),
+                                  );
+                                } else {
+                                  return RefreshIndicator(
+                                    onRefresh: _fetchForYou,
+                                    child: ListView.builder(
+                                      itemCount: posts.length,
+                                      itemBuilder: (context, index) {
+                                        if (posts.isEmpty) {
+                                          return const Text(
+                                              "No posts yet. Follow books and users on the Explore page.");
+                                        } else {
+                                          return Card(
+                                            color: const Color.fromRGBO(
+                                                245, 239, 225, 1),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
                                             ),
-                                          ),
-                                          const SizedBox(width: 8.0),
-                                          LikeIcon(
-                                            type:
-                                                posts[index]["type"].toString(),
-                                            id: posts[index]["id"].toString(),
-                                          ),
-                                          const SizedBox(width: 8.0),
-                                          const SaveIcon(),
-                                          const SizedBox(width: 8.0),
-                                          ShareButton(
-                                            onPressed: () {
-                                              // TODO: share functionality
-                                            },
-                                          ),
-                                        ],
-                                      ),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ArtSoloScreen(
+                                                          type: posts[index]
+                                                                  ["type"]
+                                                              .toString(),
+                                                          post: posts[
+                                                              index], // Pass the appropriate post data
+                                                          book: books[
+                                                              index], // Pass the appropriate book data (if available)
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      child: Image.network(
+                                                        posts[index]["url"]
+                                                            .toString(),
+                                                        loadingBuilder:
+                                                            (BuildContext
+                                                                    context,
+                                                                Widget child,
+                                                                ImageChunkEvent?
+                                                                    loadingProgress) {
+                                                          if (loadingProgress ==
+                                                              null)
+                                                            return child;
+                                                          return Center(
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                              value: loadingProgress
+                                                                          .expectedTotalBytes !=
+                                                                      null
+                                                                  ? loadingProgress
+                                                                          .cumulativeBytesLoaded /
+                                                                      loadingProgress
+                                                                          .expectedTotalBytes!
+                                                                  : null,
+                                                            ),
+                                                          );
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      vertical: 8.0,
+                                                      horizontal: 10.0),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      Expanded(
+                                                        child: Text(
+                                                          posts[index]["title"]
+                                                              .toString(),
+                                                          style: GoogleFonts
+                                                              .dmSerifDisplay(
+                                                                  fontSize: 18),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                          width: 8.0),
+                                                      LikeIcon(
+                                                        type: posts[index]
+                                                                ["type"]
+                                                            .toString(),
+                                                        id: posts[index]["id"]
+                                                            .toString(),
+                                                      ),
+                                                      const SizedBox(
+                                                          width: 8.0),
+                                                      const SaveIcon(),
+                                                      const SizedBox(
+                                                          width: 8.0),
+                                                      ShareButton(
+                                                        onPressed: () {
+                                                          // TODO: share functionality
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          10.0, 1.0, 10.0, 1.0),
+                                                  child: RichText(
+                                                    text: TextSpan(
+                                                      children: [
+                                                        TextSpan(
+                                                          text: 'By ',
+                                                          style: GoogleFonts
+                                                              .poppins(
+                                                            fontSize: 15,
+                                                            color: Colors.grey,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                        ),
+                                                        TextSpan(
+                                                          text: usernames
+                                                                  .isNotEmpty
+                                                              ? usernames[index]
+                                                              : "",
+                                                          style: GoogleFonts
+                                                              .poppins(
+                                                            fontSize: 15,
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            decoration:
+                                                                TextDecoration
+                                                                    .underline,
+                                                          ),
+                                                          // Add the onTap callback here
+                                                          recognizer:
+                                                              TapGestureRecognizer()
+                                                                ..onTap =
+                                                                    () async {
+                                                                  Navigator
+                                                                      .push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                      builder:
+                                                                          (context) =>
+                                                                              ProfileScreen(
+                                                                        userId:
+                                                                            posts[index]["user_id"].toString(),
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                  // TODO
+                                                                },
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          10.0,
+                                                          1.0,
+                                                          10.0,
+                                                          10.0),
+                                                  child: RichText(
+                                                    text: TextSpan(
+                                                      children: [
+                                                        TextSpan(
+                                                          text: 'For ',
+                                                          style: GoogleFonts
+                                                              .poppins(
+                                                            fontSize: 15,
+                                                            color: Colors.grey,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                        ),
+                                                        TextSpan(
+                                                          text: books[index]
+                                                              .title,
+                                                          style: GoogleFonts
+                                                              .poppins(
+                                                            fontSize: 15,
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            decoration:
+                                                                TextDecoration
+                                                                    .underline,
+                                                          ),
+                                                          // Add the onTap callback here
+                                                          recognizer:
+                                                              TapGestureRecognizer()
+                                                                ..onTap = () {
+                                                                  Navigator
+                                                                      .push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                      builder:
+                                                                          (context) =>
+                                                                              BookScreen(
+                                                                        book: books[
+                                                                            index],
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        }
+                                      },
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          10.0, 1.0, 10.0, 1.0),
-                                      child: FutureBuilder<List<String>>(
-                                        future: _fetchUsernamesForYou(posts),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.connectionState ==
-                                              ConnectionState.waiting) {
-                                            return const CircularProgressIndicator();
-                                          } else if (snapshot.hasError) {
-                                            return Text(
-                                                "Error: ${snapshot.error}");
-                                          } else {
-                                            List<String> usernames =
-                                                snapshot.data ?? [];
-                                            String username =
-                                                usernames.isNotEmpty
-                                                    ? usernames[index]
-                                                    : "";
-                                            return RichText(
-                                              text: TextSpan(
-                                                children: [
-                                                  TextSpan(
-                                                    text: 'By ',
-                                                    style: GoogleFonts.poppins(
-                                                      fontSize: 15,
-                                                      color: Colors.grey,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                  TextSpan(
-                                                    text: username,
-                                                    style: GoogleFonts.poppins(
-                                                      fontSize: 15,
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      decoration: TextDecoration
-                                                          .underline,
-                                                    ),
-                                                    // Add the onTap callback here
-                                                    recognizer:
-                                                        TapGestureRecognizer()
-                                                          ..onTap = () async {
-                                                            Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        ProfileScreen(
-                                                                  userId: posts[
-                                                                              index]
-                                                                          [
-                                                                          "user_id"]
-                                                                      .toString(),
-                                                                ),
-                                                              ),
-                                                            );
-                                                            // TODO
-                                                          },
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          }
-                                        },
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          10.0, 1.0, 10.0, 10.0),
-                                      child: FutureBuilder<List<Book>>(
-                                        future: _fetchBooksForYou(posts),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.connectionState ==
-                                              ConnectionState.waiting) {
-                                            return const CircularProgressIndicator();
-                                          } else if (snapshot.hasError) {
-                                            return Text(
-                                                "Error: ${snapshot.error}");
-                                          } else {
-                                            List<Book> books =
-                                                snapshot.data ?? [];
-                                            Book book = books.isNotEmpty
-                                                ? books[index]
-                                                : Book(
-                                                    id: "",
-                                                    title: "No Title",
-                                                    author: "No Author",
-                                                    thumbnailUrl: "",
-                                                    publishedDate: "",
-                                                    pageCount: 0,
-                                                    description: "",
-                                                  );
-                                            return RichText(
-                                              text: TextSpan(
-                                                children: [
-                                                  TextSpan(
-                                                    text: 'For ',
-                                                    style: GoogleFonts.poppins(
-                                                      fontSize: 15,
-                                                      color: Colors.grey,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                  TextSpan(
-                                                    text: book.title,
-                                                    style: GoogleFonts.poppins(
-                                                      fontSize: 15,
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      decoration: TextDecoration
-                                                          .underline,
-                                                    ),
-                                                    // Add the onTap callback here
-                                                    recognizer:
-                                                        TapGestureRecognizer()
-                                                          ..onTap = () {
-                                                            Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        BookScreen(
-                                                                  book: book,
-                                                                ),
-                                                              ),
-                                                            );
-                                                          },
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          }
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }
-                          },
-                        ),
+                                  );
+                                }
+                              },
+                            );
+                          }
+                        },
                       );
                     }
                   },
