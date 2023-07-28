@@ -1,9 +1,11 @@
 import 'package:bookartify/screens/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../scan_feature.dart';
 
 class InactiveSearchBar extends StatelessWidget implements PreferredSizeWidget {
   final TextEditingController _controller = TextEditingController(text: "");
+  InactiveSearchBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +48,18 @@ class InactiveSearchBar extends StatelessWidget implements PreferredSizeWidget {
             bottom: 0,
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onTap: () {
-                print("QR Code button pressed.");
+              onTap: () async {
+                final BuildContext originalContext = context;  // stores context in local variable
+                final barcode = await scanBarcode();
+                if (barcode == '-1') {
+                  return;
+                } else {
+                  Navigator.of(originalContext).push(
+                    MaterialPageRoute(
+                      builder: (context) => SearchScreen(searchQuery: barcode),
+                    ),
+                  );
+                }
               },
               child: const Padding(
                 padding: EdgeInsets.all(12.0),
@@ -64,8 +76,6 @@ class InactiveSearchBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
-
-
 
 
 
