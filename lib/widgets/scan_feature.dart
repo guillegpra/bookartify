@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 
 Future<String> scanBarcode() async {
   String barcodeScanRes;
-  // Platform messages may fail, so we use a try/catch PlatformException.
   try {
     barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
         "#ff6666", "Cancel", true, ScanMode.BARCODE);
