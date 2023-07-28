@@ -23,35 +23,27 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   User? currentUser;
   final _googleBooksAPI = GoogleBooksApi();
-  List<dynamic> _forYou = [];
-  List<Book> _books = [];
-  List<String> _usernames = [];
+  late Future<List<dynamic>> forYouPosts;
 
   @override
   void initState() {
     super.initState();
     currentUser = FirebaseAuth.instance.currentUser;
-    _fetchForYou();
-    _fetchBooksForYou();
-    _fetchUsernamesForYou();
+    forYouPosts = _fetchForYou();
   }
 
-  Future<void> _fetchForYou() async {
+  Future<List<dynamic>> _fetchForYou() async {
     if (currentUser != null) {
-      List<dynamic> fetchedForYou = await getForYouByUser(currentUser!.uid);
-      setState(() {
-        _forYou = fetchedForYou;
-      });
-
-      await _fetchBooksForYou();
-      await _fetchUsernamesForYou();
+      return await getForYouByUser(currentUser!.uid);
+    } else {
+      return [];
     }
   }
 
-  Future<void> _fetchBooksForYou() async {
+  Future<List<Book>> _fetchBooksForYou(List<dynamic> forYouData) async {
     List<Book> books = [];
 
-    for (var item in _forYou) {
+    for (var item in forYouData) {
       String bookId = item["book_id"].toString();
       Book? book = await _googleBooksAPI.getBookFromId(bookId);
       if (book != null) {
@@ -59,15 +51,13 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
 
-    setState(() {
-      _books = books;
-    });
+    return books;
   }
 
-  Future<void> _fetchUsernamesForYou() async {
+  Future<List<String>> _fetchUsernamesForYou(List<dynamic> forYouData) async {
     List<String> usernames = [];
 
-    for (var item in _forYou) {
+    for (var item in forYouData) {
       String userId = item["user_id"].toString();
       String? username = await getUsername(userId);
       if (username != null) {
@@ -75,14 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
 
-    setState(() {
-      _usernames = usernames;
-    });
-  }
-
-  Future<void> _reloadData() async {
-    // Fetch the data again and update the state
-    await _fetchForYou();
+    return usernames;
   }
 
   @override
@@ -96,166 +79,226 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: RefreshIndicator(
-                onRefresh: _reloadData,
-                child: ListView.builder(
-                    itemCount: _forYou.length,
-                    itemBuilder: (context, index) {
-                      if (_forYou.isEmpty) {
-                        return const Text(
-                            "No posts yet. Follow books and users on the Explore page.");
-                      } else {
-                        return Card(
-                          color: const Color.fromRGBO(245, 239, 225, 1),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.network(
-                                    _forYou[index]["url"].toString(),
-                                    loadingBuilder: (BuildContext context,
-                                        Widget child,
-                                        ImageChunkEvent? loadingProgress) {
-                                      if (loadingProgress == null) return child;
-                                      return Center(
-                                        child: CircularProgressIndicator(
-                                          value: loadingProgress
-                                                      .expectedTotalBytes !=
-                                                  null
-                                              ? loadingProgress
-                                                      .cumulativeBytesLoaded /
-                                                  loadingProgress
-                                                      .expectedTotalBytes!
-                                              : null,
-                                        ),
-                                      );
-                                    },
-                                  ),
+                onRefresh: () {
+                  setState(() {});
+                  return _fetchForYou();
+                },
+                child: FutureBuilder<List<dynamic>>(
+                  future: _fetchForYou(),
+                  // future: forYouPosts,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text("Error: ${snapshot.error}"));
+                    } else {
+                      List<dynamic> posts = snapshot.data ?? [];
+                      return RefreshIndicator(
+                        onRefresh: _fetchForYou,
+                        child: ListView.builder(
+                          itemCount: posts.length,
+                          itemBuilder: (context, index) {
+                            if (posts.isEmpty) {
+                              return const Text(
+                                  "No posts yet. Follow books and users on the Explore page.");
+                            } else {
+                              return Card(
+                                color: const Color.fromRGBO(245, 239, 225, 1),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 8.0, horizontal: 10.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Expanded(
-                                      child: Text(
-                                        _forYou[index]["title"].toString(),
-                                        style: GoogleFonts.dmSerifDisplay(
-                                            fontSize: 18),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Image.network(
+                                          posts[index]["url"].toString(),
+                                          loadingBuilder: (BuildContext context,
+                                              Widget child,
+                                              ImageChunkEvent? loadingProgress) {
+                                            if (loadingProgress == null) return child;
+                                            return Center(
+                                              child: CircularProgressIndicator(
+                                                value: loadingProgress
+                                                    .expectedTotalBytes !=
+                                                    null
+                                                    ? loadingProgress
+                                                    .cumulativeBytesLoaded /
+                                                    loadingProgress
+                                                        .expectedTotalBytes!
+                                                    : null,
+                                              ),
+                                            );
+                                          },
+                                        ),
                                       ),
                                     ),
-                                    const SizedBox(width: 8.0),
-                                    const LikeIcon(),
-                                    const SizedBox(width: 8.0),
-                                    const SaveIcon(),
-                                    const SizedBox(width: 8.0),
-                                    ShareButton(
-                                      onPressed: () {
-                                        // TODO: share functionality
-                                      },
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8.0, horizontal: 10.0),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              posts[index]["title"].toString(),
+                                              style: GoogleFonts.dmSerifDisplay(
+                                                  fontSize: 18),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 8.0),
+                                          const LikeIcon(),
+                                          const SizedBox(width: 8.0),
+                                          const SaveIcon(),
+                                          const SizedBox(width: 8.0),
+                                          ShareButton(
+                                            onPressed: () {
+                                              // TODO: share functionality
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          10.0, 1.0, 10.0, 1.0),
+                                      child: FutureBuilder<List<String>>(
+                                        future: _fetchUsernamesForYou(posts),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return const CircularProgressIndicator();
+                                          } else if (snapshot.hasError) {
+                                            return Text(
+                                                "Error: ${snapshot.error}");
+                                          } else {
+                                            List<String> usernames =
+                                                snapshot.data ?? [];
+                                            String username =
+                                            usernames.isNotEmpty
+                                                ? usernames[index]
+                                                : "";
+                                            return RichText(
+                                              text: TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                    text: 'By ',
+                                                    style: GoogleFonts.poppins(
+                                                      fontSize: 15,
+                                                      color: Colors.grey,
+                                                      fontWeight: FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                  TextSpan(
+                                                    text: username,
+                                                    style: GoogleFonts.poppins(
+                                                      fontSize: 15,
+                                                      color: Colors.black,
+                                                      fontWeight: FontWeight.w500,
+                                                      decoration: TextDecoration.underline,
+                                                    ),
+                                                    // Add the onTap callback here
+                                                    recognizer: TapGestureRecognizer()
+                                                      ..onTap = () async {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ProfileScreen(
+                                                                  userId: posts[index]
+                                                                  ["user_id"]
+                                                                      .toString(),
+                                                                ),
+                                                          ),
+                                                        );
+                                                        // TODO
+                                                      },
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          10.0, 1.0, 10.0, 10.0),
+                                      child: FutureBuilder<List<Book>>(
+                                        future: _fetchBooksForYou(posts),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return const CircularProgressIndicator();
+                                          } else if (snapshot.hasError) {
+                                            return Text(
+                                                "Error: ${snapshot.error}");
+                                          } else {
+                                            List<Book> books = snapshot.data ?? [];
+                                            Book book = books.isNotEmpty
+                                                ? books[index]
+                                                : Book(
+                                              id: "",
+                                              title: "No Title",
+                                              author: "No Author",
+                                              thumbnailUrl: "",
+                                              publishedDate: "",
+                                              pageCount: 0,
+                                              description: "",
+                                            );
+                                            return RichText(
+                                              text: TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                    text: 'For ',
+                                                    style: GoogleFonts.poppins(
+                                                      fontSize: 15,
+                                                      color: Colors.grey,
+                                                      fontWeight: FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                  TextSpan(
+                                                    text: book.title,
+                                                    style: GoogleFonts.poppins(
+                                                      fontSize: 15,
+                                                      color: Colors.black,
+                                                      fontWeight: FontWeight.w500,
+                                                      decoration: TextDecoration.underline,
+                                                    ),
+                                                    // Add the onTap callback here
+                                                    recognizer: TapGestureRecognizer()
+                                                      ..onTap = () {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                BookScreen(
+                                                                  book: book,
+                                                                ),
+                                                          ),
+                                                        );
+                                                      },
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      ),
                                     ),
                                   ],
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(
-                                    10.0, 1.0, 10.0, 1.0),
-                                child: RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: 'By ',
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 15,
-                                          color: Colors.grey,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: _usernames.isNotEmpty
-                                            ? _usernames[index]
-                                            : "",
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 15,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
-                                          decoration: TextDecoration.underline,
-                                        ),
-                                        // Add the onTap callback here
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = () async {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ProfileScreen(
-                                                  userId: _forYou[index]
-                                                          ["user_id"]
-                                                      .toString(),
-                                                ),
-                                              ),
-                                            );
-                                            // TODO
-                                          },
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(
-                                    10.0, 1.0, 10.0, 10.0),
-                                child: RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: 'For ',
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 15,
-                                          color: Colors.grey,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: _books.isNotEmpty
-                                            ? _books[index].title
-                                            : "",
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 15,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
-                                          decoration: TextDecoration.underline,
-                                        ),
-                                        // Add the onTap callback here
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    BookScreen(
-                                                  book: _books[index],
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                    }),
+                              );
+                            }
+                          },
+                        ),
+                      );
+                    }
+                  },
+                ),
               ),
             ),
           ),
