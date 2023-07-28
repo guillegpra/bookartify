@@ -230,6 +230,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       child: KeepAliveWrapper(
                         key: const ValueKey(0),
                         child: ImageGrid(
+                          types: List.filled(_bookart.length, "art"),
                           posts: _bookart,
                           // imagePaths: _bookart
                           //     .map((map) => map["url"].toString())
@@ -252,6 +253,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       child: KeepAliveWrapper(
                         key: const ValueKey(1),
                         child: ImageGrid(
+                          types: List.filled(_covers.length, "cover"),
                           posts: _covers,
                           // imagePaths: _covers
                           //     .map((map) => map["url"].toString())
@@ -274,6 +276,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       child: KeepAliveWrapper(
                         key: const ValueKey(2),
                         child: ImageGrid(
+                          types: _bookmarks.map((e) => e["type"].toString()).toList(),
                           posts: _bookmarks,
                           // imagePaths: _bookmarks
                           //     .map((map) => map["url"].toString())

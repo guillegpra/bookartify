@@ -150,7 +150,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                           ),
                                           const SizedBox(width: 8.0),
-                                          const LikeIcon(),
+                                          LikeIcon(
+                                            type: posts[index]["type"].toString(),
+                                            id: posts[index]["id"].toString(),
+                                          ),
                                           const SizedBox(width: 8.0),
                                           const SaveIcon(),
                                           const SizedBox(width: 8.0),

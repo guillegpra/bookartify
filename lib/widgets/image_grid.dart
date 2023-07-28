@@ -3,6 +3,7 @@ import 'package:bookartify/is_tablet.dart';
 import 'package:bookartify/widgets/post_widget.dart';
 
 class ImageGrid extends StatelessWidget {
+  final List<String> types;
   final List<dynamic> posts;
   // final List<String> _imagePaths;
   // final List<String> _imageTitles;
@@ -20,7 +21,7 @@ class ImageGrid extends StatelessWidget {
   //       _bookIds = bookIds,
   //       _userIds = userIds,
   //       super(key: key);
-  const ImageGrid({Key? key, required this.posts}) : super(key: key);
+  const ImageGrid({Key? key, required this.types, required this.posts}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +40,7 @@ class ImageGrid extends StatelessWidget {
           // title: _imageTitles[index],
           // bookId: _bookIds[index],
           // userId: _userIds[index],
+          type: types[index],
           post: posts[index],
         );
       },

@@ -15,6 +15,7 @@ class ArtSoloScreen extends StatelessWidget {
   // final String imageTitle;
   // final Book book;
   // final String userId;
+  final String type;
   final dynamic post;
   final Book book;
 
@@ -24,6 +25,7 @@ class ArtSoloScreen extends StatelessWidget {
     // required this.imageTitle,
     // required this.book,
     // required this.userId,
+    required this.type,
     required this.post,
     required this.book,
   }) : super(key: key);
@@ -36,7 +38,7 @@ class ArtSoloScreen extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProfileScreen(userId: post["user_id"]),
+            builder: (context) => ProfileScreen(userId: post["user_id"].toString()),
           ),
         );
       }
@@ -54,7 +56,7 @@ class ArtSoloScreen extends StatelessWidget {
           },
         ),
         title: Text(
-          post["title"],
+          post["title"].toString(),
           style: GoogleFonts.dmSerifDisplay(
             fontWeight: FontWeight.bold,
           ),
@@ -71,7 +73,7 @@ class ArtSoloScreen extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15),
                   child: Image.network(
-                    post["url"],
+                    post["url"].toString(),
                   ),
                 ),
               ),
@@ -93,13 +95,13 @@ class ArtSoloScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                post["title"],
+                                post["title"].toString(),
                                 style: GoogleFonts.dmSerifDisplay(
                                     fontSize: 19, fontWeight: FontWeight.w600),
                               ),
                               FutureBuilder<String?>(
                                 future: getUsername(
-                                  post["user_id"],
+                                  post["user_id"].toString(),
                                 ),
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
@@ -131,7 +133,10 @@ class ArtSoloScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              const LikeIcon(),
+                              LikeIcon(
+                                type: type,
+                                id: post["id"].toString(),
+                              ),
                               const SizedBox(width: 10),
                               const SaveIcon(),
                               ShareButton(

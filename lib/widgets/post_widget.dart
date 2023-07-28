@@ -10,6 +10,7 @@ class PostWidget extends StatelessWidget {
   // final String title;
   // final String bookId;
   // final String userId;
+  final String type;
   final dynamic post;
 
   // const PostWidget(
@@ -21,7 +22,7 @@ class PostWidget extends StatelessWidget {
   //     required this.userId})
   //     : super(key: key);
 
-  const PostWidget({Key? key, required this.post}) : super(key: key);
+  const PostWidget({Key? key, required this.type, required this.post}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +44,7 @@ class PostWidget extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ArtSoloScreen(
-                    // imagePath: post["url"],
-                    // imageTitle: post["title"],
-                    // book: book,
-                    // userId: post["user_id"],
+                    type: type,
                     post: post,
                     book: book,
                   ),
@@ -72,7 +70,7 @@ class PostWidget extends StatelessWidget {
                       child: AspectRatio(
                         aspectRatio: 1.0,
                         child: Image.network(
-                          post["url"],
+                          post["url"].toString(),
                           fit: BoxFit.cover,
                           loadingBuilder: (BuildContext context, Widget child,
                               ImageChunkEvent? loadingProgress) {
@@ -92,7 +90,7 @@ class PostWidget extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      post["title"],
+                      post["title"].toString(),
                       style: GoogleFonts.dmSerifDisplay(
                           fontSize: !isTablet(context) ? 16 : 20,
                           fontWeight: FontWeight.bold),
