@@ -43,10 +43,13 @@ class PostWidget extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ArtSoloScreen(
-                      imagePath: post["url"],
-                      imageTitle: post["title"],
-                      book: book,
-                      userId: post["user_id"]),
+                    // imagePath: post["url"],
+                    // imageTitle: post["title"],
+                    // book: book,
+                    // userId: post["user_id"],
+                    post: post,
+                    book: book,
+                  ),
                 ),
               );
             },

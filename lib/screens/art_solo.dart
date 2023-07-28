@@ -11,28 +11,32 @@ import 'package:bookartify/services/database_api.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ArtSoloScreen extends StatelessWidget {
-  final String imagePath;
-  final String imageTitle;
+  // final String imagePath;
+  // final String imageTitle;
+  // final Book book;
+  // final String userId;
+  final dynamic post;
   final Book book;
-  final String userId;
 
   const ArtSoloScreen({
     Key? key,
-    required this.imagePath,
-    required this.imageTitle,
+    // required this.imagePath,
+    // required this.imageTitle,
+    // required this.book,
+    // required this.userId,
+    required this.post,
     required this.book,
-    required this.userId,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Future<void> _navigateToUserProfile() async {
-      final username = await getUsername(userId);
+      final username = await getUsername(post["user_id"]);
       if (username != null) {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProfileScreen(userId: userId),
+            builder: (context) => ProfileScreen(userId: post["user_id"]),
           ),
         );
       }
@@ -50,7 +54,7 @@ class ArtSoloScreen extends StatelessWidget {
           },
         ),
         title: Text(
-          imageTitle,
+          post["title"],
           style: GoogleFonts.dmSerifDisplay(
             fontWeight: FontWeight.bold,
           ),
@@ -67,7 +71,7 @@ class ArtSoloScreen extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15),
                   child: Image.network(
-                    imagePath,
+                    post["url"],
                   ),
                 ),
               ),
@@ -89,12 +93,14 @@ class ArtSoloScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                imageTitle,
+                                post["title"],
                                 style: GoogleFonts.dmSerifDisplay(
                                     fontSize: 19, fontWeight: FontWeight.w600),
                               ),
                               FutureBuilder<String?>(
-                                future: getUsername(userId),
+                                future: getUsername(
+                                  post["user_id"],
+                                ),
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
@@ -230,7 +236,7 @@ class ArtSoloScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk",
+                      post["description"] ?? "No description added.",
                       style: GoogleFonts.poppins(
                         fontSize: 18,
                         fontWeight: FontWeight.w300,
