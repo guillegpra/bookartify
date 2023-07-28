@@ -136,6 +136,7 @@ class _BookScreenState extends State<BookScreen> {
                                     child: Text("No art for this book yet"));
                               } else {
                                 return ImageGrid(
+                                  types: List.filled(artworkData.length, "art"),
                                   posts: artworkData,
                                   // imagePaths: artworkData
                                   //     .map((artwork) =>
@@ -180,6 +181,7 @@ class _BookScreenState extends State<BookScreen> {
                                     child: Text("No covers for this book yet"));
                               } else {
                                 return ImageGrid(
+                                  types: List.filled(coversData.length, "cover"),
                                   posts: coversData,
                                   // imagePaths: coversData
                                   //     .map((cover) => cover["url"].toString())

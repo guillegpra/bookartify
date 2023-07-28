@@ -317,6 +317,30 @@ Future<void> unlikeCover(String userId, String coverId) async {
   }
 }
 
+Future<bool> isLikedArt(String userId, String artId) async {
+  final http.Response response = await http.get(Uri.parse(
+      "$baseUrl/check_like/art?user_id=$userId&art_id=$artId"));
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    return data["isLiked"];
+  } else {
+    throw Exception("Failed to check like status");
+  }
+}
+
+Future<bool> isLikedCover(String userId, String coverId) async {
+  final http.Response response = await http.get(Uri.parse(
+      "$baseUrl/check_like/cover?user_id=$userId&art_id=$coverId"));
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    return data["isLiked"];
+  } else {
+    throw Exception("Failed to check like status");
+  }
+}
+
 /* ------------------ Bookmarks ------------------ */
 Future<void> bookmarkArt(String userId, String artId) async {
   final url = Uri.parse("$baseUrl/bookmark_art");

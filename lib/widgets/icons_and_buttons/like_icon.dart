@@ -2,10 +2,12 @@
 import 'package:flutter/material.dart';
 
 class LikeIcon extends StatefulWidget {
-  const LikeIcon({Key? key}) : super(key: key);
+  final String type;
+  final String id;
+  const LikeIcon({Key? key, required this.type, required this.id}) : super(key: key);
 
   @override
-  _LikeIconState createState() => _LikeIconState();
+  State<LikeIcon> createState() => _LikeIconState();
 }
 
 class _LikeIconState extends State<LikeIcon> {
