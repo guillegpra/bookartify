@@ -8,7 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({Key? key}) : super(key: key);
+  final String? searchQuery;
+
+  const SearchScreen({Key? key, this.searchQuery}) : super(key: key);
 
   @override
   _SearchScreenState createState() => _SearchScreenState();
@@ -23,6 +25,12 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
+    // callback function called after the widget is fully built.
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      if (widget.searchQuery != null) {
+        _searchSubject.add(widget.searchQuery!);
+      }
+    });
     _searchSubject.stream.listen((value) {
       if (_debounce?.isActive ?? false) _debounce?.cancel();
       _debounce = Timer(const Duration(milliseconds: 500), () {
