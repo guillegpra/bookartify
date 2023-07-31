@@ -109,8 +109,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                 placeholder:
                                                     'images/search_placeholder_image.jpg',
                                                 image: book.thumbnailUrl,
-                                                width:
-                                                    90, // you can change width and height as you need
+                                                width: 90,
                                                 height: 120,
                                                 fit: BoxFit.cover,
                                                 imageErrorBuilder: (BuildContext

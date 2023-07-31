@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:bookartify/models/book_search.dart';
 import 'package:bookartify/widgets/upload_book_selection.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:io';

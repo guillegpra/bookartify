@@ -10,7 +10,7 @@ class UploadScreen extends StatefulWidget {
 }
 
 class _UploadScreenState extends State<UploadScreen> {
-  String selectedOption = 'art'; // initially selected option
+  String selectedOption = 'art';
 
   final ButtonStyle customButtonStyle = ButtonStyle(
     backgroundColor:

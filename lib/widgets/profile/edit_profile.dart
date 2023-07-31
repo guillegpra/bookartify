@@ -34,7 +34,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void initState() {
     super.initState();
     _fetchCurrentBio();
-    _fetchCurrentUsername(); // Fetch the current username
+    _fetchCurrentUsername();
     _fetchCurrentProfilePic(); // Fetch the current profile pic
     _fetchCurrentGoodreadsUrl(); // Fetch the current Goodreads URL
   }
