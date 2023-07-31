@@ -11,20 +11,12 @@ import 'package:bookartify/services/database_api.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ArtSoloScreen extends StatelessWidget {
-  // final String imagePath;
-  // final String imageTitle;
-  // final Book book;
-  // final String userId;
   final String type;
   final dynamic post;
   final Book book;
 
   const ArtSoloScreen({
     Key? key,
-    // required this.imagePath,
-    // required this.imageTitle,
-    // required this.book,
-    // required this.userId,
     required this.type,
     required this.post,
     required this.book,
@@ -64,7 +56,7 @@ class ArtSoloScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -78,14 +70,14 @@ class ArtSoloScreen extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 2.0),
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(42),
                     color: const Color.fromARGB(70, 192, 162, 73),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(25, 8, 25, 8),
+                    padding: const EdgeInsets.fromLTRB(25, 10, 25, 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -106,7 +98,7 @@ class ArtSoloScreen extends StatelessWidget {
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
-                                    return CircularProgressIndicator();
+                                    return const CircularProgressIndicator();
                                   } else if (snapshot.hasError) {
                                     return Text('Error: ${snapshot.error}');
                                   } else {
@@ -157,7 +149,7 @@ class ArtSoloScreen extends StatelessWidget {
                 height: 5,
               ),
               Padding(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -194,7 +186,7 @@ class ArtSoloScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(width: 20),
+                    const SizedBox(width: 20),
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
@@ -231,22 +223,22 @@ class ArtSoloScreen extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(15, 0, 10, 0),
+                padding: const EdgeInsets.fromLTRB(0, 10, 10, 5),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
                       "Description",
-                      style: GoogleFonts.poppins(
-                        fontSize: 18,
+                      style: GoogleFonts.dmSerifDisplay(
+                        fontSize: 19,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 2.5),
                     Text(
                       post["description"] ?? "No description added.",
                       style: GoogleFonts.poppins(
-                        fontSize: 18,
+                        fontSize: 16,
                         fontWeight: FontWeight.w300,
                         color: Colors.grey,
                       ),
@@ -255,7 +247,7 @@ class ArtSoloScreen extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -268,7 +260,7 @@ class ArtSoloScreen extends StatelessWidget {
                             const Color.fromARGB(255, 192, 162, 73),
                         foregroundColor: Colors.black,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(12.5),
                         ),
                       ),
                       child: Padding(
@@ -285,13 +277,14 @@ class ArtSoloScreen extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () {
+                        // TODO: connect to AR
                         print("Button pressed!");
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromARGB(255, 47, 47, 47),
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(12.5),
                         ),
                       ),
                       child: Padding(
