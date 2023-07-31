@@ -16,7 +16,7 @@ Future<void> addUser(String userId) async {
   };
 
   final http.Response response =
-    await http.post(url, headers: headers, body: body);
+      await http.post(url, headers: headers, body: body);
 
   if (response.statusCode == 201) {
     print("User created successfully");
@@ -248,7 +248,7 @@ Future<int> getFollowingCountByUser(String userId) async {
   }
 }
 
-Future<List<String>> getFollowingArtistsByUser(String userId) async {
+Future<List<dynamic>> getFollowingArtistsByUser(String userId) async {
   final Uri url = Uri.parse("$baseUrl/user/$userId/following_users");
 
   try {
@@ -256,8 +256,11 @@ Future<List<String>> getFollowingArtistsByUser(String userId) async {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      List<String> followingIds = List<String>.from(data);
-      return followingIds;
+      // List<String> followingIds = List<String>.from(data);
+      print("Following artists response body: ${response.body}");
+      // print("Following artists: $followingIds");
+      // return followingIds;
+      return data as List<dynamic>;
     } else {
       throw Exception("Failed to get following artists");
     }
@@ -266,7 +269,7 @@ Future<List<String>> getFollowingArtistsByUser(String userId) async {
   }
 }
 
-Future<List<String>> getFollowingBooksByUser(String userId) async {
+Future<List<dynamic>> getFollowingBooksByUser(String userId) async {
   final Uri url = Uri.parse("$baseUrl/user/$userId/following_books");
 
   try {
@@ -274,8 +277,12 @@ Future<List<String>> getFollowingBooksByUser(String userId) async {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      List<String> followingIds = List<String>.from(data);
-      return followingIds;
+      // List<String> followingIds = List<String>.from(data);
+      print("Following books response body: ${response.body}");
+      // print("Following books: $followingIds");
+
+      // return followingIds;
+      return data as List<dynamic>;
     } else {
       throw Exception("Failed to get following books");
     }
@@ -484,8 +491,8 @@ Future<List<dynamic>> getBookmarksByUser(String userId) async {
 }
 
 Future<bool> isBookmarkedArt(String userId, String artId) async {
-  final http.Response response = await http.get(Uri.parse(
-      "$baseUrl/check_bookmark/art?user_id=$userId&art_id=$artId"));
+  final http.Response response = await http.get(
+      Uri.parse("$baseUrl/check_bookmark/art?user_id=$userId&art_id=$artId"));
 
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);
