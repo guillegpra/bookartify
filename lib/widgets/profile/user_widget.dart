@@ -121,7 +121,9 @@ class _UserWidgetState extends State<UserWidget> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => FollowingListScreen(),
+        builder: (context) => FollowingListScreen(
+          userId: widget.userId, // Pass the userId here
+        ),
       ),
     );
   }
