@@ -206,9 +206,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 10, // Adjust the right position as per your requirement
                                                             child: Container(
                                                               width:
-                                                                  40, // Adjust the width of the white square as per your requirement
+                                                                  35, // Adjust the width of the white square as per your requirement
                                                               height:
-                                                                  40, // Adjust the height of the white square as per your requirement
+                                                                  35, // Adjust the height of the white square as per your requirement
                                                               decoration:
                                                                   BoxDecoration(
                                                                 color: Colors
@@ -221,12 +221,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                             10), // Adjust the border radius for curved corners
                                                               ),
                                                               child:
-                                                                  Image.asset(
-                                                                'images/augmented-reality.png',
-                                                                width:
-                                                                    30, // Adjust the width of the "augmented-reality.png" image as per your requirement
-                                                                height:
-                                                                    30, // Adjust the height of the "augmented-reality.png" image as per your requirement
+                                                                  GestureDetector(
+                                                                onTap: () {
+                                                                  //TODO: Link to the AR feauture
+                                                                  print(
+                                                                      "AR button pressed");
+                                                                },
+                                                                child:
+                                                                    Image.asset(
+                                                                  'images/augmented-reality.png',
+                                                                  width:
+                                                                      25, // Adjust the width of the "augmented-reality.png" image as per your requirement
+                                                                  height:
+                                                                      25, // Adjust the height of the "augmented-reality.png" image as per your requirement
+                                                                ),
                                                               ),
                                                             ),
                                                           ),
@@ -289,7 +297,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           width: 8.0),
                                                       SaveIcon(
                                                         type: posts[index]
-                                                        ["type"]
+                                                                ["type"]
                                                             .toString(),
                                                         id: posts[index]["id"]
                                                             .toString(),
