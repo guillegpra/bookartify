@@ -13,20 +13,25 @@ class CoverUploadPage extends StatefulWidget {
 
 class _CoverUploadPageState extends State<CoverUploadPage> {
   late ImagePicker _imagePicker;
+  String? _originalImagePath;
   Map<String, XFile?> coverImages = {
     'Front': null,
-    'Back': null,
-    'Spine': null,
   };
   Map<String, String?> _selectedImagePaths = {
     'Front': null,
-    'Back': null,
-    'Spine': null,
   };
+
+  final ButtonStyle customButtonStyle = ButtonStyle(
+    backgroundColor:
+        MaterialStateProperty.all<Color>(const Color.fromARGB(255, 48, 80, 72)),
+    foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+  );
+
   late CropAspectRatio _cropAspectRatio;
   late CropStyle _cropStyle;
   String? selectedBookTitle;
   String? selectedBookAuthor;
+  String? selectedBookId;
   TextEditingController _titleController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
 
@@ -44,14 +49,15 @@ class _CoverUploadPageState extends State<CoverUploadPage> {
     if (pickedFile != null) {
       setState(() {
         coverImages[coverType] = pickedFile;
-        _selectedImagePaths[coverType] = pickedFile.path;
+        _originalImagePath = pickedFile.path; // Store the original image path
+        _selectedImagePaths[coverType] = null; // Clear the cropped image path
       });
       await _cropAndResizeImage(coverType);
     }
   }
 
   Future<void> _cropAndResizeImage(String coverType) async {
-    final sourcePath = _selectedImagePaths[coverType];
+    final sourcePath = _originalImagePath; // Use the original image path
     if (sourcePath != null) {
       final croppedFile = await ImageCropper().cropImage(
         sourcePath: sourcePath,
@@ -98,16 +104,20 @@ class _CoverUploadPageState extends State<CoverUploadPage> {
   }
 
   Future<void> _uploadArt() async {
-    // Implement art upload and details saving logic to your database
-    // You can access the selected image paths using _selectedImagePaths
-    // You can access the entered details using the TextEditingController values
-    // Handle the upload process and display a confirmation to the user
+    // Check if all the required data is provided
+    if (_selectedImagePaths['Front'] != null &&
+        _titleController.text.isNotEmpty &&
+        _descriptionController.text.isNotEmpty &&
+        selectedBookId != null) {
+      // Implement art upload and details saving logic to your database
+      // You can access the selected image paths using _selectedImagePaths
+      // You can access the entered details using the TextEditingController values
+      // Handle the upload process and display a confirmation to the user
 
-    // After the upload is complete, navigate to a confirmation page or another screen
-    // You can pass any necessary data to the next screen
+      // After the upload is complete, navigate to a confirmation page or another screen
+      // You can pass any necessary data to the next screen
 
-    // For example:
-    if (_selectedImagePaths['Front'] != null) {
+      // For example:
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -115,18 +125,20 @@ class _CoverUploadPageState extends State<CoverUploadPage> {
             selectedImagePaths: _selectedImagePaths,
             title: _titleController.text,
             description: _descriptionController.text,
+            selectedBookId: selectedBookId,
             selectedBookTitle: selectedBookTitle,
             selectedBookAuthor: selectedBookAuthor,
           ),
         ),
       );
     } else {
+      // If any required data is missing, show an error dialog
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Error'),
-            content: Text('You must select a front cover image.'),
+            content: Text('Please fill in all required fields.'),
             actions: [
               TextButton(
                 child: Text('OK'),
@@ -146,7 +158,7 @@ class _CoverUploadPageState extends State<CoverUploadPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xfffbf8f2),
-        centerTitle: true, // Change this line
+        centerTitle: true,
         title: Text(
           'Upload Your Cover',
           style: GoogleFonts.dmSerifDisplay(
@@ -162,71 +174,59 @@ class _CoverUploadPageState extends State<CoverUploadPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              SizedBox(height: 10),
-              Text(
-                'Choose Front Cover',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+              SizedBox(height: 16),
+              GestureDetector(
+                onTap: () => _cropAndResizeImage('Front'),
+                child: Container(
+                  alignment: Alignment.center,
+                  child: _selectedImagePaths['Front'] != null
+                      ? Stack(
+                          children: [
+                            Image.file(
+                              File(_selectedImagePaths['Front']!),
+                              fit: BoxFit.cover,
+                            ),
+                            Positioned(
+                              top: 8,
+                              right: 8,
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _selectedImagePaths['Front'] =
+                                        null; // Remove the selected cover
+                                  });
+                                },
+                                child: Icon(
+                                  Icons.close,
+                                  color: Color.fromARGB(255, 255, 153, 0),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : Image.asset(
+                          'images/upload-images-placeholder.png',
+                          fit: BoxFit.cover,
+                        ),
                 ),
               ),
-              InkWell(
-                onTap: () => _selectAndCropImage('Front'),
-                child: coverImages['Front'] != null
-                    ? Container(
-                        alignment: Alignment.center,
-                        height: 150,
-                        width: 200,
-                        child: Image.file(
-                          File(coverImages['Front']!.path),
-                          fit: BoxFit.contain,
-                        ),
-                      )
-                    : Image.asset('images/upload-images-placeholder.png'),
-              ),
-              SizedBox(height: 10),
-              Text(
-                'Choose Back Cover *optional*',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 0),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: ElevatedButton(
+                    onPressed: () => _selectAndCropImage('Front'),
+                    style: customButtonStyle,
+                    child: Text(
+                      "Select cover from gallery",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-              InkWell(
-                onTap: () => _selectAndCropImage('Back'),
-                child: coverImages['Back'] != null
-                    ? Container(
-                        alignment: Alignment.center,
-                        height: 150,
-                        width: 200,
-                        child: Image.file(
-                          File(coverImages['Back']!.path),
-                          fit: BoxFit.contain,
-                        ),
-                      )
-                    : Image.asset('images/upload-images-placeholder.png'),
-              ),
-              SizedBox(height: 10),
-              Text(
-                'Choose Spine *optional*',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              InkWell(
-                onTap: () => _selectAndCropImage('Spine'),
-                child: coverImages['Spine'] != null
-                    ? Container(
-                        alignment: Alignment.center,
-                        height: 150,
-                        width: 200,
-                        child: Image.file(
-                          File(coverImages['Spine']!.path),
-                          fit: BoxFit.contain,
-                        ),
-                      )
-                    : Image.asset('images/upload-images-placeholder.png'),
               ),
               SizedBox(height: 10),
               Text(
@@ -243,6 +243,7 @@ class _CoverUploadPageState extends State<CoverUploadPage> {
                   labelText: 'Title',
                   border: OutlineInputBorder(),
                 ),
+                maxLength: 30, // Set maximum character limit to 30
               ),
               SizedBox(height: 16),
               TextFormField(
@@ -252,6 +253,7 @@ class _CoverUploadPageState extends State<CoverUploadPage> {
                   border: OutlineInputBorder(),
                 ),
                 maxLines: 3,
+                maxLength: 100, // Set maximum character limit to 100
               ),
               SizedBox(height: 10),
               Text(
@@ -264,7 +266,8 @@ class _CoverUploadPageState extends State<CoverUploadPage> {
               SizedBox(height: 16),
               InkWell(
                 onTap: () async {
-                  final selectedBook = await Navigator.push<Book?>(
+                  final selectedBook =
+                      await Navigator.push<Map<String, dynamic>>(
                     context,
                     MaterialPageRoute(
                       builder: (context) => SearchScreen(),
@@ -273,8 +276,9 @@ class _CoverUploadPageState extends State<CoverUploadPage> {
 
                   if (selectedBook != null) {
                     setState(() {
-                      selectedBookTitle = selectedBook.title;
-                      selectedBookAuthor = selectedBook.author;
+                      selectedBookId = selectedBook['id'];
+                      selectedBookTitle = selectedBook['title'];
+                      selectedBookAuthor = selectedBook['author'];
                     });
                   }
                 },
@@ -299,7 +303,8 @@ class _CoverUploadPageState extends State<CoverUploadPage> {
                       ),
                       IconButton(
                         onPressed: () async {
-                          final selectedBook = await Navigator.push<Book?>(
+                          final selectedBook =
+                              await Navigator.push<Map<String, dynamic>>(
                             context,
                             MaterialPageRoute(
                               builder: (context) => SearchScreen(),
@@ -308,8 +313,9 @@ class _CoverUploadPageState extends State<CoverUploadPage> {
 
                           if (selectedBook != null) {
                             setState(() {
-                              selectedBookTitle = selectedBook.title;
-                              selectedBookAuthor = selectedBook.author;
+                              selectedBookId = selectedBook['id'];
+                              selectedBookTitle = selectedBook['title'];
+                              selectedBookAuthor = selectedBook['author'];
                             });
                           }
                         },
@@ -324,26 +330,17 @@ class _CoverUploadPageState extends State<CoverUploadPage> {
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 0),
                 child: Align(
                   alignment: Alignment.center,
-                  child: MaterialButton(
+                  child: ElevatedButton(
                     onPressed: _uploadArt,
-                    color: Color(0xff2f2f2f),
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                      side: BorderSide(color: Color(0x85808080), width: 1),
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 25),
+                    style: customButtonStyle,
                     child: Text(
-                      "Upload Cover",
+                      "Publish Cover",
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.normal,
                       ),
                     ),
-                    textColor: Color(0xffe3d4b5),
-                    height: 40,
-                    minWidth: 140,
                   ),
                 ),
               ),
@@ -359,6 +356,7 @@ class ArtConfirmationPage extends StatelessWidget {
   final Map<String, String?> selectedImagePaths;
   final String title;
   final String description;
+  final String? selectedBookId;
   final String? selectedBookTitle;
   final String? selectedBookAuthor;
 
@@ -366,6 +364,7 @@ class ArtConfirmationPage extends StatelessWidget {
     required this.selectedImagePaths,
     required this.title,
     required this.description,
+    required this.selectedBookId,
     required this.selectedBookTitle,
     required this.selectedBookAuthor,
   });
@@ -383,7 +382,7 @@ class ArtConfirmationPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Selected Images:',
+                'Book Cover',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

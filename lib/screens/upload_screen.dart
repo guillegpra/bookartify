@@ -12,6 +12,13 @@ class UploadScreen extends StatefulWidget {
 class _UploadScreenState extends State<UploadScreen> {
   String selectedOption = 'art'; // initially selected option
 
+  final ButtonStyle customButtonStyle = ButtonStyle(
+    backgroundColor:
+        MaterialStateProperty.all<Color>(const Color.fromARGB(255, 48, 80, 72)),
+    foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+    fixedSize: MaterialStateProperty.all<Size>(Size(200, 50)),
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -176,39 +183,31 @@ class _UploadScreenState extends State<UploadScreen> {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
-              child: MaterialButton(
-                onPressed: () {
-                  if (selectedOption == 'art') {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ArtUploadPage()),
-                    );
-                  } else if (selectedOption == 'book_cover') {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => CoverUploadPage()),
-                    );
-                  }
-                },
-                color: const Color.fromARGB(255, 47, 47, 1),
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                padding: const EdgeInsets.all(16),
-                child: const Text(
-                  "Select Option",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    fontStyle: FontStyle.normal,
-                  ),
-                ),
-                textColor: const Color(0xFFE3D4B5),
-                height: 50,
-                minWidth: 300,
-              ),
+              child: ElevatedButton(
+                  onPressed: () {
+                    if (selectedOption == 'art') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ArtUploadPage()),
+                      );
+                    } else if (selectedOption == 'book_cover') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CoverUploadPage()),
+                      );
+                    }
+                  },
+                  style: customButtonStyle,
+                  child: Text(
+                    "Select Option",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.normal,
+                    ),
+                  )),
             ),
           ],
         ),
