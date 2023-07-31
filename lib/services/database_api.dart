@@ -3,6 +3,28 @@ import 'package:http/http.dart' as http;
 
 const String baseUrl = "https://bookartify.scss.tcd.ie";
 
+/* ------------------ User ------------------ */
+Future<void> addUser(String userId) async {
+  final url = Uri.parse("$baseUrl/user/add_user");
+
+  final body = jsonEncode({
+    "id": userId,
+  });
+
+  final headers = {
+    "Content-Type": "application/json",
+  };
+
+  final http.Response response =
+    await http.post(url, headers: headers, body: body);
+
+  if (response.statusCode == 201) {
+    print("User created successfully");
+  } else {
+    throw Exception("Failed to create user in database");
+  }
+}
+
 /* ------------------ Art ------------------ */
 Future<List<dynamic>> getArtByUser(String userId) async {
   final http.Response response =
@@ -48,6 +70,7 @@ Future<void> uploadArt(String userId, String title, String description,
   final body = jsonEncode({
     "userId": userId,
     "title": title,
+    "description": description,
     "bookId": bookId,
     "imageUrl": imageUrl,
   });
@@ -114,6 +137,7 @@ Future<void> uploadCover(String userId, String title, String description,
   final body = jsonEncode({
     "userId": userId,
     "title": title,
+    "description": description,
     "bookId": bookId,
     "imageUrl": imageUrl,
   });
@@ -221,6 +245,42 @@ Future<int> getFollowingCountByUser(String userId) async {
     return data["following"];
   } else {
     throw Exception("Failed to load following count");
+  }
+}
+
+Future<List<String>> getFollowingArtistsByUser(String userId) async {
+  final Uri url = Uri.parse("$baseUrl/user/$userId/following_users");
+
+  try {
+    final http.Response response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      List<String> followingIds = List<String>.from(data);
+      return followingIds;
+    } else {
+      throw Exception("Failed to get following artists");
+    }
+  } catch (e) {
+    throw Exception("Failed to get following artists: $e");
+  }
+}
+
+Future<List<String>> getFollowingBooksByUser(String userId) async {
+  final Uri url = Uri.parse("$baseUrl/user/$userId/following_books");
+
+  try {
+    final http.Response response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      List<String> followingIds = List<String>.from(data);
+      return followingIds;
+    } else {
+      throw Exception("Failed to get following books");
+    }
+  } catch (e) {
+    throw Exception("Failed to get following books: $e");
   }
 }
 

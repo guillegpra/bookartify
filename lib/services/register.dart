@@ -1,3 +1,4 @@
+import 'package:bookartify/services/database_api.dart';
 import 'package:bookartify/services/usernames_db.dart';
 import 'package:bookartify/utils.dart';
 import 'package:bookartify/widgets/icons_and_buttons/loading_overlay.dart';
@@ -80,22 +81,22 @@ Future<User?> signInWithGoogle(BuildContext context) async {
         if (e.code == "account-exists-with-different-credential") {
           // handle error here
           Utils.showSnackBar(
-              "The account already exists with a different credential.",
-              true
+            "The account already exists with a different credential.",
+            true
           );
         }
         else if (e.code == "invalid-credential") {
           // handle error here
           Utils.showSnackBar(
-              "Error occurred while accessing credentials. Try again.",
-              true
+            "Error occurred while accessing credentials. Try again.",
+            true
           );
         }
       } catch (e) {
         // handle error here
         Utils.showSnackBar(
-            "Error occurred using Google Sign-In. Try again.",
-            true
+          "Error occurred using Google Sign-In. Try again.",
+          true
         );
       }
 
@@ -117,9 +118,10 @@ Future<void> signUp(BuildContext context, String email, String password, String 
     UserCredential user = await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
 
-    String selectedUsername = username.isNotEmpty ? username : await generateDefaultUsername();
+    addUser(user.user!.uid); // add user to SQL
 
     // add username to database
+    String selectedUsername = username.isNotEmpty ? username : await generateDefaultUsername();
     await addUsername(user.user!.uid, selectedUsername);
   } on FirebaseAuthException catch (e) {
     Utils.showSnackBar(e.message, true);
