@@ -68,11 +68,8 @@ class _SearchScreenState extends State<SearchScreen> {
                   final books = snapshot.data ?? [];
                   if (books.isEmpty) {
                     return Center(
-                      child: Text(
-                        'No results found',
-                        style: GoogleFonts.poppins(fontSize: 18)
-                      )
-                    );
+                        child: Text('No results found',
+                            style: GoogleFonts.poppins(fontSize: 18)));
                   } else {
                     return ListView.builder(
                       itemCount: books.length,
@@ -80,7 +77,18 @@ class _SearchScreenState extends State<SearchScreen> {
                         final book = books[index];
                         return InkWell(
                           onTap: () {
-                            Navigator.pop(context, book);
+                            Navigator.pop(
+                              context,
+                              {
+                                'id': book.id,
+                                'title': book.title,
+                                'author': book.author,
+                                'thumbnailUrl': book.thumbnailUrl,
+                                'publishedDate': book.publishedDate,
+                                'pageCount': book.pageCount,
+                                'description': book.description,
+                              },
+                            );
                           },
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -101,8 +109,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                 placeholder:
                                                     'images/search_placeholder_image.jpg',
                                                 image: book.thumbnailUrl,
-                                                width:
-                                                    90, // you can change width and height as you need
+                                                width: 90,
                                                 height: 120,
                                                 fit: BoxFit.cover,
                                                 imageErrorBuilder: (BuildContext
