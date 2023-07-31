@@ -1,32 +1,63 @@
 //SAVE ICON WITH ANIMATION
+import 'package:bookartify/services/database_api.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SaveIcon extends StatefulWidget {
-  const SaveIcon({Key? key}) : super(key: key);
+  final String type;
+  final String id;
+
+  const SaveIcon({Key? key, required this.type, required this.id}) : super(key: key);
 
   @override
-  _SaveIconState createState() => _SaveIconState();
+  State<SaveIcon> createState() => _SaveIconState();
 }
 
 class _SaveIconState extends State<SaveIcon> {
-  bool isTapped = false;
+  String userId = FirebaseAuth.instance.currentUser!.uid;
+  bool isSaved = false;
+
+  @override
+  void initState() {
+    super.initState();
+    getSavedStatus();
+  }
+
+  Future<void> getSavedStatus() async {
+    bool saved = (widget.type == "art") ? await isBookmarkedArt(userId, widget.id)
+        : await isBookmarkedCover(userId, widget.id);
+
+    setState(() {
+      isSaved = saved;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
+        if (widget.type == "art" && !isSaved) {
+          await bookmarkArt(userId, widget.id);
+        } else if (widget.type == "art" && isSaved) {
+          await unbookmarkArt(userId, widget.id);
+        } else if (widget.type == "cover" && !isSaved) {
+          await bookmarkCover(userId, widget.id);
+        } else {
+          await unbookmarkCover(userId, widget.id);
+        }
+
         setState(() {
-          isTapped = !isTapped;
+          isSaved = !isSaved;
         });
       },
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 200),
         transitionBuilder: (Widget child, Animation<double> animation) {
-          return ScaleTransition(child: child, scale: animation);
+          return ScaleTransition(scale: animation, child: child);
         },
         child: Icon(
-          isTapped ? Icons.bookmark : Icons.bookmark_border,
-          key: ValueKey<bool>(isTapped), // Unique key to trigger the animation
+          isSaved ? Icons.bookmark : Icons.bookmark_border,
+          key: ValueKey<bool>(isSaved), // Unique key to trigger the animation
           color: Colors.black,
         ),
       ),
@@ -34,34 +65,4 @@ class _SaveIconState extends State<SaveIcon> {
   }
 }
 
-
-
-//SAVE ICON WITHOUT ANIMATION
-// import 'package:flutter/material.dart';
-
-// class SaveIcon extends StatefulWidget {
-//   const SaveIcon({Key? key}) : super(key: key);
-
-//   @override
-//   _SaveIconState createState() => _SaveIconState();
-// }
-
-// class _SaveIconState extends State<SaveIcon> {
-//   bool isTapped = false;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return GestureDetector(
-//       onTap: () {
-//         setState(() {
-//           isTapped = !isTapped;
-//         });
-//       },
-//       child: Icon(
-//         isTapped ? Icons.bookmark : Icons.bookmark_border,
-//         color: isTapped ? Colors.black : Colors.black,
-//       ),
-//     );
-//   }
-// }
 

@@ -138,7 +138,10 @@ class ArtSoloScreen extends StatelessWidget {
                                 id: post["id"].toString(),
                               ),
                               const SizedBox(width: 10),
-                              const SaveIcon(),
+                              SaveIcon(
+                                type: type,
+                                id: post["id"].toString(),
+                              ),
                               ShareButton(
                                 onPressed: () {},
                               ),

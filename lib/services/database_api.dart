@@ -301,6 +301,7 @@ Future<void> unlikeArt(String userId, String artId) async {
   if (response.statusCode == 200) {
     print("Artwork unliked successfully");
   } else {
+    print("Status code: ${response.statusCode}");
     throw Exception("Failed to unlike artwork");
   }
 }
@@ -358,9 +359,9 @@ Future<void> bookmarkArt(String userId, String artId) async {
       await http.post(url, headers: headers, body: body);
 
   if (response.statusCode == 201) {
-    print("Artwork liked successfully");
+    print("Artwork bookmarked successfully");
   } else {
-    throw Exception("Failed to like artwork");
+    throw Exception("Failed to bookmark artwork");
   }
 }
 
@@ -380,9 +381,9 @@ Future<void> bookmarkCover(String userId, String coverId) async {
       await http.post(url, headers: headers, body: body);
 
   if (response.statusCode == 201) {
-    print("Cover liked successfully");
+    print("Cover bookmarked successfully");
   } else {
-    throw Exception("Failed to like cover");
+    throw Exception("Failed to bookmark cover");
   }
 }
 
@@ -419,6 +420,30 @@ Future<List<dynamic>> getBookmarksByUser(String userId) async {
     return data as List<dynamic>;
   } else {
     throw Exception("Failed to load bookmarks by user with id: $userId");
+  }
+}
+
+Future<bool> isBookmarkedArt(String userId, String artId) async {
+  final http.Response response = await http.get(Uri.parse(
+      "$baseUrl/check_bookmark/art?user_id=$userId&art_id=$artId"));
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    return data["isBookmarked"];
+  } else {
+    throw Exception("Failed to check bookmark status");
+  }
+}
+
+Future<bool> isBookmarkedCover(String userId, String coverId) async {
+  final http.Response response = await http.get(Uri.parse(
+      "$baseUrl/check_bookmark/cover?user_id=$userId&cover_id=$coverId"));
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    return data["isBookmarked"];
+  } else {
+    throw Exception("Failed to check bookmark status");
   }
 }
 
