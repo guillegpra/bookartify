@@ -34,7 +34,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void initState() {
     super.initState();
     _fetchCurrentBio();
-    _fetchCurrentUsername(); // Fetch the current username
+    _fetchCurrentUsername();
     _fetchCurrentProfilePic(); // Fetch the current profile pic
     _fetchCurrentGoodreadsUrl(); // Fetch the current Goodreads URL
   }
@@ -190,9 +190,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           // Show a success message or navigate to another page
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) =>
-              ProfileScreen(userId: widget.currentUser!.uid)
-            ),
+            MaterialPageRoute(
+                builder: (context) =>
+                    ProfileScreen(userId: widget.currentUser!.uid)),
           );
         } else {
           // No changes were made
@@ -234,10 +234,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             onPressed: _saveChanges,
             child: Text(
               'Save',
-              style: GoogleFonts.dmSerifDisplay(
-                fontWeight: FontWeight.bold,
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.normal,
                 color: const Color(0xff2f2f2f),
-                fontSize: 18,
+                fontSize: 16,
               ),
             ),
           ),
@@ -297,10 +297,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
-                        side: const BorderSide(color: Color(0x85808080), width: 1),
+                        side: const BorderSide(
+                            color: Color(0x85808080), width: 1),
                       ),
-                      padding:
-                          const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 25),
                       textColor: const Color(0xffe3d4b5),
                       height: 40,
                       minWidth: 140,
@@ -327,6 +328,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               const SizedBox(height: 10),
               TextField(
                 controller: _usernameController,
+                maxLength: 20,
                 decoration: const InputDecoration(
                   hintText: 'Enter your username',
                   border: OutlineInputBorder(
@@ -346,6 +348,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               const SizedBox(height: 10),
               TextField(
                 controller: _bioController,
+                maxLength: 40,
                 decoration: const InputDecoration(
                   hintText: 'Enter your bio',
                   border: OutlineInputBorder(
