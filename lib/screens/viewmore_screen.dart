@@ -94,7 +94,7 @@ class ViewMoreScreen extends StatelessWidget {
                 const SizedBox(width: 8.0),
                 // const LikeIcon(),
                 const SizedBox(width: 8.0),
-                const SaveIcon(),
+                // const SaveIcon(),
                 const SizedBox(width: 8.0),
                 ShareButton(
                   onPressed: () {

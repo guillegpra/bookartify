@@ -1,4 +1,6 @@
 //SAVE ICON WITH ANIMATION
+import 'package:bookartify/services/database_api.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LikeIcon extends StatefulWidget {
@@ -11,24 +13,50 @@ class LikeIcon extends StatefulWidget {
 }
 
 class _LikeIconState extends State<LikeIcon> {
-  bool isTapped = false;
+  String userId = FirebaseAuth.instance.currentUser!.uid;
+  bool isLiked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    getLikedStatus();
+  }
+
+  Future<void> getLikedStatus() async {
+    bool liked = (widget.type == "art") ? await isLikedArt(userId, widget.id)
+      : await isLikedCover(userId, widget.id);
+
+    setState(() {
+      isLiked = liked;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
+        if (widget.type == "art" && !isLiked) {
+          await likeArt(userId, widget.id);
+        } else if (widget.type == "art" && isLiked) {
+          await unlikeArt(userId, widget.id);
+        } else if (widget.type == "cover" && !isLiked) {
+          await likeCover(userId, widget.id);
+        } else {
+          await unlikeCover(userId, widget.id);
+        }
+
         setState(() {
-          isTapped = !isTapped;
+          isLiked = !isLiked;
         });
       },
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 200),
         transitionBuilder: (Widget child, Animation<double> animation) {
-          return ScaleTransition(child: child, scale: animation);
+          return ScaleTransition(scale: animation, child: child);
         },
         child: Icon(
-          isTapped ? Icons.favorite : Icons.favorite_border,
-          key: ValueKey<bool>(isTapped), // Unique key to trigger the animation
+          isLiked ? Icons.favorite : Icons.favorite_border,
+          key: ValueKey<bool>(isLiked), // Unique key to trigger the animation
           color: Colors.black,
         ),
       ),
@@ -36,34 +64,4 @@ class _LikeIconState extends State<LikeIcon> {
   }
 }
 
-
-
-//SAVE ICON WITHOUT ANIMATION
-// import 'package:flutter/material.dart';
-
-// class SaveIcon extends StatefulWidget {
-//   const SaveIcon({Key? key}) : super(key: key);
-
-//   @override
-//   _SaveIconState createState() => _SaveIconState();
-// }
-
-// class _SaveIconState extends State<SaveIcon> {
-//   bool isTapped = false;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return GestureDetector(
-//       onTap: () {
-//         setState(() {
-//           isTapped = !isTapped;
-//         });
-//       },
-//       child: Icon(
-//         isTapped ? Icons.bookmark : Icons.bookmark_border,
-//         color: isTapped ? Colors.black : Colors.black,
-//       ),
-//     );
-//   }
-// }
 

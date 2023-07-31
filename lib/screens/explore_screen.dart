@@ -140,7 +140,7 @@ class ExploreScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 8.0),
-                  const SaveIcon(),
+                  // const SaveIcon(),
                 ],
               ),
             ),

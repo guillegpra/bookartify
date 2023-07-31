@@ -227,7 +227,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       ),
                                                       const SizedBox(
                                                           width: 8.0),
-                                                      const SaveIcon(),
+                                                      SaveIcon(
+                                                        type: posts[index]
+                                                        ["type"]
+                                                            .toString(),
+                                                        id: posts[index]["id"]
+                                                            .toString(),
+                                                      ),
                                                       const SizedBox(
                                                           width: 8.0),
                                                       ShareButton(
