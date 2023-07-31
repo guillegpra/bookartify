@@ -193,7 +193,7 @@ Future<void> unfollowBook(String userId, String followingId) async {
   final http.Response response = await http.delete(url);
 
   if (response.statusCode == 200) {
-    print("User unfollowed successfully");
+    print("Book unfollowed successfully");
   } else {
     print("Failed to unfollow book. Status code: ${response.statusCode}");
     throw Exception("Failed to unfollow book");
@@ -318,8 +318,8 @@ Future<void> unlikeCover(String userId, String coverId) async {
 }
 
 Future<bool> isLikedArt(String userId, String artId) async {
-  final http.Response response = await http.get(Uri.parse(
-      "$baseUrl/check_like/art?user_id=$userId&art_id=$artId"));
+  final http.Response response = await http
+      .get(Uri.parse("$baseUrl/check_like/art?user_id=$userId&art_id=$artId"));
 
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);
@@ -330,8 +330,8 @@ Future<bool> isLikedArt(String userId, String artId) async {
 }
 
 Future<bool> isLikedCover(String userId, String coverId) async {
-  final http.Response response = await http.get(Uri.parse(
-      "$baseUrl/check_like/cover?user_id=$userId&art_id=$coverId"));
+  final http.Response response = await http.get(
+      Uri.parse("$baseUrl/check_like/cover?user_id=$userId&art_id=$coverId"));
 
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);

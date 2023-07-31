@@ -26,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   User? currentUser;
   final _googleBooksAPI = GoogleBooksApi();
   late Future<List<dynamic>> forYouPosts;
+  // bookId -> followStatus (true: followed, false: not followed)
   //late List<Book> books = [];
 
   @override
@@ -168,32 +169,68 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               10),
-                                                      child: Image.network(
-                                                        posts[index]["url"]
-                                                            .toString(),
-                                                        loadingBuilder:
-                                                            (BuildContext
-                                                                    context,
-                                                                Widget child,
-                                                                ImageChunkEvent?
-                                                                    loadingProgress) {
-                                                          if (loadingProgress ==
-                                                              null)
-                                                            return child;
-                                                          return Center(
-                                                            child:
-                                                                CircularProgressIndicator(
-                                                              value: loadingProgress
-                                                                          .expectedTotalBytes !=
-                                                                      null
-                                                                  ? loadingProgress
-                                                                          .cumulativeBytesLoaded /
-                                                                      loadingProgress
-                                                                          .expectedTotalBytes!
-                                                                  : null,
+                                                      child: Stack(
+                                                        children: [
+                                                          Image.network(
+                                                            posts[index]["url"]
+                                                                .toString(),
+                                                            loadingBuilder:
+                                                                (BuildContext
+                                                                        context,
+                                                                    Widget
+                                                                        child,
+                                                                    ImageChunkEvent?
+                                                                        loadingProgress) {
+                                                              if (loadingProgress ==
+                                                                  null)
+                                                                return child;
+                                                              return Center(
+                                                                child:
+                                                                    CircularProgressIndicator(
+                                                                  value: loadingProgress
+                                                                              .expectedTotalBytes !=
+                                                                          null
+                                                                      ? loadingProgress
+                                                                              .cumulativeBytesLoaded /
+                                                                          loadingProgress
+                                                                              .expectedTotalBytes!
+                                                                      : null,
+                                                                ),
+                                                              );
+                                                            },
+                                                          ),
+                                                          Positioned(
+                                                            top:
+                                                                10, // Adjust the top position as per your requirement
+                                                            right:
+                                                                10, // Adjust the right position as per your requirement
+                                                            child: Container(
+                                                              width:
+                                                                  40, // Adjust the width of the white square as per your requirement
+                                                              height:
+                                                                  40, // Adjust the height of the white square as per your requirement
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Colors
+                                                                    .white
+                                                                    .withOpacity(
+                                                                        0.4), // White background color
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10), // Adjust the border radius for curved corners
+                                                              ),
+                                                              child:
+                                                                  Image.asset(
+                                                                'images/augmented-reality.png',
+                                                                width:
+                                                                    30, // Adjust the width of the "augmented-reality.png" image as per your requirement
+                                                                height:
+                                                                    30, // Adjust the height of the "augmented-reality.png" image as per your requirement
+                                                              ),
                                                             ),
-                                                          );
-                                                        },
+                                                          ),
+                                                        ],
                                                       ),
                                                     ),
                                                   ),
@@ -208,12 +245,35 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         MainAxisAlignment.end,
                                                     children: [
                                                       Expanded(
-                                                        child: Text(
-                                                          posts[index]["title"]
-                                                              .toString(),
-                                                          style: GoogleFonts
-                                                              .dmSerifDisplay(
-                                                                  fontSize: 18),
+                                                        child: GestureDetector(
+                                                          onTap: () {
+                                                            Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        ArtSoloScreen(
+                                                                  type: posts[index]
+                                                                          [
+                                                                          "type"]
+                                                                      .toString(),
+                                                                  post: posts[
+                                                                      index],
+                                                                  book: books[
+                                                                      index],
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                          child: Text(
+                                                            posts[index]
+                                                                    ["title"]
+                                                                .toString(),
+                                                            style: GoogleFonts
+                                                                .dmSerifDisplay(
+                                                                    fontSize:
+                                                                        18),
+                                                          ),
                                                         ),
                                                       ),
                                                       const SizedBox(
