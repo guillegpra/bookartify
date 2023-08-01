@@ -19,20 +19,30 @@ class SearchScanBar extends StatefulWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
-class _SearchScanBarState extends State<SearchScanBar> {
+class _SearchScanBarState extends State<SearchScanBar> with WidgetsBindingObserver {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _controller.addListener(() {
-      setState(
-        () {}); // rebuilds the widget on every text change to update the cross icon visibility
+      setState(() {}); // rebuilds the widget on every text change to update the cross icon visibility
     });
-     Future.delayed(Duration.zero).then((_) {
-      FocusScope.of(context).requestFocus(_focusNode);
-    });
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (ModalRoute.of(context)?.isCurrent == true) {
+      _focusNode.requestFocus();
+    }
   }
 
   @override
@@ -80,7 +90,6 @@ class _SearchScanBarState extends State<SearchScanBar> {
           ),
           onChanged: widget.onChanged,
           focusNode: _focusNode,
-          autofocus: true, // TextField automatically focused
         ),
       ),
       centerTitle: true,
@@ -90,6 +99,10 @@ class _SearchScanBarState extends State<SearchScanBar> {
   @override
   void dispose() {
     _controller.dispose();
+    _focusNode.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 }
+
+
