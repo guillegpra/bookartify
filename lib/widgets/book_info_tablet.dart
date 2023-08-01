@@ -35,18 +35,22 @@ class _BookInfoTabletState extends State<BookInfoTablet> {
       margin: const EdgeInsets.only(bottom: 8.0, top: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: MediaQuery.of(context).size.width * 0.20,
-            decoration: BoxDecoration(
-              color: const Color(0xFFF5EFE1),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.network(
-                widget.book.thumbnailUrl,
-                fit: BoxFit.cover,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.20,
+              decoration: BoxDecoration(
+                color: const Color(0xFFF5EFE1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(
+                  widget.book.thumbnailUrl,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
@@ -54,12 +58,14 @@ class _BookInfoTabletState extends State<BookInfoTablet> {
             child: Column(
               children: [
                 Row(
+                  // Wrapping title and author with a Row
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Expanded(
                       child: Container(
                         margin: const EdgeInsets.only(left: 20),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
                               widget.book.title,
@@ -67,44 +73,49 @@ class _BookInfoTabletState extends State<BookInfoTablet> {
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
                               ),
+                              textAlign: TextAlign.center,
                             ),
-                            Text(" by " + widget.book.author),
+                            Text(
+                              "by " + widget.book.author,
+                              textAlign: TextAlign.center,
+                            ),
                           ],
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15),
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            isBookSaved = !isBookSaved;
-                          });
-                        },
-                        child: Icon(
-                          isBookSaved ? Icons.check : Icons.add,
-                          size: 30,
-                          color: isBookSaved
-                              ? const Color(0xFFBFA054)
-                              : const Color(0xFF2F2F2F),
-                        ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isBookSaved = !isBookSaved;
+                        });
+                      },
+                      child: Icon(
+                        isBookSaved ? Icons.check : Icons.add,
+                        size: 30,
+                        color: isBookSaved
+                            ? const Color(0xFFBFA054)
+                            : const Color(0xFF2F2F2F),
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 8.0),
-                Row(
-                  children: [
-                    InfoBox(
-                      title: "Released",
-                      info: formatDate(widget.book.publishedDate),
-                    ),
-                    const SizedBox(width: 10.0),
-                    InfoBox(
-                      title: "Pages",
-                      info: widget.book.pageCount.toString(),
-                    ),
-                  ],
+                Center(
+                  // Centering the release date and pages
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InfoBox(
+                        title: "Released",
+                        info: formatDate(widget.book.publishedDate),
+                      ),
+                      const SizedBox(width: 10.0),
+                      InfoBox(
+                        title: "Pages",
+                        info: widget.book.pageCount.toString(),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 8.0),
                 IntrinsicWidth(

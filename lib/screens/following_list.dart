@@ -22,12 +22,13 @@ class _FollowingListScreenState extends State<FollowingListScreen>
   final GoogleBooksApi _googleBooksApi = GoogleBooksApi();
   List<dynamic> _followingArtists = [];
   List<Book> _followingBooks = [];
+  Future<List<String>>? _followingArtistsFuture;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    _fetchFollowingArtists();
+    _followingArtistsFuture = _fetchFollowingArtists();
     _fetchFollowingBooks();
   }
 
@@ -68,6 +69,14 @@ class _FollowingListScreenState extends State<FollowingListScreen>
       List<dynamic> artistIds =
           followingArtists.map((artist) => artist["following_id"]).toList();
 
+      setState(() {
+        _followingArtists =
+            artistIds; // Assign the fetched artist IDs to _followingArtists
+      });
+
+      print(
+          "Following artists IDs: $_followingArtists"); // Check if the artist IDs are correct
+
       List<String> artistNames = [];
       for (String artistId in artistIds) {
         String? username = await getUsername(artistId);
@@ -75,6 +84,9 @@ class _FollowingListScreenState extends State<FollowingListScreen>
           artistNames.add(username);
         }
       }
+
+      print(
+          "Following artist names: $artistNames"); // Check if the artist names are correct
 
       return artistNames;
     } catch (e) {
@@ -148,39 +160,50 @@ class _FollowingListScreenState extends State<FollowingListScreen>
         String author = book.author;
         String thumbnailUrl = book.thumbnailUrl;
 
-        return ListTile(
-          leading: GestureDetector(
-            onTap: () {
-              _navigateToBookScreen(book);
-            },
-            child: Container(
-              width: 60,
-              height: 90,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(thumbnailUrl),
-                  fit: BoxFit.cover,
+        return Padding(
+          padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(42),
+              color: const Color.fromARGB(70, 192, 162, 73),
+            ),
+            child: ListTile(
+              leading: GestureDetector(
+                onTap: () {
+                  _navigateToBookScreen(book);
+                },
+                child: Container(
+                  width: 60,
+                  height: 90,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    image: DecorationImage(
+                      image: NetworkImage(thumbnailUrl),
+                      fit: BoxFit.contain, // Use BoxFit.contain here
+                    ),
+                  ),
                 ),
-                borderRadius: BorderRadius.circular(8),
               ),
-            ),
-          ),
-          title: GestureDetector(
-            onTap: () {
-              _navigateToBookScreen(book);
-            },
-            child: Text(
-              title,
-              style: GoogleFonts.poppins(),
-            ),
-          ),
-          subtitle: GestureDetector(
-            onTap: () {
-              _navigateToBookScreen(book);
-            },
-            child: Text(
-              author,
-              style: GoogleFonts.poppins(),
+              title: GestureDetector(
+                onTap: () {
+                  _navigateToBookScreen(book);
+                },
+                child: Text(
+                  title,
+                  style: GoogleFonts.dmSerifDisplay(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              subtitle: GestureDetector(
+                onTap: () {
+                  _navigateToBookScreen(book);
+                },
+                child: Text(
+                  author,
+                  style: GoogleFonts.poppins(),
+                ),
+              ),
             ),
           ),
         );
@@ -198,8 +221,8 @@ class _FollowingListScreenState extends State<FollowingListScreen>
   }
 
   Widget _buildArtistsTab() {
-    return FutureBuilder(
-      future: _fetchFollowingArtists(),
+    return FutureBuilder<List<String>>(
+      future: _followingArtistsFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
@@ -210,24 +233,40 @@ class _FollowingListScreenState extends State<FollowingListScreen>
             child: Text("Error fetching data"),
           );
         } else {
-          List<String> artistNames = snapshot.data as List<String>;
+          List<String> artistNames = snapshot.data ?? [];
+
+          if (artistNames.isEmpty) {
+            return Center(
+              child: Text("No artists followed yet."),
+            );
+          }
 
           return ListView.builder(
             itemCount: artistNames.length,
             itemBuilder: (context, index) {
-              String artistUserId =
-                  _followingArtists[index]; // Get the artist's user ID
-              String artistName = artistNames[index]; // Get the artist's name
+              String artistUserId = _followingArtists[index];
+              String artistName = artistNames[index];
 
-              return ListTile(
-                leading: Icon(Icons.person),
-                title: GestureDetector(
-                  onTap: () {
-                    _navigateToUserProfileScreen(artistUserId);
-                  },
-                  child: Text(
-                    artistName,
-                    style: GoogleFonts.poppins(),
+              return Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(42),
+                    color: const Color.fromARGB(70, 192, 162, 73),
+                  ),
+                  child: ListTile(
+                    leading: Icon(Icons.person),
+                    title: GestureDetector(
+                      onTap: () {
+                        _navigateToUserProfileScreen(artistUserId);
+                      },
+                      child: Text(
+                        artistName,
+                        style: GoogleFonts.dmSerifDisplay(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               );

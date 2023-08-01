@@ -81,14 +81,9 @@ class _UserWidgetState extends State<UserWidget> {
             Row(
               children: [
                 if (_artWorksCountData != null)
-                  GestureDetector(
-                    onTap: () {
-                      _navigateToFollowingListScreen();
-                    },
-                    child: UserCounter(
-                      name: "Artworks",
-                      number: _artWorksCountData!,
-                    ),
+                  UserCounter(
+                    name: "Artworks",
+                    number: _artWorksCountData!,
                   )
                 else
                   const UserCounter(name: "Artworks", number: 0),
