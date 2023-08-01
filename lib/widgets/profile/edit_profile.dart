@@ -1,11 +1,6 @@
 import 'package:bookartify/services/database_api.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:bookartify/services/user_bios_db.dart';
-import 'package:bookartify/services/usernames_db.dart';
-import 'package:bookartify/services/user_profile_pics_db.dart';
-import 'package:bookartify/services/user_goodreads_links_db.dart';
 import 'package:bookartify/screens/profile_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -205,6 +200,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
       if (changesMade) {
         // Show a success message or navigate to another page
+        Navigator.pop(context);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -254,15 +250,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 fontWeight: FontWeight.normal,
                 color: const Color(0xff2f2f2f),
                 fontSize: 16,
+                letterSpacing: -0.5,
               ),
             ),
           ),
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(18.0),
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
+          // padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -324,7 +321,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       child: const Text(
                         "Change Picture",
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 16,
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.normal,
                         ),
