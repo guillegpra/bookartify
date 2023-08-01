@@ -16,6 +16,7 @@ class InactiveSearchBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           GestureDetector(
             onTap: () {
+              FocusManager.instance.primaryFocus?.unfocus(); // remove focus
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => const SearchScreen(),
