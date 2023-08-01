@@ -24,8 +24,7 @@ class _ProfileScreenState extends State<ProfileScreen>
         AutomaticKeepAliveClientMixin<ProfileScreen> {
   late TabController _tabController;
   User? currentUser;
-  String _username = "";
-  String _profileImageUrl = ""; // New variable for profile image URL
+  Map<String, dynamic> _userData = {};
   List<dynamic> _bookart = [];
   List<dynamic> _covers = [];
   List<dynamic> _bookmarks = [];
@@ -37,26 +36,19 @@ class _ProfileScreenState extends State<ProfileScreen>
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
     currentUser = FirebaseAuth.instance.currentUser;
-    _fetchUsername();
-    _fetchProfileImageUrl(); // Fetch profile image URL
+    _fetchUserData();
     _fetchFollowersCount();
     _fetchBookart();
     _fetchCovers();
     _fetchBookmarks();
   }
 
-  Future<void> _fetchProfileImageUrl() async {
-    String? fetchedImageUrl = await getUserProfilePic(
-        widget.userId); // Use your function to get the profile pic
+  Future<void> _fetchUserData() async {
+    Map<String, dynamic> data = await getUserById(widget.userId);
+    getUsernameById(widget.userId);
+    print(data.toString());
     setState(() {
-      _profileImageUrl = fetchedImageUrl ?? "";
-    });
-  }
-
-  Future<void> _fetchUsername() async {
-    String? fetchedUsername = await getUsername(widget.userId);
-    setState(() {
-      _username = fetchedUsername ?? "";
+      _userData = data;
     });
   }
 
@@ -105,8 +97,7 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   Future<void> _reloadData() async {
     // Fetch the data again and update the state
-    await _fetchUsername();
-    await _fetchProfileImageUrl();
+    await _fetchUserData();
     await _fetchFollowersCount();
     await _fetchBookart();
     await _fetchCovers();
@@ -125,7 +116,7 @@ class _ProfileScreenState extends State<ProfileScreen>
           opacity: _showUsernameInAppBar ? 1.0 : 0.0,
           duration: const Duration(milliseconds: 300),
           child: Text(
-            _username.isNotEmpty ? _username : "username",
+            _userData["username"] ?? "username",
             style: GoogleFonts.dmSerifDisplay(
               fontWeight: FontWeight.bold,
             ),
@@ -167,7 +158,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            EditProfileScreen(currentUser: currentUser),
+                          EditProfileScreen(
+                            userId: widget.userId,
+                          ),
                       ),
                     );
                     break;
@@ -197,9 +190,10 @@ class _ProfileScreenState extends State<ProfileScreen>
               SliverToBoxAdapter(
                 child: UserWidget(
                   userId: widget.userId,
-                  username: _username.isNotEmpty ? _username : "username",
-                  profileImageUrl:
-                      _profileImageUrl, // Pass the profile image URL
+                  username: _userData["username"] ?? "username",
+                  bio: _userData["bio"] ?? "Hi there!",
+                  goodreadsUrl: _userData["goodreads_url"] ?? "",
+                  profileImageUrl: _userData["profile_pic_url"] ?? "", // Pass the profile image URL
                 ),
               ),
             ];
@@ -232,18 +226,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                         child: ImageGrid(
                           types: List.filled(_bookart.length, "art"),
                           posts: _bookart,
-                          // imagePaths: _bookart
-                          //     .map((map) => map["url"].toString())
-                          //     .toList(),
-                          // imageTitles: _bookart
-                          //     .map((map) => map["title"].toString())
-                          //     .toList(),
-                          // bookIds: _bookart
-                          //     .map((map) => map["book_id"].toString())
-                          //     .toList(),
-                          // userIds: _bookart
-                          //     .map((map) => map["user_id"].toString())
-                          //     .toList(),
                         ),
                       ),
                     ),
@@ -255,18 +237,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                         child: ImageGrid(
                           types: List.filled(_covers.length, "cover"),
                           posts: _covers,
-                          // imagePaths: _covers
-                          //     .map((map) => map["url"].toString())
-                          //     .toList(),
-                          // imageTitles: _covers
-                          //     .map((map) => map["title"].toString())
-                          //     .toList(),
-                          // bookIds: _covers
-                          //     .map((map) => map["book_id"].toString())
-                          //     .toList(),
-                          // userIds: _covers
-                          //     .map((map) => map["user_id"].toString())
-                          //     .toList(),
                         ),
                       ),
                     ),
@@ -278,18 +248,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                         child: ImageGrid(
                           types: _bookmarks.map((e) => e["type"].toString()).toList(),
                           posts: _bookmarks,
-                          // imagePaths: _bookmarks
-                          //     .map((map) => map["url"].toString())
-                          //     .toList(),
-                          // imageTitles: _bookmarks
-                          //     .map((map) => map["title"].toString())
-                          //     .toList(),
-                          // bookIds: _bookmarks
-                          //     .map((map) => map["book_id"].toString())
-                          //     .toList(),
-                          // userIds: _bookmarks
-                          //     .map((map) => map["user_id"].toString())
-                          //     .toList(),
                         ),
                       ),
                     ),

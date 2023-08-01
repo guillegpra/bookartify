@@ -19,6 +19,10 @@ DROP TABLE users;
 
 CREATE TABLE users (
     id varchar(512) NOT NULL UNIQUE,
+    username VARCHAR(255) UNIQUE,
+    bio TEXT,
+    profile_pic_url VARCHAR(2083),
+    goodreads_url VARCHAR(1024),
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

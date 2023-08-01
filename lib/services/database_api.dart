@@ -4,11 +4,12 @@ import 'package:http/http.dart' as http;
 const String baseUrl = "https://bookartify.scss.tcd.ie";
 
 /* ------------------ User ------------------ */
-Future<void> addUser(String userId) async {
+Future<void> addUser(String userId, String username) async {
   final url = Uri.parse("$baseUrl/user/add_user");
 
   final body = jsonEncode({
     "id": userId,
+    "username": username,
   });
 
   final headers = {
@@ -22,6 +23,146 @@ Future<void> addUser(String userId) async {
     print("User created successfully");
   } else {
     throw Exception("Failed to create user in database");
+  }
+}
+
+Future<Map<String, dynamic>> getUserById(String userId) async {
+  final http.Response response =
+      await http.get(Uri.parse("$baseUrl/user/$userId"));
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    print(data.toString());
+    return data as Map<String, dynamic>;
+  } else {
+    throw Exception("Failed to get user data for id: $userId");
+  }
+}
+
+Future<String> getUsernameById(String userId) async {
+  final http.Response response =
+  await http.get(Uri.parse("$baseUrl/user/$userId"));
+
+  if (response.statusCode == 200) {
+    final Map<String, dynamic> data = jsonDecode(response.body);
+    print("---------------- Username: ${data["username"].toString()}");
+    return data["username"].toString();
+  } else {
+    throw Exception("Failed to get user data for id: $userId");
+  }
+}
+
+Future<void> updateBio(String userId, String newBio) async {
+  final url = Uri.parse("$baseUrl/user/$userId/update_bio");
+
+  try {
+    final http.Response response = await http.put(
+      url,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: jsonEncode({
+        "bio": newBio,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print("Bio updated successfully");
+    } else {
+      print("Failed to update bio: ${response.reasonPhrase}");
+    }
+  } catch (e) {
+    print("Error updating bio: $e");
+  }
+}
+
+Future<void> updateUsername(String userId, String newUsername) async {
+  final bool isAvailable = await isUsernameAvailable(newUsername);
+
+  if (isAvailable) {
+    final url = Uri.parse("$baseUrl/user/$userId/update_username");
+
+    try {
+      final http.Response response = await http.put(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode({
+          "username": newUsername,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        print("Username updated successfully");
+      } else {
+        print("Failed to update username: ${response.reasonPhrase}");
+      }
+    } catch (e) {
+      print("Error updating username: $e");
+    }
+  } else {
+    print("Username is not available");
+  }
+}
+
+Future<bool> isUsernameAvailable(String username) async {
+  final http.Response response = await http.get(Uri.parse(
+      "$baseUrl/check_username?username=$username"));
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    return data["isAvailable"];
+  } else {
+    throw Exception("Failed to check username status");
+  }
+}
+
+Future<void> updateProfilePicUrl(String userId, String profilePicUrl) async {
+  final url = Uri.parse("$baseUrl/user/$userId/update_profile_pic");
+
+  try {
+    final http.Response response = await http.put(
+      url,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: jsonEncode({
+        "profilePicUrl": profilePicUrl,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print("Bio updated successfully");
+    } else {
+      print("Failed to update profile pic: ${response.reasonPhrase}");
+    }
+  } catch (e) {
+    print("Error updating profile pic: $e");
+  }
+}
+
+Future<void> updateGoodreadsUrl(String userId, String goodreadsUrl) async {
+  final url = Uri.parse("$baseUrl/user/$userId/update_goodreads");
+
+  try {
+    final http.Response response = await http.put(
+      url,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: jsonEncode({
+        "goodreadsUrl": goodreadsUrl,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print("Goodreads link updated successfully");
+    } else {
+      print("Failed to update Goodreads link: ${response.reasonPhrase}");
+    }
+  } catch (e) {
+    print("Error updating Goodreads link: $e");
   }
 }
 

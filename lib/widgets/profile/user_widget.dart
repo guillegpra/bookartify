@@ -7,17 +7,21 @@ import 'package:bookartify/screens/following_list.dart';
 class UserWidget extends StatefulWidget {
   final String userId;
   final String username;
+  final String bio;
+  final String goodreadsUrl;
   final String profileImageUrl;
 
   const UserWidget({
-    Key? key,
+    super.key,
     required this.userId,
     required this.username,
+    required this.bio,
+    required this.goodreadsUrl,
     required this.profileImageUrl,
-  }) : super(key: key);
+  });
 
   @override
-  _UserWidgetState createState() => _UserWidgetState();
+  State<UserWidget> createState() => _UserWidgetState();
 }
 
 class _UserWidgetState extends State<UserWidget> {
@@ -74,7 +78,7 @@ class _UserWidgetState extends State<UserWidget> {
                 backgroundImage: widget.profileImageUrl.isNotEmpty
                     ? NetworkImage(widget.profileImageUrl) as ImageProvider
                     : const AssetImage("images/upload-images-placeholder.png")
-                        as ImageProvider,
+                as ImageProvider,
               ),
             ),
             const SizedBox(height: 10),
@@ -107,6 +111,8 @@ class _UserWidgetState extends State<UserWidget> {
         UserDisplay(
           userId: widget.userId,
           username: widget.username,
+          bio: widget.bio,
+          goodreadsUrl: widget.goodreadsUrl,
         ),
       ],
     );

@@ -201,14 +201,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           ),
                                                           Positioned(
                                                             top:
-                                                                10, // Adjust the top position as per your requirement
+                                                                10,
                                                             right:
-                                                                10, // Adjust the right position as per your requirement
+                                                                10,
                                                             child: Container(
                                                               width:
-                                                                  35, // Adjust the width of the white square as per your requirement
+                                                                  35,
                                                               height:
-                                                                  35, // Adjust the height of the white square as per your requirement
+                                                                  35,
                                                               decoration:
                                                                   BoxDecoration(
                                                                 color: Colors
@@ -218,12 +218,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 borderRadius:
                                                                     BorderRadius
                                                                         .circular(
-                                                                            10), // Adjust the border radius for curved corners
+                                                                            10),
                                                               ),
                                                               child:
                                                                   GestureDetector(
                                                                 onTap: () {
-                                                                  //TODO: Link to the AR feauture
+                                                                  //TODO: Link to the AR feature
                                                                   print(
                                                                       "AR button pressed");
                                                                 },
@@ -231,9 +231,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                     Image.asset(
                                                                   'images/augmented-reality.png',
                                                                   width:
-                                                                      25, // Adjust the width of the "augmented-reality.png" image as per your requirement
+                                                                      10,
                                                                   height:
-                                                                      25, // Adjust the height of the "augmented-reality.png" image as per your requirement
+                                                                      10,
                                                                 ),
                                                               ),
                                                             ),

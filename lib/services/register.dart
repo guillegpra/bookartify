@@ -1,5 +1,5 @@
 import 'package:bookartify/services/database_api.dart';
-import 'package:bookartify/services/usernames_db.dart';
+// import 'package:bookartify/services/usernames_db.dart';
 import 'package:bookartify/utils.dart';
 import 'package:bookartify/widgets/icons_and_buttons/loading_overlay.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,11 +13,11 @@ Future<String> generateDefaultUsername() async {
   String defaultUsername = "user_$_usernameCounter";
   _usernameCounter++;
 
-  bool isAvailable = await usernameAvailable(defaultUsername);
+  bool isAvailable = await isUsernameAvailable(defaultUsername);
   while (!isAvailable) {
     defaultUsername = "user$_usernameCounter";
     _usernameCounter++;
-    isAvailable = await usernameAvailable(defaultUsername);
+    isAvailable = await isUsernameAvailable(defaultUsername);
   }
 
   return defaultUsername;
@@ -73,9 +73,9 @@ Future<User?> signInWithGoogle(BuildContext context) async {
         await auth.signInWithCredential(credential);
 
         user = userCredential.user;
-        if (getUsername(user!.uid) == null) {
+        if (getUsernameById(user!.uid) == null) {
           String defaultUsername = await generateDefaultUsername();
-          addUsername(user!.uid, defaultUsername);
+          addUser(user!.uid, defaultUsername); // add to database
         }
       } on FirebaseAuthException catch (e) {
         if (e.code == "account-exists-with-different-credential") {
@@ -107,7 +107,7 @@ Future<User?> signInWithGoogle(BuildContext context) async {
 }
 
 Future<void> signUp(BuildContext context, String email, String password, String username) async {
-  if (!(await usernameAvailable(username))) {
+  if (!(await isUsernameAvailable(username))) {
     Utils.showSnackBar("Username is already taken", true);
     return;
   }
@@ -118,11 +118,9 @@ Future<void> signUp(BuildContext context, String email, String password, String 
     UserCredential user = await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
 
-    addUser(user.user!.uid); // add user to SQL
-
     // add username to database
     String selectedUsername = username.isNotEmpty ? username : await generateDefaultUsername();
-    await addUsername(user.user!.uid, selectedUsername);
+    await addUser(user.user!.uid, selectedUsername); // add user to SQL
   } on FirebaseAuthException catch (e) {
     Utils.showSnackBar(e.message, true);
   }

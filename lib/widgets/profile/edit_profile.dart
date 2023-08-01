@@ -1,3 +1,4 @@
+import 'package:bookartify/services/database_api.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,12 +13,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'dart:io';
 
 class EditProfileScreen extends StatefulWidget {
-  final User? currentUser;
+  final String userId;
 
-  const EditProfileScreen({required this.currentUser});
+  const EditProfileScreen({super.key, required this.userId});
 
   @override
-  _EditProfileScreenState createState() => _EditProfileScreenState();
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
@@ -33,10 +34,28 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchCurrentBio();
-    _fetchCurrentUsername();
-    _fetchCurrentProfilePic(); // Fetch the current profile pic
-    _fetchCurrentGoodreadsUrl(); // Fetch the current Goodreads URL
+    _fetchUserData();
+  }
+
+  Future<void> _fetchUserData() async {
+    Map<String, dynamic> data = await getUserById(widget.userId);
+    print(data.toString());
+    setState(() {
+      // username
+      _currentUsername = data["username"] ?? '';
+      _usernameController.text = _currentUsername;
+
+      // bio
+      _currentBio = data["bio"] ?? '';
+      _bioController.text = _currentBio;
+
+      // profile pic
+      _currentProfilePicUrl = data["profile_pic_url"] ?? '';
+
+      // goodreads url
+      _currentGoodreadsUrl = data["goodreads_url"] ?? '';
+      _goodreadsUrlController.text = _currentGoodreadsUrl;
+    });
   }
 
   Future<void> _selectImage(ImageSource source) async {
@@ -88,7 +107,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     try {
       final reference = firebase_storage.FirebaseStorage.instance
           .ref()
-          .child('user_profile_pics/${widget.currentUser!.uid}');
+          .child('user_profile_pics/${widget.userId}');
       final uploadTask = reference.putFile(image);
       final snapshot = await uploadTask;
       final downloadUrl = await snapshot.ref.getDownloadURL();
@@ -99,112 +118,107 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
   }
 
-  Future<void> _fetchCurrentBio() async {
-    if (widget.currentUser != null) {
-      final String? bio = await getUserBio(widget.currentUser!.uid);
-      setState(() {
-        _currentBio = bio ?? '';
-        _bioController.text = _currentBio;
-      });
-    }
-  }
-
-  Future<void> _fetchCurrentUsername() async {
-    if (widget.currentUser != null) {
-      final String? username = await getUsername(widget.currentUser!.uid);
-      setState(() {
-        _currentUsername = username ?? '';
-        _usernameController.text = _currentUsername;
-      });
-    }
-  }
-
-  Future<void> _fetchCurrentProfilePic() async {
-    if (widget.currentUser != null) {
-      final String? profilePicUrl =
-          await getUserProfilePic(widget.currentUser!.uid);
-      setState(() {
-        _currentProfilePicUrl = profilePicUrl;
-      });
-    }
-  }
-
-  Future<void> _fetchCurrentGoodreadsUrl() async {
-    if (widget.currentUser != null) {
-      final String? goodreadsUrl =
-          await getUserGoodreadsUrl(widget.currentUser!.uid);
-      setState(() {
-        _currentGoodreadsUrl = goodreadsUrl ?? '';
-        _goodreadsUrlController.text = _currentGoodreadsUrl;
-      });
-    }
-  }
+  // Future<void> _fetchCurrentBio() async {
+  //   if (widget.currentUser != null) {
+  //     final String? bio = await getUserBio(widget.currentUser!.uid);
+  //     setState(() {
+  //       _currentBio = bio ?? '';
+  //       _bioController.text = _currentBio;
+  //     });
+  //   }
+  // }
+  //
+  // Future<void> _fetchCurrentUsername() async {
+  //   if (widget.currentUser != null) {
+  //     final String? username = await getUsername(widget.currentUser!.uid);
+  //     setState(() {
+  //       _currentUsername = username ?? '';
+  //       _usernameController.text = _currentUsername;
+  //     });
+  //   }
+  // }
+  //
+  // Future<void> _fetchCurrentProfilePic() async {
+  //   if (widget.currentUser != null) {
+  //     final String? profilePicUrl =
+  //         await getUserProfilePic(widget.currentUser!.uid);
+  //     setState(() {
+  //       _currentProfilePicUrl = profilePicUrl;
+  //     });
+  //   }
+  // }
+  //
+  // Future<void> _fetchCurrentGoodreadsUrl() async {
+  //   if (widget.currentUser != null) {
+  //     final String? goodreadsUrl =
+  //         await getUserGoodreadsUrl(widget.currentUser!.uid);
+  //     setState(() {
+  //       _currentGoodreadsUrl = goodreadsUrl ?? '';
+  //       _goodreadsUrlController.text = _currentGoodreadsUrl;
+  //     });
+  //   }
+  // }
 
   void _saveChanges() async {
     final String newBio = _bioController.text;
     final String newUsername = _usernameController.text;
     bool changesMade = false;
 
-    if (widget.currentUser != null) {
-      try {
-        // Update the bio
-        if (newBio != _currentBio) {
-          await addUserBio(widget.currentUser!.uid, newBio);
-          setState(() {
-            _currentBio = newBio;
-          });
-          changesMade = true;
-        }
-
-        // Update the username
-        if (newUsername != _currentUsername) {
-          final currentUsername =
-              _currentUsername; // Use _currentUsername instead of widget.currentUser!.displayName
-          await changeUsername(currentUsername, newUsername);
-          setState(() {
-            _currentUsername = newUsername;
-          });
-          changesMade = true;
-        }
-
-        // Update the Goodreads URL
-        if (_goodreadsUrlController.text != _currentGoodreadsUrl) {
-          await addUserGoodreadsUrl(
-              widget.currentUser!.uid, _goodreadsUrlController.text);
-          setState(() {
-            _currentGoodreadsUrl = _goodreadsUrlController.text;
-          });
-          changesMade = true;
-        }
-
-        // Upload and update the profile picture
-        if (_selectedImage != null) {
-          final imageUrl = await _uploadImage(_selectedImage!);
-          if (imageUrl != null) {
-            await addUserProfilePic(widget.currentUser!.uid, imageUrl);
-            changesMade = true;
-          }
-        }
-
-        if (changesMade) {
-          // Show a success message or navigate to another page
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    ProfileScreen(userId: widget.currentUser!.uid)),
-          );
-        } else {
-          // No changes were made
-          // navigate back
-          Navigator.pop(context);
-        }
-      } catch (e) {
-        print('Error updating user profile: $e');
-        // Show an error message
+    try {
+      // Update the bio
+      if (newBio != _currentBio) {
+        await updateBio(widget.userId, newBio);
+        setState(() {
+          _currentBio = newBio;
+        });
+        changesMade = true;
       }
-    } else {
-      // Current user is null, handle this scenario as per your requirements
+
+      // Update the username
+      if (newUsername != _currentUsername) {
+        // final currentUsername = _currentUsername;
+        // await changeUsername(currentUsername, newUsername);
+        await updateUsername(widget.userId, newUsername);
+        setState(() {
+          _currentUsername = newUsername;
+        });
+        changesMade = true;
+      }
+
+      // Update the Goodreads URL
+      if (_goodreadsUrlController.text != _currentGoodreadsUrl) {
+        await updateGoodreadsUrl(widget.userId, _goodreadsUrlController.text);
+        setState(() {
+          _currentGoodreadsUrl = _goodreadsUrlController.text;
+        });
+        changesMade = true;
+      }
+
+      // Upload and update the profile picture
+      if (_selectedImage != null) {
+        final imageUrl = await _uploadImage(_selectedImage!);
+        if (imageUrl != null) {
+          await updateProfilePicUrl(widget.userId, imageUrl);
+          changesMade = true;
+        }
+      }
+
+      if (changesMade) {
+        // Show a success message or navigate to another page
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  ProfileScreen(userId: widget.userId)),
+        );
+      } else {
+        // No changes were made
+        // navigate back
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      print('Error updating user profile: $e');
+      // Show an error message
     }
   }
 
@@ -212,6 +226,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void dispose() {
     _bioController.dispose();
     _usernameController.dispose();
+    _goodreadsUrlController.dispose();
     super.dispose();
   }
 
@@ -219,7 +234,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xfffbf8f2),
+        backgroundColor: Colors.grey[50],
+        elevation: 0,
         centerTitle: true,
         title: Text(
           'Edit Profile',
@@ -272,7 +288,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           ),
                         ),
                       )
-                    else if (_currentProfilePicUrl != null)
+                    else if (_currentProfilePicUrl != null && _currentProfilePicUrl != "")
                       Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
@@ -318,61 +334,73 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ],
                 ),
               ),
-              const Text(
-                'Username',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
+              const Padding(
+                padding: EdgeInsets.fromLTRB(6.0, 0, 0, 0),
+                child: Text(
+                  'Username',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
               ),
               const SizedBox(height: 10),
               TextField(
                 controller: _usernameController,
                 maxLength: 20,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   hintText: 'Enter your username',
                   border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
                     borderSide:
-                        BorderSide(color: Color(0x85808080), width: 2.0),
+                      const BorderSide(color: Color(0x85808080), width: 2.0),
                   ),
                 ),
               ),
               const SizedBox(height: 16),
-              const Text(
-                'Bio',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
+              const Padding(
+                padding: EdgeInsets.fromLTRB(6.0, 0, 0, 0),
+                child: Text(
+                  'Bio',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
               ),
               const SizedBox(height: 10),
               TextField(
                 controller: _bioController,
                 maxLength: 40,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   hintText: 'Enter your bio',
                   border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
                     borderSide:
-                        BorderSide(color: Color(0x85808080), width: 2.0),
+                        const BorderSide(color: Color(0x85808080), width: 2.0),
                   ),
                 ),
               ),
               const SizedBox(height: 16),
-              const Text(
-                'Goodreads Profile',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
+              const Padding(
+                padding: EdgeInsets.fromLTRB(6.0, 0, 0, 0),
+                child: Text(
+                  'Goodreads Profile',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
               ),
               const SizedBox(height: 10),
               TextField(
                 controller: _goodreadsUrlController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   hintText: 'Enter your Goodreads profile link',
                   border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
                     borderSide:
-                        BorderSide(color: Color(0x85808080), width: 2.0),
+                        const BorderSide(color: Color(0x85808080), width: 2.0),
                   ),
                 ),
               ),

@@ -1,7 +1,5 @@
 import 'package:bookartify/services/database_api.dart';
 import 'package:bookartify/widgets/icons_and_buttons/share_profile_button.dart';
-import 'package:bookartify/services/user_bios_db.dart';
-import 'package:bookartify/services/user_goodreads_links_db.dart';
 import 'package:bookartify/widgets/profile/edit_profile.dart';
 import 'package:bookartify/widgets/icons_and_buttons/follow_button.dart';
 import 'package:flutter/material.dart';
@@ -12,22 +10,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 class UserDisplay extends StatelessWidget {
   final String userId;
   final String username;
+  final String bio;
+  final String goodreadsUrl;
 
-  const UserDisplay({super.key, required this.userId, required this.username});
+  const UserDisplay({super.key, required this.userId, required this.username,
+  required this.bio, required this.goodreadsUrl});
 
   Future<void> _launchUrl(BuildContext context) async {
     final User? currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser == null) return;
-
-    // final bool isFollowing = await isFollowingUser(currentUser!.uid, userId);
-    // print("isFollowing: $isFollowing");
-
-    String? goodreadsUrl = await getUserGoodreadsUrl(currentUser.uid);
     if (goodreadsUrl == null || goodreadsUrl.isEmpty) {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => EditProfileScreen(currentUser: currentUser),
+          builder: (context) => EditProfileScreen(userId: userId),
         ),
       );
       return;
@@ -65,25 +60,15 @@ class UserDisplay extends StatelessWidget {
                 ))
           ],
         ),
-        FutureBuilder<String?>(
-          future: currentUser != null ? getUserBio(currentUser.uid) : null,
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return const Text('Error retrieving bio');
-            } else {
-              final bio = snapshot.data;
-              return SizedBox(
-                width: 130,
-                child: Text(
-                  bio ?? 'Hi there!',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  softWrap: false,
-                  style: GoogleFonts.poppins(fontSize: 12),
-                ),
-              );
-            }
-          },
+        SizedBox(
+          width: 130,
+          child: Text(
+            bio,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            softWrap: false,
+            style: GoogleFonts.poppins(fontSize: 12),
+          ),
         ),
         const SizedBox(height: 10), // FollowButton(isFollowing: false),
         Row(
@@ -115,7 +100,7 @@ class UserDisplay extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                          EditProfileScreen(currentUser: currentUser),
+                          EditProfileScreen(userId: userId,),
                       ),
                     );
                   },
