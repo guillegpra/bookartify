@@ -21,6 +21,7 @@ class SearchScanBar extends StatefulWidget implements PreferredSizeWidget {
 
 class _SearchScanBarState extends State<SearchScanBar> {
   final TextEditingController _controller = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
 
   @override
   void initState() {
@@ -28,6 +29,9 @@ class _SearchScanBarState extends State<SearchScanBar> {
     _controller.addListener(() {
       setState(
         () {}); // rebuilds the widget on every text change to update the cross icon visibility
+    });
+     Future.delayed(Duration.zero).then((_) {
+      FocusScope.of(context).requestFocus(_focusNode);
     });
   }
 
@@ -75,7 +79,8 @@ class _SearchScanBarState extends State<SearchScanBar> {
             border: InputBorder.none,
           ),
           onChanged: widget.onChanged,
-          autofocus: false, // TextField automatically focused
+          focusNode: _focusNode,
+          autofocus: true, // TextField automatically focused
         ),
       ),
       centerTitle: true,
