@@ -61,7 +61,7 @@ class UserDisplay extends StatelessWidget {
           ],
         ),
         SizedBox(
-          width: 130,
+          width: 160,
           child: Text(
             bio,
             maxLines: 2,
