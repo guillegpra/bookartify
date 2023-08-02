@@ -62,12 +62,14 @@ class UserDisplay extends StatelessWidget {
         ),
         SizedBox(
           width: 160,
-          child: Text(
-            bio,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            softWrap: false,
-            style: GoogleFonts.poppins(fontSize: 12),
+          child: Center(
+            child: Text(
+              bio,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              style: GoogleFonts.poppins(fontSize: 12),
+            ),
           ),
         ),
         const SizedBox(height: 10), // FollowButton(isFollowing: false),

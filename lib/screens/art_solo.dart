@@ -1,14 +1,12 @@
 import 'package:bookartify/widgets/icons_and_buttons/like_icon.dart';
 import 'package:bookartify/widgets/icons_and_buttons/save_icon.dart';
 import 'package:bookartify/widgets/icons_and_buttons/share_button.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:bookartify/models/book_search.dart';
-import 'package:bookartify/services/usernames_db.dart';
 import 'package:bookartify/screens/book_screen.dart';
 import 'package:bookartify/screens/profile_screen.dart';
-import 'package:bookartify/services/database_api.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class ArtSoloScreen extends StatelessWidget {
   final String type;
@@ -24,16 +22,13 @@ class ArtSoloScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> _navigateToUserProfile() async {
-      final username = await getUsername(post["user_id"]);
-      if (username != null) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProfileScreen(userId: post["user_id"].toString()),
-          ),
-        );
-      }
+    void navigateToUserProfile() {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProfileScreen(userId: post["user_id"].toString()),
+        ),
+      );
     }
 
     return Scaffold(
@@ -91,32 +86,66 @@ class ArtSoloScreen extends StatelessWidget {
                                 style: GoogleFonts.dmSerifDisplay(
                                     fontSize: 19, fontWeight: FontWeight.w600),
                               ),
-                              FutureBuilder<String?>(
-                                future: getUsername(
-                                  post["user_id"].toString(),
-                                ),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return const CircularProgressIndicator();
-                                  } else if (snapshot.hasError) {
-                                    return Text('Error: ${snapshot.error}');
-                                  } else {
-                                    final username = snapshot.data;
-                                    return GestureDetector(
-                                      onTap: _navigateToUserProfile,
-                                      child: Text(
-                                        'By ${username ?? 'Unknown Artist'}',
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w300,
-                                          decoration: TextDecoration.underline,
-                                        ),
+                              RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: 'By ',
+                                      style: GoogleFonts
+                                          .poppins(
+                                        fontSize: 15,
+                                        color: Colors.black,
+                                        fontWeight:
+                                        FontWeight.w300,
                                       ),
-                                    );
-                                  }
-                                },
+                                    ),
+                                    TextSpan(
+                                      text: post["username"].toString(),
+                                      style: GoogleFonts
+                                          .poppins(
+                                        fontSize: 15,
+                                        color: Colors.black,
+                                        fontWeight:
+                                        FontWeight.w300,
+                                        decoration:
+                                        TextDecoration
+                                            .underline,
+                                      ),
+                                      // Add the onTap callback here
+                                      recognizer:
+                                      TapGestureRecognizer()
+                                        ..onTap =
+                                            navigateToUserProfile,
+                                    ),
+                                  ],
+                                ),
                               ),
+                              // FutureBuilder<String?>(
+                              //   future: getUsername(
+                              //     post["user_id"].toString(),
+                              //   ),
+                              //   builder: (context, snapshot) {
+                              //     if (snapshot.connectionState ==
+                              //         ConnectionState.waiting) {
+                              //       return const CircularProgressIndicator();
+                              //     } else if (snapshot.hasError) {
+                              //       return Text('Error: ${snapshot.error}');
+                              //     } else {
+                              //       final username = snapshot.data;
+                              //       return GestureDetector(
+                              //         onTap: _navigateToUserProfile,
+                              //         child: Text(
+                              //           'By ${username ?? 'Unknown Artist'}',
+                              //           style: GoogleFonts.poppins(
+                              //             fontSize: 15,
+                              //             fontWeight: FontWeight.w300,
+                              //             decoration: TextDecoration.underline,
+                              //           ),
+                              //         ),
+                              //       );
+                              //     }
+                              //   },
+                              // ),
                             ],
                           ),
                         ),
