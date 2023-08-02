@@ -11,9 +11,10 @@ import 'package:bookartify/screens/profile_screen.dart';
 class FollowingListScreen extends StatefulWidget {
   final String userId;
 
-  FollowingListScreen({required this.userId});
+  const FollowingListScreen({super.key, required this.userId});
+
   @override
-  _FollowingListScreenState createState() => _FollowingListScreenState();
+  State<FollowingListScreen> createState() => _FollowingListScreenState();
 }
 
 class _FollowingListScreenState extends State<FollowingListScreen>
@@ -125,8 +126,8 @@ class _FollowingListScreenState extends State<FollowingListScreen>
         children: [
           TabBar(
             controller: _tabController,
-            indicatorColor: Color(0xFF8A6245),
-            tabs: [
+            indicatorColor: const Color(0xFF8A6245),
+            tabs: const [
               Tab(
                 icon: Icon(Icons.book),
                 text: "Books",
@@ -141,8 +142,14 @@ class _FollowingListScreenState extends State<FollowingListScreen>
             child: TabBarView(
               controller: _tabController,
               children: [
-                _buildBooksTab(),
-                _buildArtistsTab(),
+                RefreshIndicator(
+                  onRefresh: _fetchFollowingBooks,
+                  child: _buildBooksTab()
+                ),
+                RefreshIndicator(
+                  onRefresh: _fetchFollowingArtists,
+                  child: _buildArtistsTab()
+                ),
               ],
             ),
           ),
@@ -160,48 +167,57 @@ class _FollowingListScreenState extends State<FollowingListScreen>
         String author = book.author;
         String thumbnailUrl = book.thumbnailUrl;
 
-        return Padding(
-          padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(42),
-              color: const Color.fromARGB(70, 192, 162, 73),
-            ),
-            child: ListTile(
-              leading: GestureDetector(
-                onTap: () {
-                  _navigateToBookScreen(book);
-                },
-                child: Container(
-                  width: 60,
-                  height: 90,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    image: DecorationImage(
-                      image: NetworkImage(thumbnailUrl),
-                      fit: BoxFit.contain, // Use BoxFit.contain here
+        return GestureDetector(
+          onTap: () {
+            _navigateToBookScreen(book);
+          },
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 2.0),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(42),
+                color: const Color.fromARGB(70, 192, 162, 73),
+              ),
+              child: ListTile(
+                leading: GestureDetector(
+                  onTap: () {
+                    _navigateToBookScreen(book);
+                  },
+                  child: Container(
+                    width: 60,
+                    height: 90,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      image: DecorationImage(
+                        image: NetworkImage(thumbnailUrl),
+                        fit: BoxFit.contain, // Use BoxFit.contain here
+                      ),
                     ),
                   ),
                 ),
-              ),
-              title: GestureDetector(
-                onTap: () {
-                  _navigateToBookScreen(book);
-                },
-                child: Text(
+                title: Text(
                   title,
                   style: GoogleFonts.dmSerifDisplay(
                     fontWeight: FontWeight.bold,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-              subtitle: GestureDetector(
-                onTap: () {
-                  _navigateToBookScreen(book);
-                },
-                child: Text(
+                subtitle: Text(
                   author,
                   style: GoogleFonts.poppins(),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                trailing: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      // TODO
+                      print("pressed");
+                    },
+                    child: const Icon(Icons.add), // TODO: follow/unfollow from here
+                  ),
                 ),
               ),
             ),
@@ -225,18 +241,18 @@ class _FollowingListScreenState extends State<FollowingListScreen>
       future: _followingArtistsFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
-          return Center(
+          return const Center(
             child: Text("Error fetching data"),
           );
         } else {
           List<String> artistNames = snapshot.data ?? [];
 
           if (artistNames.isEmpty) {
-            return Center(
+            return const Center(
               child: Text("No artists followed yet."),
             );
           }
@@ -248,14 +264,14 @@ class _FollowingListScreenState extends State<FollowingListScreen>
               String artistName = artistNames[index];
 
               return Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(42),
                     color: const Color.fromARGB(70, 192, 162, 73),
                   ),
                   child: ListTile(
-                    leading: Icon(Icons.person),
+                    leading: const Icon(Icons.person),
                     title: GestureDetector(
                       onTap: () {
                         _navigateToUserProfileScreen(artistUserId);
