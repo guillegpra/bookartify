@@ -3,6 +3,7 @@ import 'package:bookartify/widgets/info_box.dart';
 import 'package:bookartify/widgets/upload_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:html/parser.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -155,7 +156,7 @@ class _BookInfoTabletState extends State<BookInfoTablet> {
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.3,
             child: Text(
-              "The Seven Husbands of Evelyn Hugo tells the story of old Hollywood actor Evelyn Hugo, determined to secure an A-List spot in the industry by doing whatever it takes to get there. While attempting to complete her rise to stardom, she marries  seven husbands and outlives them all. Later in her life, Hugo then hires a lesser-known journalist to write her memoir and, for the first time in her decorated life, tells details and secrets about her love life leaving readers with no choice but to keep turning the pages.\n\nMonique Grant – the journalist hired by Hugo – goes on her own journey while learning about the actress and as the book goes on, Grant seeks to discover why she was chosen to document Hugo’s life. The reason is later revealed, in a twist leaving readers on edge.",
+              parseFragment(widget.book.description).text ?? "",
               maxLines: 20,
               overflow: TextOverflow.ellipsis,
               softWrap: false,

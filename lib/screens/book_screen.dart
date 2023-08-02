@@ -1,4 +1,3 @@
-import 'package:bookartify/is_tablet.dart';
 import 'package:bookartify/models/book_search.dart';
 import 'package:bookartify/widgets/book_info.dart';
 import 'package:bookartify/widgets/book_info_tablet.dart';
@@ -77,14 +76,12 @@ class _BookScreenState extends State<BookScreen> {
         centerTitle: true,
       ),
       body: DefaultTabController(
-        length: isTablet(context) ? 2 : 3,
+        length: 3,
         child: NestedScrollView(
           headerSliverBuilder: (context, _) {
             return [
               SliverToBoxAdapter(
-                child: !isTablet(context)
-                    ? BookInfo(book: widget.book)
-                    : BookInfoTablet(book: widget.book),
+                child: BookInfo(book: widget.book),
               ),
             ];
           },
@@ -100,7 +97,7 @@ class _BookScreenState extends State<BookScreen> {
                 TabBar(
                   indicatorColor: const Color(0xFF8A6245),
                   tabs: [
-                    if (!isTablet(context)) const Tab(text: 'Synopsis'),
+                    const Tab(text: 'Synopsis'),
                     const Tab(text: 'Bookart'),
                     const Tab(text: 'Covers'),
                   ],
@@ -109,51 +106,37 @@ class _BookScreenState extends State<BookScreen> {
                   child: TabBarView(
                     children: [
                       // ------ Synopsis content ------
-                      if (!isTablet(context))
-                        KeepAliveWrapper(
-                          key: const ValueKey(0),
-                          child:
-                              SynopsisWidget(synopsis: widget.book.description),
-                        ),
+                      KeepAliveWrapper(
+                        key: const ValueKey(0),
+                        child:
+                            SynopsisWidget(synopsis: widget.book.description),
+                      ),
                       // ------ Covers content ------
                       KeepAliveWrapper(
-                        key: ValueKey(isTablet(context) ? 0 : 1),
+                        key: const ValueKey(1),
                         child: FutureBuilder<List<dynamic>>(
                           future: getArtByBook(widget.book.id),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
                               return const Center(
-                                  child: CircularProgressIndicator());
+                                child: CircularProgressIndicator(),
+                              );
                             } else if (snapshot.hasError) {
                               return Center(
-                                  child: Text("Error: ${snapshot.error}"));
+                                child: Text("Error: ${snapshot.error}"),
+                              );
                             } else {
                               final List<dynamic> artworkData =
                                   snapshot.data ?? [];
                               if (artworkData.isEmpty) {
                                 return const Center(
-                                    child: Text("No art for this book yet"));
+                                  child: Text("No art for this book yet"),
+                                );
                               } else {
                                 return ImageGrid(
                                   types: List.filled(artworkData.length, "art"),
                                   posts: artworkData,
-                                  // imagePaths: artworkData
-                                  //     .map((artwork) =>
-                                  //         artwork["url"].toString())
-                                  //     .toList(),
-                                  // imageTitles: artworkData
-                                  //     .map((artwork) =>
-                                  //         artwork["title"].toString())
-                                  //     .toList(),
-                                  // bookIds: artworkData
-                                  //     .map((artwork) =>
-                                  //         artwork["book_id"].toString())
-                                  //     .toList(),
-                                  // userIds: artworkData
-                                  //     .map((artwork) =>
-                                  //         artwork["user_id"].toString())
-                                  //     .toList(),
                                 );
                               }
                             }
@@ -162,41 +145,31 @@ class _BookScreenState extends State<BookScreen> {
                       ),
                       // ------ Collections content ------
                       KeepAliveWrapper(
-                        key: ValueKey(isTablet(context) ? 1 : 2),
+                        key: const ValueKey(2),
                         child: FutureBuilder<List<dynamic>>(
                           future: getCoversByBook(widget.book.id),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
                               return const Center(
-                                  child: CircularProgressIndicator());
+                                child: CircularProgressIndicator(),
+                              );
                             } else if (snapshot.hasError) {
                               return Center(
-                                  child: Text("Error: ${snapshot.error}"));
+                                child: Text("Error: ${snapshot.error}"),
+                              );
                             } else {
                               final List<dynamic> coversData =
                                   snapshot.data ?? [];
                               if (coversData.isEmpty) {
                                 return const Center(
-                                    child: Text("No covers for this book yet"));
+                                  child: Text("No covers for this book yet"),
+                                );
                               } else {
                                 return ImageGrid(
-                                  types: List.filled(coversData.length, "cover"),
+                                  types:
+                                      List.filled(coversData.length, "cover"),
                                   posts: coversData,
-                                  // imagePaths: coversData
-                                  //     .map((cover) => cover["url"].toString())
-                                  //     .toList(),
-                                  // imageTitles: coversData
-                                  //     .map((cover) => cover["title"].toString())
-                                  //     .toList(),
-                                  // bookIds: coversData
-                                  //     .map((cover) =>
-                                  //         cover["book_id"].toString())
-                                  //     .toList(),
-                                  // userIds: coversData
-                                  //     .map((cover) =>
-                                  //         cover["user_id"].toString())
-                                  //     .toList(),
                                 );
                               }
                             }
