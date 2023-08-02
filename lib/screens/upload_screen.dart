@@ -16,7 +16,12 @@ class _UploadScreenState extends State<UploadScreen> {
     backgroundColor:
         MaterialStateProperty.all<Color>(const Color.fromARGB(255, 48, 80, 72)),
     foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-    fixedSize: MaterialStateProperty.all<Size>(Size(200, 50)),
+    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+      RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(42),
+      ),
+    ),
+    minimumSize: MaterialStateProperty.all<Size>(Size(200, 50)),
   );
 
   @override

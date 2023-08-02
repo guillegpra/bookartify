@@ -6,6 +6,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:bookartify/widgets/upload_book_selection.dart';
 import 'package:bookartify/services/database_api.dart';
+import 'package:bookartify/screens/art_solo.dart';
+import 'package:bookartify/models/book_search.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:io';
 
@@ -15,10 +17,12 @@ class ArtUploadPage extends StatefulWidget {
 }
 
 class _ArtUploadPageState extends State<ArtUploadPage> {
+  bool _isUploading = false;
   late ImagePicker _imagePicker;
   String? _selectedImagePath;
   late CropStyle _cropStyle;
   late CropAspectRatio _cropAspectRatio;
+  Book? selectedBook; // Declare selectedBook here
   String? selectedBookTitle;
   String? selectedBookAuthor;
   String? selectedBookId;
@@ -31,6 +35,12 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
     backgroundColor:
         MaterialStateProperty.all<Color>(const Color.fromARGB(255, 48, 80, 72)),
     foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+      RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(42),
+      ),
+    ),
+    minimumSize: MaterialStateProperty.all<Size>(Size(200, 50)),
   );
 
   @override
@@ -136,7 +146,62 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
     }
   }
 
+  Future<Map<String, dynamic>> _getMostRecentArtPost(String userId) async {
+    try {
+      // Fetch art posts from the database and sort them by the 'date_upload' field in descending order
+      List<dynamic> artPosts = await getArtByUser(userId);
+      artPosts.sort((a, b) => b['date_upload'].compareTo(a['date_upload']));
+
+      // Check if there are any art posts
+      if (artPosts.isNotEmpty) {
+        // Get the most recent art post
+        Map<String, dynamic> mostRecentPost = artPosts.first;
+
+        // Fetch the username of the poster
+        String? username =
+            await getUsername(mostRecentPost['user_id'].toString());
+
+        // Add the username to the map and return it
+        mostRecentPost['username'] = username ?? 'Unknown Artist';
+        return mostRecentPost;
+      } else {
+        // If no art posts found, return an empty map
+        return {};
+      }
+    } catch (e) {
+      print('Error fetching most recent art post: $e');
+      return {};
+    }
+  }
+
+  // Function to show error dialog
+  void _showErrorDialog(String errorMessage) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Error'),
+          content: Text(errorMessage),
+          actions: [
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> _uploadArt() async {
+    if (_isUploading) return; // Prevent multiple clicks while uploading
+
+    setState(() {
+      _isUploading = true; // Start the upload process
+    });
+
     if (_selectedImagePath != null) {
       User? user = FirebaseAuth.instance.currentUser;
       if (user != null) {
@@ -154,74 +219,60 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
               imageUrl,
             );
 
-            // Artwork uploaded successfully, show the "Post Published" page
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => PostPublishedPage(),
-              ),
-            );
+            // Fetch the newly uploaded art post from the database
+            List<dynamic> artPosts = await getArtByUser(user.uid);
+            if (artPosts.isNotEmpty) {
+              // Get the index of the latest art post
+              // Fetch the newly uploaded art post from the database
+              Map<String, dynamic>? latestArtPost =
+                  await _getMostRecentArtPost(user.uid);
+
+              // Artwork uploaded successfully, show the "Post Published" page
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ArtSoloScreen(
+                    type: 'art', // Set the correct type (e.g., 'art')
+                    post:
+                        latestArtPost, // Pass the data of the latest published art post
+                    book: selectedBook ??
+                        Book(
+                          id: '',
+                          title: 'No Book Selected',
+                          author: '',
+                          thumbnailUrl:
+                              '', // Provide any default thumbnail URL if needed
+                          publishedDate: '',
+                          pageCount: 0,
+                          description: '',
+                        ),
+                  ),
+                ),
+              );
+              setState(() {
+                _isUploading = false; // Reset the upload state
+              });
+            } else {
+              // No art posts found, show an error dialog
+              _showErrorDialog('Failed to load published art post.');
+            }
           } catch (e) {
             // Error while uploading to database
             print('Error uploading art to database: $e');
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text('Error'),
-                  content: Text('Failed to upload artwork to the database.'),
-                  actions: [
-                    TextButton(
-                      child: Text('OK'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
+            _showErrorDialog('Please fill all details and select a book');
           }
         } else {
           // Image upload failed, show error dialog
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text('Error'),
-                content: Text('Failed to upload image. Please try again.'),
-                actions: [
-                  TextButton(
-                    child: Text('OK'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              );
-            },
-          );
+          _showErrorDialog('Failed to upload image. Please try again.');
         }
       }
     } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Error'),
-            content: Text('You must select an image.'),
-            actions: [
-              TextButton(
-                child: Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
+      _showErrorDialog('You must select an image.');
     }
+
+    setState(() {
+      _isUploading = false; // Reset the upload state
+    });
   }
 
   @override
@@ -315,7 +366,7 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
                   labelText: 'Title',
                   border: OutlineInputBorder(),
                 ),
-                maxLength: 30,
+                maxLength: 30, // Set maximum character limit to 30
               ),
               SizedBox(height: 16),
               TextFormField(
@@ -324,7 +375,7 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
                   labelText: 'Description',
                   border: OutlineInputBorder(),
                 ),
-                maxLength: 80,
+                maxLength: 80, // Set maximum character limit to 80
               ),
               SizedBox(height: 32),
               Text(
@@ -337,20 +388,27 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
               SizedBox(height: 16),
               InkWell(
                 onTap: () async {
-                  final selectedBook =
-                      await Navigator.push<Map<String, dynamic>>(
+                  final book = await Navigator.push<Map<String, dynamic>>(
                     context,
                     MaterialPageRoute(
                       builder: (context) => SearchScreen(),
                     ),
                   );
 
-                  if (selectedBook != null) {
+                  if (book != null) {
                     setState(() {
-                      selectedBookTitle = selectedBook['title'];
-                      selectedBookAuthor = selectedBook['author'];
-                      selectedBookId = selectedBook[
-                          'id']; // Add this line to store the book ID
+                      selectedBook = Book(
+                        id: book['id'],
+                        title: book['title'],
+                        author: book['author'],
+                        thumbnailUrl: book['thumbnailUrl'],
+                        publishedDate: book['publishedDate'],
+                        pageCount: book['pageCount'],
+                        description: book['description'],
+                      );
+                      selectedBookTitle = book['title'];
+                      selectedBookAuthor = book['author'];
+                      selectedBookId = book['id'];
                     });
                   }
                 },
@@ -383,40 +441,24 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
                 child: Align(
                   alignment: Alignment.center,
                   child: ElevatedButton(
-                    onPressed: _uploadArt,
+                    onPressed: _isUploading ? null : _uploadArt,
+                    // Disable the button if upload is in progress
                     style: customButtonStyle,
-                    child: Text(
-                      "Publish Art",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                      ),
-                    ),
+                    child: _isUploading
+                        ? CircularProgressIndicator() // Show progress indicator
+                        : Text(
+                            "Publish Art",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              fontStyle: FontStyle.normal,
+                            ),
+                          ),
                   ),
                 ),
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class PostPublishedPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Your Post Was Published'),
-        backgroundColor: Color(0xfffbf8f2),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Text(
-          'Congratulations! Your art work has been published.',
-          style: TextStyle(fontSize: 18),
         ),
       ),
     );
