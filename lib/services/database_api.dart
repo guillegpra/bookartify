@@ -433,11 +433,14 @@ Future<List<dynamic>> getFollowingBooksByUser(String userId) async {
 }
 
 Future<bool> isFollowingUser(String userId, String followingId) async {
+  print("user_id: $userId");
+  print("following_id: $followingId");
   final http.Response response = await http.get(Uri.parse(
       "$baseUrl/check_follow/user?user_id=$userId&following_id=$followingId"));
 
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);
+    print('response: ${data["isFollowing"]}');
     return data["isFollowing"];
   } else {
     throw Exception("Failed to check follow status");

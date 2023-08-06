@@ -1,7 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:bookartify/services/database_api.dart';
-import 'package:bookartify/widgets/profile/user_widget.dart';
 import 'package:bookartify/services/google_books_api.dart';
 import 'package:bookartify/models/book_search.dart';
 import 'package:bookartify/screens/book_screen.dart';
@@ -24,12 +24,14 @@ class _FollowingListScreenState extends State<FollowingListScreen>
   List<dynamic> _followingArtists = [];
   List<Book> _followingBooks = [];
   Future<List<String>>? _followingArtistsFuture;
+  List<bool> _isFollowingBookList = [];
+  List<bool> _isFollowingArtistList = [];
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    _followingArtistsFuture = _fetchFollowingArtists();
+    // _followingArtistsFuture = _fetchFollowingArtists();
     _fetchFollowingBooks();
   }
 
@@ -44,19 +46,26 @@ class _FollowingListScreenState extends State<FollowingListScreen>
 
   Future<void> _fetchFollowingBooks() async {
     try {
+      String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+
       List<dynamic> followingBooks =
           await getFollowingBooksByUser(widget.userId);
       List<dynamic> bookIds =
           followingBooks.map((book) => book["following_id"]).toList();
 
       List<Book> books = [];
+      List<bool> isFollowingBookList = [];
       for (String bookId in bookIds) {
         Book book = await _googleBooksApi.getBookFromId(bookId);
         books.add(book);
+
+        bool isFollowingBookAux = await isFollowingBook(currentUserId, bookId);
+        isFollowingBookList.add(isFollowingBookAux);
       }
 
       setState(() {
         _followingBooks = books;
+        _isFollowingBookList = isFollowingBookList;
       });
     } catch (e) {
       print("Error fetching following books: $e");
@@ -65,18 +74,17 @@ class _FollowingListScreenState extends State<FollowingListScreen>
 
   Future<List<String>> _fetchFollowingArtists() async {
     try {
+      String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+
       List<dynamic> followingArtists =
           await getFollowingArtistsByUser(widget.userId);
       List<dynamic> artistIds =
           followingArtists.map((artist) => artist["following_id"]).toList();
 
-      setState(() {
-        _followingArtists =
-            artistIds; // Assign the fetched artist IDs to _followingArtists
-      });
+      List<bool> isFollowingArtistList = [];
 
       print(
-          "Following artists IDs: $_followingArtists"); // Check if the artist IDs are correct
+          "Following artists IDs: $artistIds"); // Check if the artist IDs are correct
 
       List<String> artistNames = [];
       for (String artistId in artistIds) {
@@ -84,7 +92,17 @@ class _FollowingListScreenState extends State<FollowingListScreen>
         if (username != null) {
           artistNames.add(username);
         }
+
+        // check if current user is following them
+        bool isFollowingArtistAux = await isFollowingUser(currentUserId, artistId);
+        isFollowingArtistList.add(isFollowingArtistAux);
       }
+
+      setState(() {
+        _followingArtists =
+            artistIds; // Assign the fetched artist IDs to _followingArtists
+        _isFollowingArtistList = isFollowingArtistList;
+      });
 
       print(
           "Following artist names: $artistNames"); // Check if the artist names are correct
@@ -93,6 +111,58 @@ class _FollowingListScreenState extends State<FollowingListScreen>
     } catch (e) {
       print("Error fetching following artists: $e");
       return []; // Return an empty list in case of an error
+    }
+  }
+
+  void _toggleSaveBook(bool isSaved, String bookId, int index) async {
+    // Get the current user's ID
+    String currentUserID = FirebaseAuth.instance.currentUser!.uid;
+
+    try {
+      if (isSaved) {
+        // If the book is saved, unfollow it
+        await unfollowBook(currentUserID, bookId);
+        print("Unfollowed book response: Success");
+      } else {
+        // If the book is not saved, follow it
+        await followBook(currentUserID, bookId);
+        print("Followed book response: Success");
+      }
+
+      // Toggle the icon state after successful follow/unfollow
+      setState(() {
+        _isFollowingBookList[index] = !_isFollowingBookList[index];
+      });
+    } catch (e) {
+      // Handle any errors that occur during the operation
+      print("Error saving/unfollowing book: $e");
+      // // Revert the 'isBookSaved' state to its original value if an error occurs
+      // setState(() {
+      //   isSaved = !isSaved;
+      // });
+    }
+  }
+
+  void _toggleFollowingUser(bool isFollowing, String userId, int index) async {
+    // Get the current user's ID
+    String currentUserID = FirebaseAuth.instance.currentUser!.uid;
+
+    try {
+      if (isFollowing) {
+        await unfollowUser(currentUserID, userId);
+        print("Unfollowed user response: Success");
+      } else {
+        await followUser(currentUserID, userId);
+        print("Followed user response: Success");
+      }
+
+      // Toggle the icon state after successful follow/unfollow
+      setState(() {
+        _isFollowingArtistList[index] = !_isFollowingArtistList[index];
+      });
+    } catch (e) {
+      // Handle any errors that occur during the operation
+      print("Error saving/unfollowing user: $e");
     }
   }
 
@@ -134,7 +204,7 @@ class _FollowingListScreenState extends State<FollowingListScreen>
               ),
               Tab(
                 icon: Icon(Icons.person),
-                text: "Artists",
+                text: "Users",
               ),
             ],
           ),
@@ -147,7 +217,10 @@ class _FollowingListScreenState extends State<FollowingListScreen>
                   child: _buildBooksTab()
                 ),
                 RefreshIndicator(
-                  onRefresh: _fetchFollowingArtists,
+                  onRefresh: () async {
+                    await _fetchFollowingArtists();
+                    _buildArtistsTab();
+                  },
                   child: _buildArtistsTab()
                 ),
               ],
@@ -163,9 +236,12 @@ class _FollowingListScreenState extends State<FollowingListScreen>
       itemCount: _followingBooks.length,
       itemBuilder: (context, index) {
         Book book = _followingBooks[index];
+        String bookId = book.id;
         String title = book.title;
         String author = book.author;
         String thumbnailUrl = book.thumbnailUrl;
+
+        bool isFollowing = _isFollowingBookList[index];
 
         return GestureDetector(
           onTap: () {
@@ -213,10 +289,15 @@ class _FollowingListScreenState extends State<FollowingListScreen>
                   padding: const EdgeInsets.only(right: 8.0),
                   child: GestureDetector(
                     onTap: () {
-                      // TODO
-                      print("pressed");
+                      _toggleSaveBook(isFollowing, bookId, index);
                     },
-                    child: const Icon(Icons.add), // TODO: follow/unfollow from here
+                    child: Icon(
+                      isFollowing ? Icons.check : Icons.add,
+                      size: 30,
+                      color: isFollowing
+                          ? const Color(0xFFBFA054)
+                          : const Color(0xFF2F2F2F),
+                    ),
                   ),
                 ),
               ),
@@ -251,9 +332,9 @@ class _FollowingListScreenState extends State<FollowingListScreen>
         } else {
           List<String> artistNames = snapshot.data ?? [];
 
-          if (artistNames.isEmpty) {
+          if (artistNames.isEmpty || !snapshot.hasData) {
             return const Center(
-              child: Text("No artists followed yet."),
+              child: Text("No users followed yet."),
             );
           }
 
@@ -262,6 +343,8 @@ class _FollowingListScreenState extends State<FollowingListScreen>
             itemBuilder: (context, index) {
               String artistUserId = _followingArtists[index];
               String artistName = artistNames[index];
+              bool isFollowing = _isFollowingArtistList[index];
+              print("is following: $isFollowing");
 
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
@@ -280,6 +363,21 @@ class _FollowingListScreenState extends State<FollowingListScreen>
                         artistName,
                         style: GoogleFonts.dmSerifDisplay(
                           fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    trailing: Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          _toggleFollowingUser(isFollowing, artistUserId, index);
+                        },
+                        child: Icon(
+                          isFollowing ? Icons.check : Icons.add,
+                          size: 30,
+                          color: isFollowing
+                              ? const Color(0xFFBFA054)
+                              : const Color(0xFF2F2F2F),
                         ),
                       ),
                     ),

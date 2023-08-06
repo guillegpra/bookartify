@@ -65,8 +65,7 @@ class _BookInfoState extends State<BookInfo> {
     String currentUserID = FirebaseAuth.instance.currentUser!.uid;
 
     // Get the book ID
-    String bookID =
-        widget.book.id; // Assuming the Book class has a property 'id'
+    String bookID = widget.book.id;
 
     try {
       if (isBookSaved) {
@@ -150,7 +149,7 @@ class _BookInfoState extends State<BookInfo> {
                               ),
                               overflow: TextOverflow.ellipsis,
                             ),
-                            Text(" by " + widget.book.author),
+                            Text(" by ${widget.book.author}"),
                           ],
                         ),
                       ),
