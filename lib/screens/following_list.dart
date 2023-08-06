@@ -21,18 +21,18 @@ class _FollowingListScreenState extends State<FollowingListScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final GoogleBooksApi _googleBooksApi = GoogleBooksApi();
-  List<dynamic> _followingArtists = [];
+  List<dynamic> _followingUsers = [];
   List<Book> _followingBooks = [];
-  Future<List<String>>? _followingArtistsFuture;
+  List<String> _followingUsernames = [];
   List<bool> _isFollowingBookList = [];
-  List<bool> _isFollowingArtistList = [];
+  List<bool> _isFollowingUserList = [];
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    // _followingArtistsFuture = _fetchFollowingArtists();
     _fetchFollowingBooks();
+    _fetchFollowingUsers();
   }
 
   void _navigateToUserProfileScreen(String userId) {
@@ -72,22 +72,22 @@ class _FollowingListScreenState extends State<FollowingListScreen>
     }
   }
 
-  Future<List<String>> _fetchFollowingArtists() async {
+  Future<List<String>> _fetchFollowingUsers() async {
     try {
       String currentUserId = FirebaseAuth.instance.currentUser!.uid;
 
-      List<dynamic> followingArtists =
+      List<dynamic> followingUsers =
           await getFollowingArtistsByUser(widget.userId);
-      List<dynamic> artistIds =
-          followingArtists.map((artist) => artist["following_id"]).toList();
+      List<dynamic> userIds =
+          followingUsers.map((artist) => artist["following_id"]).toList();
 
       List<bool> isFollowingArtistList = [];
 
       print(
-          "Following artists IDs: $artistIds"); // Check if the artist IDs are correct
+          "Following artists IDs: $userIds"); // Check if the artist IDs are correct
 
       List<String> artistNames = [];
-      for (String artistId in artistIds) {
+      for (String artistId in userIds) {
         String? username = await getUsername(artistId);
         if (username != null) {
           artistNames.add(username);
@@ -99,9 +99,10 @@ class _FollowingListScreenState extends State<FollowingListScreen>
       }
 
       setState(() {
-        _followingArtists =
-            artistIds; // Assign the fetched artist IDs to _followingArtists
-        _isFollowingArtistList = isFollowingArtistList;
+        _followingUsers =
+            userIds; // Assign the fetched artist IDs to _followingUsers
+        _followingUsernames = artistNames;
+        _isFollowingUserList = isFollowingArtistList;
       });
 
       print(
@@ -158,7 +159,7 @@ class _FollowingListScreenState extends State<FollowingListScreen>
 
       // Toggle the icon state after successful follow/unfollow
       setState(() {
-        _isFollowingArtistList[index] = !_isFollowingArtistList[index];
+        _isFollowingUserList[index] = !_isFollowingUserList[index];
       });
     } catch (e) {
       // Handle any errors that occur during the operation
@@ -218,10 +219,10 @@ class _FollowingListScreenState extends State<FollowingListScreen>
                 ),
                 RefreshIndicator(
                   onRefresh: () async {
-                    await _fetchFollowingArtists();
-                    _buildArtistsTab();
+                    await _fetchFollowingUsers();
+                    _buildUsersTab();
                   },
-                  child: _buildArtistsTab()
+                  child: _buildUsersTab()
                 ),
               ],
             ),
@@ -232,6 +233,10 @@ class _FollowingListScreenState extends State<FollowingListScreen>
   }
 
   Widget _buildBooksTab() {
+    if (_followingBooks.isEmpty) {
+      return const Center(child: Text("No books followed yet."),);
+    }
+
     return ListView.builder(
       itemCount: _followingBooks.length,
       itemBuilder: (context, index) {
@@ -317,76 +322,57 @@ class _FollowingListScreenState extends State<FollowingListScreen>
     );
   }
 
-  Widget _buildArtistsTab() {
-    return FutureBuilder<List<String>>(
-      future: _followingArtistsFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (snapshot.hasError) {
-          return const Center(
-            child: Text("Error fetching data"),
-          );
-        } else {
-          List<String> artistNames = snapshot.data ?? [];
+  Widget _buildUsersTab() {
+    if (_followingUsers.isEmpty) {
+      return const Center(child: Text("No users followed yet."),);
+    }
 
-          if (artistNames.isEmpty || !snapshot.hasData) {
-            return const Center(
-              child: Text("No users followed yet."),
-            );
-          }
+    return ListView.builder(
+      itemCount: _followingUsers.length,
+      itemBuilder: (context, index) {
+        String userId = _followingUsers[index];
+        String username = _followingUsernames[index];
+        bool isFollowing = _isFollowingUserList[index];
+        print("is following: $isFollowing");
 
-          return ListView.builder(
-            itemCount: artistNames.length,
-            itemBuilder: (context, index) {
-              String artistUserId = _followingArtists[index];
-              String artistName = artistNames[index];
-              bool isFollowing = _isFollowingArtistList[index];
-              print("is following: $isFollowing");
-
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(42),
-                    color: const Color.fromARGB(70, 192, 162, 73),
-                  ),
-                  child: ListTile(
-                    leading: const Icon(Icons.person),
-                    title: GestureDetector(
-                      onTap: () {
-                        _navigateToUserProfileScreen(artistUserId);
-                      },
-                      child: Text(
-                        artistName,
-                        style: GoogleFonts.dmSerifDisplay(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    trailing: Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          _toggleFollowingUser(isFollowing, artistUserId, index);
-                        },
-                        child: Icon(
-                          isFollowing ? Icons.check : Icons.add,
-                          size: 30,
-                          color: isFollowing
-                              ? const Color(0xFFBFA054)
-                              : const Color(0xFF2F2F2F),
-                        ),
-                      ),
-                    ),
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(42),
+              color: const Color.fromARGB(70, 192, 162, 73),
+            ),
+            child: ListTile(
+              leading: const Icon(Icons.person),
+              title: GestureDetector(
+                onTap: () {
+                  _navigateToUserProfileScreen(userId);
+                },
+                child: Text(
+                  username,
+                  style: GoogleFonts.dmSerifDisplay(
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              );
-            },
-          );
-        }
+              ),
+              trailing: Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: GestureDetector(
+                  onTap: () {
+                    _toggleFollowingUser(isFollowing, userId, index);
+                  },
+                  child: Icon(
+                    isFollowing ? Icons.check : Icons.add,
+                    size: 30,
+                    color: isFollowing
+                        ? const Color(0xFFBFA054)
+                        : const Color(0xFF2F2F2F),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
       },
     );
   }
