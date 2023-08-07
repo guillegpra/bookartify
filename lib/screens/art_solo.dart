@@ -1,6 +1,7 @@
 import 'package:bookartify/widgets/icons_and_buttons/like_icon.dart';
 import 'package:bookartify/widgets/icons_and_buttons/save_icon.dart';
 import 'package:bookartify/widgets/icons_and_buttons/share_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -120,32 +121,6 @@ class ArtSoloScreen extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              // FutureBuilder<String?>(
-                              //   future: getUsername(
-                              //     post["user_id"].toString(),
-                              //   ),
-                              //   builder: (context, snapshot) {
-                              //     if (snapshot.connectionState ==
-                              //         ConnectionState.waiting) {
-                              //       return const CircularProgressIndicator();
-                              //     } else if (snapshot.hasError) {
-                              //       return Text('Error: ${snapshot.error}');
-                              //     } else {
-                              //       final username = snapshot.data;
-                              //       return GestureDetector(
-                              //         onTap: _navigateToUserProfile,
-                              //         child: Text(
-                              //           'By ${username ?? 'Unknown Artist'}',
-                              //           style: GoogleFonts.poppins(
-                              //             fontSize: 15,
-                              //             fontWeight: FontWeight.w300,
-                              //             decoration: TextDecoration.underline,
-                              //           ),
-                              //         ),
-                              //       );
-                              //     }
-                              //   },
-                              // ),
                             ],
                           ),
                         ),
@@ -276,55 +251,66 @@ class ArtSoloScreen extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        print("Button pressed!");
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            const Color.fromARGB(255, 192, 162, 73),
-                        foregroundColor: Colors.black,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.5),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (FirebaseAuth.instance.currentUser!.uid ==
+                              post["user_id"].toString()) {
+                            // TODO: delete post
+                          } else {
+                            // TODO: save/unsave
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              const Color.fromARGB(255, 192, 162, 73),
+                          foregroundColor: Colors.black,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.5),
+                          ),
                         ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 0,
-                        ),
-                        child: Text(
-                          "Add to Collection",
-                          style: GoogleFonts.poppins(
-                              fontSize: 16, fontWeight: FontWeight.w400),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 0,
+                          ),
+                          child: Text(
+                            FirebaseAuth.instance.currentUser!.uid == post["user_id"].toString()
+                                ? "Delete" : "Add to Collection",
+                            style: GoogleFonts.poppins(
+                                fontSize: 16, fontWeight: FontWeight.w400),
+                          ),
                         ),
                       ),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        // TODO: connect to AR
-                        print("Button pressed!");
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 47, 47, 47),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.5),
+                    const SizedBox(width: 10,),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // TODO: connect to AR
+                          print("Button pressed!");
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromARGB(255, 47, 47, 47),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.5),
+                          ),
                         ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 28,
-                        ),
-                        child: Text(
-                          "View in AR",
-                          style: GoogleFonts.poppins(
-                              fontSize: 16, fontWeight: FontWeight.w400),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 28,
+                          ),
+                          child: Text(
+                            "View in AR",
+                            style: GoogleFonts.poppins(
+                                fontSize: 16, fontWeight: FontWeight.w400),
+                          ),
                         ),
                       ),
                     ),
