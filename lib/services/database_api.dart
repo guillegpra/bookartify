@@ -377,6 +377,23 @@ Future<int> getFollowersCountByUser(String userId) async {
   }
 }
 
+Future<List<dynamic>> getFollowersByUser(String userId) async {
+  final Uri url = Uri.parse("$baseUrl/user/$userId/followers");
+
+  try {
+    final http.Response response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return data as List<dynamic>;
+    } else {
+      throw Exception("Failed to get followers");
+    }
+  } catch (e) {
+    throw Exception("Failed to get followers: $e");
+  }
+}
+
 Future<int> getFollowingCountByUser(String userId) async {
   final http.Response response =
       await http.get(Uri.parse("$baseUrl/user/$userId/following/count"));

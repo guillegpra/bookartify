@@ -5,7 +5,6 @@ import 'package:bookartify/services/database_api.dart';
 import 'package:bookartify/services/google_books_api.dart';
 import 'package:bookartify/models/book_model.dart';
 import 'package:bookartify/screens/book_screen.dart';
-import 'package:bookartify/services/usernames_db.dart';
 import 'package:bookartify/screens/profile_screen.dart';
 
 class FollowingListScreen extends StatefulWidget {
@@ -88,7 +87,7 @@ class _FollowingListScreenState extends State<FollowingListScreen>
 
       List<String> artistNames = [];
       for (String artistId in userIds) {
-        String? username = await getUsername(artistId);
+        String? username = await getUsernameById(artistId);
         if (username != null) {
           artistNames.add(username);
         }

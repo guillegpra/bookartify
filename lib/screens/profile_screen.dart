@@ -1,7 +1,6 @@
+import 'package:bookartify/screens/followers_list.dart';
 import 'package:bookartify/services/database_api.dart';
 import 'package:bookartify/services/register.dart';
-import 'package:bookartify/services/usernames_db.dart';
-import 'package:bookartify/services/user_profile_pics_db.dart';
 import 'package:bookartify/widgets/image_grid.dart';
 import 'package:bookartify/widgets/keep_alive_wrapper.dart';
 import 'package:bookartify/widgets/profile/user_widget.dart';
@@ -151,7 +150,13 @@ class _ProfileScreenState extends State<ProfileScreen>
                 // Handle selected option
                 switch (value) {
                   case "followers":
-                    // TODO
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            FollowersListScreen(userId: FirebaseAuth.instance.currentUser!.uid)
+                      ),
+                    );
                     break;
                   case "edit":
                     Navigator.push(
