@@ -3,7 +3,7 @@ import 'package:bookartify/services/google_books_api.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:bookartify/screens/art_solo.dart';
-import 'package:bookartify/models/book_search.dart';
+import 'package:bookartify/models/book_model.dart';
 
 class PostWidget extends StatelessWidget {
   // final String path;

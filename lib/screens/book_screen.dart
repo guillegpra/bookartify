@@ -1,4 +1,4 @@
-import 'package:bookartify/models/book_search.dart';
+import 'package:bookartify/models/book_model.dart';
 import 'package:bookartify/widgets/book_info.dart';
 import 'package:bookartify/widgets/book_info_tablet.dart';
 import 'package:bookartify/widgets/image_grid.dart';

@@ -5,7 +5,8 @@ class Book {
   final String thumbnailUrl;
   final String publishedDate;
   final int pageCount;
-  final String description; // added
+  final String description;
+  final List<String> categories;
 
 
   Book(
@@ -15,9 +16,16 @@ class Book {
       required this.thumbnailUrl,
       required this.publishedDate,
       required this.pageCount,
-      required this.description});
+      required this.description,
+      required this.categories});
 
   factory Book.fromJson(Map<String, dynamic> json) {
+    List<String> categories = [];
+    if (json['volumeInfo'] != null && json['volumeInfo']['categories'] != null
+        && json['volumeInfo']['categories'].isNotEmpty) {
+      categories = List<String>.from(json['volumeInfo']['categories']);
+    }
+    
     return Book(
       id: json['id'] ?? "Id not available",
       title: json['volumeInfo']['title'] ?? "Title not available",
@@ -31,7 +39,8 @@ class Book {
       publishedDate: json['volumeInfo']['publishedDate'] ?? "No release date",
       pageCount: json['volumeInfo']['pageCount'] ?? 0,
       description:
-          json['volumeInfo']['description'] ?? "No synopsis available", // added
+          json['volumeInfo']['description'] ?? "No synopsis available",
+      categories: categories,
     );
   }
 }

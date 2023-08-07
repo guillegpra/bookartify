@@ -1,4 +1,4 @@
-import 'package:bookartify/models/book_search.dart';
+import 'package:bookartify/models/book_model.dart';
 import 'package:bookartify/widgets/info_box.dart';
 import 'package:bookartify/widgets/upload_button.dart';
 import 'package:flutter/cupertino.dart';

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:bookartify/widgets/search/search_bar.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:bookartify/models/book_search.dart';
+import 'package:bookartify/models/book_model.dart';
 import 'package:bookartify/services/google_books_api.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

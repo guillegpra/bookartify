@@ -1,4 +1,4 @@
-import 'package:bookartify/models/book_search.dart';
+import 'package:bookartify/models/book_model.dart';
 import 'package:bookartify/screens/book_screen.dart';
 import 'package:bookartify/screens/profile_screen.dart';
 import 'package:bookartify/services/google_books_api.dart';

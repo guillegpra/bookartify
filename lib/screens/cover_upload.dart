@@ -7,7 +7,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:bookartify/widgets/upload_book_selection.dart';
 import 'package:bookartify/services/database_api.dart';
 import 'package:bookartify/screens/art_solo.dart';
-import 'package:bookartify/models/book_search.dart';
+import 'package:bookartify/models/book_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:io';
 
@@ -245,6 +245,7 @@ class _CoverUploadPageState extends State<CoverUploadPage> {
                           publishedDate: '',
                           pageCount: 0,
                           description: '',
+                          categories: [],
                         ),
                   ),
                 ),
@@ -404,6 +405,7 @@ class _CoverUploadPageState extends State<CoverUploadPage> {
                         publishedDate: book['publishedDate'],
                         pageCount: book['pageCount'],
                         description: book['description'],
+                        categories: book['categories'],
                       );
                       selectedBookTitle = book['title'];
                       selectedBookAuthor = book['author'];

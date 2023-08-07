@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:bookartify/models/book_search.dart';
+import 'package:bookartify/models/book_model.dart';
 
 class GoogleBooksApi {
   final String _apiKey =

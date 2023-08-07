@@ -7,7 +7,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:bookartify/widgets/upload_book_selection.dart';
 import 'package:bookartify/services/database_api.dart';
 import 'package:bookartify/screens/art_solo.dart';
-import 'package:bookartify/models/book_search.dart';
+import 'package:bookartify/models/book_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:io';
 
@@ -40,14 +40,14 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
         borderRadius: BorderRadius.circular(42),
       ),
     ),
-    minimumSize: MaterialStateProperty.all<Size>(Size(200, 50)),
+    minimumSize: MaterialStateProperty.all<Size>(const Size(200, 50)),
   );
 
   @override
   void initState() {
     super.initState();
     _imagePicker = ImagePicker();
-    _cropAspectRatio = CropAspectRatio(ratioX: 16, ratioY: 9);
+    _cropAspectRatio = const CropAspectRatio(ratioX: 16, ratioY: 9);
     _cropStyle = CropStyle.rectangle;
     _fetchCurrentUsername();
   }
@@ -112,7 +112,7 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
       uiSettings: [
         AndroidUiSettings(
           toolbarTitle: 'Crop Image',
-          toolbarColor: Color(0xFFBFA054),
+          toolbarColor: const Color(0xFFBFA054),
           toolbarWidgetColor: Colors.white,
           initAspectRatio: CropAspectRatioPreset.original,
           lockAspectRatio: false,
@@ -180,11 +180,11 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Error'),
+          title: const Text('Error'),
           content: Text(errorMessage),
           actions: [
             TextButton(
-              child: Text('OK'),
+              child: const Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -245,6 +245,7 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
                           publishedDate: '',
                           pageCount: 0,
                           description: '',
+                          categories: [],
                         ),
                   ),
                 ),
@@ -279,13 +280,13 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xfffbf8f2),
+        backgroundColor: const Color(0xfffbf8f2),
         centerTitle: true,
         title: Text(
           'Upload Your Art Work',
           style: GoogleFonts.dmSerifDisplay(
             fontWeight: FontWeight.bold,
-            color: Color(0xff2f2f2f),
+            color: const Color(0xff2f2f2f),
             fontSize: 20,
           ),
         ),
@@ -296,7 +297,7 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Container(
                 alignment: Alignment.center,
                 child: _selectedImagePath == null
@@ -324,7 +325,7 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
                                   _selectedImagePath = null;
                                 });
                               },
-                              child: Icon(
+                              child: const Icon(
                                 Icons.close,
                                 color: Color.fromARGB(255, 255, 153, 0),
                               ),
@@ -334,13 +335,13 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
                       ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 0),
+                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
                 child: Align(
                   alignment: Alignment.center,
                   child: ElevatedButton(
                     onPressed: _selectImage,
                     style: customButtonStyle,
-                    child: Text(
+                    child: const Text(
                       "Select art from gallery",
                       style: TextStyle(
                         fontSize: 14,
@@ -351,47 +352,47 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
-              Text(
+              const SizedBox(height: 10),
+              const Text(
                 'Fill Art Details',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _titleController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Title',
                   border: OutlineInputBorder(),
                 ),
                 maxLength: 30, // Set maximum character limit to 30
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _descriptionController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Description',
                   border: OutlineInputBorder(),
                 ),
                 maxLength: 80, // Set maximum character limit to 80
               ),
-              SizedBox(height: 32),
-              Text(
+              const SizedBox(height: 32),
+              const Text(
                 'Select a Book',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               InkWell(
                 onTap: () async {
                   final book = await Navigator.push<Map<String, dynamic>>(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => SearchScreen(),
+                      builder: (context) => const SearchScreen(),
                     ),
                   );
 
@@ -405,6 +406,7 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
                         publishedDate: book['publishedDate'],
                         pageCount: book['pageCount'],
                         description: book['description'],
+                        categories: book['categories'],
                       );
                       selectedBookTitle = book['title'];
                       selectedBookAuthor = book['author'];
@@ -413,31 +415,31 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
                   }
                 },
                 child: Container(
-                  padding: EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Color(0xff2f2f2f),
+                      color: const Color(0xff2f2f2f),
                       width: 1.0,
                     ),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.book),
-                      SizedBox(width: 8),
+                      const Icon(Icons.book),
+                      const SizedBox(width: 8),
                       Expanded(
                         child: Text(
                           selectedBookTitle ?? 'Select a Book',
-                          style: TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 16),
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 0),
+                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
                 child: Align(
                   alignment: Alignment.center,
                   child: ElevatedButton(
@@ -445,8 +447,8 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
                     // Disable the button if upload is in progress
                     style: customButtonStyle,
                     child: _isUploading
-                        ? CircularProgressIndicator() // Show progress indicator
-                        : Text(
+                        ? const CircularProgressIndicator() // Show progress indicator
+                        : const Text(
                             "Publish Art",
                             style: TextStyle(
                               fontSize: 14,
