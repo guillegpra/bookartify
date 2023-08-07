@@ -94,12 +94,12 @@ class _BookScreenState extends State<BookScreen> {
             },
             child: Column(
               children: <Widget>[
-                TabBar(
-                  indicatorColor: const Color(0xFF8A6245),
+                const TabBar(
+                  indicatorColor: Color(0xFF8A6245),
                   tabs: [
-                    const Tab(text: 'Synopsis'),
-                    const Tab(text: 'Bookart'),
-                    const Tab(text: 'Covers'),
+                    Tab(text: 'Synopsis'),
+                    Tab(text: 'Bookart'),
+                    Tab(text: 'Covers'),
                   ],
                 ),
                 Expanded(
@@ -109,7 +109,7 @@ class _BookScreenState extends State<BookScreen> {
                       KeepAliveWrapper(
                         key: const ValueKey(0),
                         child:
-                            SynopsisWidget(synopsis: widget.book.description),
+                            Center(child: SynopsisWidget(synopsis: widget.book.description)),
                       ),
                       // ------ Covers content ------
                       KeepAliveWrapper(

@@ -353,6 +353,8 @@ class _FollowingListScreenState extends State<FollowingListScreen>
                   style: GoogleFonts.dmSerifDisplay(
                     fontWeight: FontWeight.bold,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               trailing: Padding(
