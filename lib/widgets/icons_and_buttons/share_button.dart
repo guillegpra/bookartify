@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:bookartify/widgets/build_social_buttons.dart';
-import 'package:bookartify/widgets/photo_widget.dart';
 
 class ShareButton extends StatelessWidget {
   final Function() onPressed;
