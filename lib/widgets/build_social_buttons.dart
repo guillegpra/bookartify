@@ -3,9 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:social_share/social_share.dart';
 import 'package:flutter/services.dart'; // Import the Flutter services for clipboard functionality
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-import 'package:bookartify/widgets/photo_widget.dart'; // Import url_launcher package
 
 enum SocialMedia {
   whatsapp,
@@ -19,18 +17,18 @@ Widget buildSocialButtons(BuildContext context, Map<String, dynamic> post) =>
         children: [
           buildSocialButton(
             icon: FontAwesomeIcons.whatsapp,
-            color: Color(0xFF25D366),
+            color: const Color(0xFF25D366),
             onClicked: () => share(context, SocialMedia.whatsapp, post),
           ),
           buildSocialButton(
             icon: FontAwesomeIcons.twitter,
-            color: Color(0xFF1da1f2),
+            color: const Color(0xFF1da1f2),
             onClicked: () => share(context, SocialMedia.twitter, post),
           ),
           // Add the Copy to Clipboard IconButton
           Builder(
             builder: (context) => IconButton(
-              icon: Icon(Icons.content_copy, size: 34),
+              icon: const Icon(Icons.content_copy, size: 34),
               onPressed: () => copyToClipboard(context, post),
             ),
           ),
@@ -52,7 +50,7 @@ Future<void> share(BuildContext context, SocialMedia socialPlatform,
       } else {
         // Show a message to the user indicating that WhatsApp is not installed.
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text("WhatsApp is not installed on your device."),
             duration: Duration(seconds: 2),
           ),
@@ -75,7 +73,7 @@ void copyToClipboard(BuildContext context, Map<String, dynamic> post) {
 
   // Show a snackbar to indicate that the link is copied to the clipboard.
   ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
+    const SnackBar(
       content: Text("Copied to clipboard!"),
       duration: Duration(seconds: 2), // Adjust the duration as needed
     ),

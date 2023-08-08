@@ -24,8 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
   User? currentUser;
   final _googleBooksAPI = GoogleBooksApi();
   late Future<List<dynamic>> forYouPosts;
-  // bookId -> followStatus (true: followed, false: not followed)
-  //late List<Book> books = [];
 
   @override
   void initState() {
