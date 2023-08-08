@@ -26,6 +26,7 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
   String? selectedBookTitle;
   String? selectedBookAuthor;
   String? selectedBookId;
+  String? selectedBookCategory;
   TextEditingController _titleController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
@@ -217,6 +218,7 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
               selectedBookId ??
                   '', // Use selectedBookId if not null, otherwise use empty string
               imageUrl,
+              selectedBookCategory ?? '',
             );
 
             // Fetch the newly uploaded art post from the database
@@ -411,6 +413,7 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
                       selectedBookTitle = book['title'];
                       selectedBookAuthor = book['author'];
                       selectedBookId = book['id'];
+                      selectedBookCategory = book['categories'].isNotEmpty ? book['categories'][0] : "";
                     });
                   }
                 },

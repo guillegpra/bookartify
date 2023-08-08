@@ -205,7 +205,7 @@ Future<int> getArtCountByUser(String userId) async {
 }
 
 Future<void> uploadArt(String userId, String title, String description,
-    String bookId, String imageUrl) async {
+    String bookId, String imageUrl, String bookCategory) async {
   final url = Uri.parse("$baseUrl/art/upload");
 
   final body = jsonEncode({
@@ -214,6 +214,7 @@ Future<void> uploadArt(String userId, String title, String description,
     "description": description,
     "bookId": bookId,
     "imageUrl": imageUrl,
+    "bookCategory": bookCategory,
   });
 
   final headers = {
@@ -268,7 +269,7 @@ Future<int> getCoversCountByUser(String userId) async {
 }
 
 Future<void> uploadCover(String userId, String title, String description,
-    String bookId, String imageUrl) async {
+    String bookId, String imageUrl, String bookCategory) async {
   final url = Uri.parse("$baseUrl/covers/upload");
 
   final headers = {
@@ -281,6 +282,7 @@ Future<void> uploadCover(String userId, String title, String description,
     "description": description,
     "bookId": bookId,
     "imageUrl": imageUrl,
+    "bookCategory": bookCategory,
   });
 
   final http.Response response =
