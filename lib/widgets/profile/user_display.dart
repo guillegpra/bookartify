@@ -49,7 +49,9 @@ class UserDisplay extends StatelessWidget {
               style: GoogleFonts.dmSerifDisplay(
                   fontWeight: FontWeight.bold, fontSize: 24),
             ),
-            IconButton(
+            if (FirebaseAuth.instance.currentUser!.uid == userId
+                || (goodreadsUrl != null && goodreadsUrl != ""))
+              IconButton(
                 onPressed: () {
                   _launchUrl(context);
                 },
@@ -57,7 +59,8 @@ class UserDisplay extends StatelessWidget {
                   "images/goodreads_icon.png",
                   width: 15,
                   height: 15,
-                ))
+                )
+              )
           ],
         ),
         SizedBox(
