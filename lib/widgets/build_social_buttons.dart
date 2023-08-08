@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:social_share/social_share.dart';
@@ -93,4 +93,61 @@ Widget buildSocialButton({
           height: 64,
           child: Center(child: FaIcon(icon, color: color, size: 40))),
       onTap: onClicked,
+    );*/
+
+/*import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:social_share/social_share.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:bookartify/widgets/photo_widget.dart';
+
+class ShareButton extends StatelessWidget {
+  final Map<String, dynamic> post;
+
+  const ShareButton({Key? key, required this.post}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () => share(context, post), // Directly call the share function
+      icon: const Icon(Icons.share),
     );
+  }
+}
+
+Future<void> share(BuildContext context, Map<String, dynamic> post) async {
+  final text = "Check out this artwork from BookARtify!";
+  final imageLink = post["url"].toString();
+
+  await SocialShare.shareOptions(
+    text,
+    url: imageLink,
+  );
+}
+
+Widget buildSocialButtons(BuildContext context, Map<String, dynamic> post) =>
+    Card(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          buildSocialButton(
+            icon: FontAwesomeIcons.share, // Use a generic share icon
+            color: Colors.blue, // Customize the color
+            onClicked: () => share(context, post),
+          ),
+        ],
+      ),
+    );
+
+Widget buildSocialButton({
+  required IconData icon,
+  Color? color,
+  required VoidCallback onClicked,
+}) =>
+    InkWell(
+      child: Container(
+          width: 64,
+          height: 64,
+          child: Center(child: FaIcon(icon, color: color, size: 40))),
+      onTap: onClicked,
+    );*/

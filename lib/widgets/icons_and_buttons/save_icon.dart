@@ -7,7 +7,8 @@ class SaveIcon extends StatefulWidget {
   final String type;
   final String id;
 
-  const SaveIcon({Key? key, required this.type, required this.id}) : super(key: key);
+  const SaveIcon({Key? key, required this.type, required this.id})
+      : super(key: key);
 
   @override
   State<SaveIcon> createState() => _SaveIconState();
@@ -24,12 +25,14 @@ class _SaveIconState extends State<SaveIcon> {
   }
 
   Future<void> getSavedStatus() async {
-    bool saved = (widget.type == "art") ? await isBookmarkedArt(userId, widget.id)
+    bool saved = (widget.type == "art")
+        ? await isBookmarkedArt(userId, widget.id)
         : await isBookmarkedCover(userId, widget.id);
-
-    setState(() {
-      isSaved = saved;
-    });
+    if (mounted) {
+      setState(() {
+        isSaved = saved;
+      });
+    }
   }
 
   @override
@@ -70,5 +73,3 @@ class _SaveIconState extends State<SaveIcon> {
     );
   }
 }
-
-

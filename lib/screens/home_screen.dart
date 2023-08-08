@@ -251,9 +251,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ),
                                                 const SizedBox(width: 8.0),
                                                 ShareButton(
-                                                  onPressed: () {
-                                                    // TODO: share functionality
-                                                  },
                                                   post: posts[index],
                                                 ),
                                               ],

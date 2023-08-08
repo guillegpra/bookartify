@@ -133,7 +133,6 @@ class ArtSoloScreen extends StatelessWidget {
                                 id: post["id"].toString(),
                               ),
                               ShareButton(
-                                onPressed: () {},
                                 post: post,
                               ),
                             ],

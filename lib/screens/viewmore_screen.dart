@@ -97,9 +97,6 @@ class ViewMoreScreen extends StatelessWidget {
                 // const SaveIcon(),
                 const SizedBox(width: 8.0),
                 ShareButton(
-                  onPressed: () {
-                    // TODO: share functionality
-                  },
                   post: {
                     "title": artTitle, // Replace with the actual art title
                     "url": image, // Replace with the actual image URL

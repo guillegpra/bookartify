@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 class LikeIcon extends StatefulWidget {
   final String type;
   final String id;
-  const LikeIcon({Key? key, required this.type, required this.id}) : super(key: key);
+  const LikeIcon({Key? key, required this.type, required this.id})
+      : super(key: key);
 
   @override
   State<LikeIcon> createState() => _LikeIconState();
@@ -23,12 +24,15 @@ class _LikeIconState extends State<LikeIcon> {
   }
 
   Future<void> getLikedStatus() async {
-    bool liked = (widget.type == "art") ? await isLikedArt(userId, widget.id)
-      : await isLikedCover(userId, widget.id);
+    bool liked = (widget.type == "art")
+        ? await isLikedArt(userId, widget.id)
+        : await isLikedCover(userId, widget.id);
 
-    setState(() {
-      isLiked = liked;
-    });
+    if (mounted) {
+      setState(() {
+        isLiked = liked;
+      });
+    }
   }
 
   @override
@@ -63,5 +67,3 @@ class _LikeIconState extends State<LikeIcon> {
     );
   }
 }
-
-
