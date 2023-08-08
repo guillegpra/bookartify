@@ -63,6 +63,9 @@
     <!-- End of the Google Sign-In section -->
     <!-- Camera permission -->
     <key>NSCameraUsageDescription</key>
-    <string>Camera permission is required for barcode scanning.</string>
+    <string>Camera permission is required for barcode scanning and AR features.</string>
+    <!-- Photo library permission -->
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>BookARtify needs access to the photo library to upload art/cover.</string>
 </dict>
 </plist>
