@@ -25,6 +25,11 @@ class UserDisplay extends StatelessWidget {
           builder: (context) => EditProfileScreen(userId: userId),
         ),
       );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Please, add the link to your Goodreads profile first."),
+        ),
+      );
       return;
     }
 
