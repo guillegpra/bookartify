@@ -137,81 +137,83 @@ class _HomeScreenState extends State<HomeScreen> {
                                               padding:
                                               const EdgeInsets.all(
                                                   8.0),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                BorderRadius.circular(
-                                                    10),
-                                                child: Stack(
-                                                  children: [
-                                                    Image.network(
-                                                      posts[index]["url"]
-                                                          .toString(),
-                                                      loadingBuilder:
-                                                          (BuildContext
-                                                      context,
-                                                          Widget
-                                                          child,
-                                                          ImageChunkEvent?
-                                                          loadingProgress) {
-                                                        if (loadingProgress ==
-                                                            null) {
-                                                          return child;
-                                                        }
-                                                        return Center(
-                                                          child:
-                                                          CircularProgressIndicator(
-                                                            value: loadingProgress
-                                                                .expectedTotalBytes !=
-                                                                null
-                                                                ? loadingProgress
-                                                                .cumulativeBytesLoaded /
-                                                                loadingProgress
-                                                                    .expectedTotalBytes!
-                                                                : null,
+                                              child: Center(
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                  BorderRadius.circular(
+                                                      10),
+                                                  child: Stack(
+                                                    children: [
+                                                      Image.network(
+                                                        posts[index]["url"]
+                                                            .toString(),
+                                                        loadingBuilder:
+                                                            (BuildContext
+                                                        context,
+                                                            Widget
+                                                            child,
+                                                            ImageChunkEvent?
+                                                            loadingProgress) {
+                                                          if (loadingProgress ==
+                                                              null) {
+                                                            return child;
+                                                          }
+                                                          return Center(
+                                                            child:
+                                                            CircularProgressIndicator(
+                                                              value: loadingProgress
+                                                                  .expectedTotalBytes !=
+                                                                  null
+                                                                  ? loadingProgress
+                                                                  .cumulativeBytesLoaded /
+                                                                  loadingProgress
+                                                                      .expectedTotalBytes!
+                                                                  : null,
+                                                            ),
+                                                          );
+                                                        },
+                                                      ),
+                                                      Positioned(
+                                                        top:
+                                                        10,
+                                                        right:
+                                                        10,
+                                                        child: Container(
+                                                          width:
+                                                          35,
+                                                          height:
+                                                          35,
+                                                          decoration:
+                                                          BoxDecoration(
+                                                            color: Colors
+                                                                .white
+                                                                .withOpacity(
+                                                                0.4), // White background color
+                                                            borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                                10),
                                                           ),
-                                                        );
-                                                      },
-                                                    ),
-                                                    Positioned(
-                                                      top:
-                                                      10,
-                                                      right:
-                                                      10,
-                                                      child: Container(
-                                                        width:
-                                                        35,
-                                                        height:
-                                                        35,
-                                                        decoration:
-                                                        BoxDecoration(
-                                                          color: Colors
-                                                              .white
-                                                              .withOpacity(
-                                                              0.4), // White background color
-                                                          borderRadius:
-                                                          BorderRadius
-                                                              .circular(
-                                                              10),
-                                                        ),
-                                                        child:
-                                                        GestureDetector(
-                                                          onTap: () {
-                                                            //TODO: Link to the AR feature
-                                                            print(
-                                                                "AR button pressed");
-                                                          },
                                                           child:
-                                                          Image.asset(
-                                                            'images/augmented-reality.png',
-                                                            width:
-                                                            10,
-                                                            height:
-                                                            10,
+                                                          GestureDetector(
+                                                            onTap: () {
+                                                              //TODO: Link to the AR feature
+                                                              print(
+                                                                  "AR button pressed");
+                                                            },
+                                                            child:
+                                                            Image.asset(
+                                                              'images/augmented-reality.png',
+                                                              width:
+                                                              10,
+                                                              height:
+                                                              10,
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ),
