@@ -100,6 +100,11 @@ class ViewMoreScreen extends StatelessWidget {
                   onPressed: () {
                     // TODO: share functionality
                   },
+                  post: {
+                    "title": artTitle, // Replace with the actual art title
+                    "url": image, // Replace with the actual image URL
+                    // Add other necessary data here
+                  },
                 ),
               ],
             ),
