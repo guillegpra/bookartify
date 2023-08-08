@@ -219,26 +219,32 @@ class _ProfileScreenState extends State<ProfileScreen>
                     // ------ Bookart content ------
                     KeepAliveWrapper(
                       key: const ValueKey(0),
-                      child: ImageGrid(
-                        types: List.filled(_bookart.length, "art"),
-                        posts: _bookart,
-                      ),
+                      child: (_bookart.isNotEmpty)
+                        ? ImageGrid(
+                          types: List.filled(_bookart.length, "art"),
+                          posts: _bookart,
+                        )
+                        : const Center(child: Text("No art posted yet"),)
                     ),
                     // ------ Covers content ------
                     KeepAliveWrapper(
                       key: const ValueKey(1),
-                      child: ImageGrid(
-                        types: List.filled(_covers.length, "cover"),
-                        posts: _covers,
-                      ),
+                      child: (_covers.isNotEmpty)
+                        ? ImageGrid(
+                          types: List.filled(_covers.length, "cover"),
+                          posts: _covers,
+                        )
+                        : const Center(child: Text("No covers posted yet.",),)
                     ),
                     // ------ Collections content ------
                     KeepAliveWrapper(
                       key: const ValueKey(2),
-                      child: ImageGrid(
-                        types: _bookmarks.map((e) => e["type"].toString()).toList(),
-                        posts: _bookmarks,
-                      ),
+                      child: (_bookmarks.isNotEmpty)
+                        ? ImageGrid(
+                          types: _bookmarks.map((e) => e["type"].toString()).toList(),
+                          posts: _bookmarks,
+                        )
+                        : const Center(child: Text("No posts saved yet."),)
                     ),
                   ],
                 ))
