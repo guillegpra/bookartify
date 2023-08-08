@@ -1,8 +1,8 @@
+import 'dart:io';
+
 import 'package:bookartify/models/book_model.dart';
 import 'package:bookartify/widgets/book_info.dart';
-import 'package:bookartify/widgets/book_info_tablet.dart';
 import 'package:bookartify/widgets/image_grid.dart';
-import 'package:bookartify/widgets/icons_and_buttons/save_icon.dart';
 import 'package:bookartify/widgets/keep_alive_wrapper.dart';
 import 'package:bookartify/widgets/synopsis_widget.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +52,11 @@ class _BookScreenState extends State<BookScreen> {
     }
   }
 
+  Future<void> _reloadData() async {
+    await getArtByBook(widget.book.id);
+    await getCoversByBook(widget.book.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,35 +69,34 @@ class _BookScreenState extends State<BookScreen> {
             Navigator.pop(context);
           },
         ),
-        title: AnimatedOpacity(
-          opacity: _showTitleInAppBar ? 1.0 : 0.0,
-          duration: const Duration(milliseconds: 300),
-          child: Text(
-            widget.book.title,
-            style: GoogleFonts.dmSerifDisplay(
-                fontWeight: FontWeight.w500, letterSpacing: -0.7),
-          ),
+        title: Text(
+          widget.book.title,
+          style: GoogleFonts.dmSerifDisplay(
+              fontWeight: FontWeight.w500, letterSpacing: -0.7),
+          overflow: TextOverflow.ellipsis,
         ),
         centerTitle: true,
       ),
       body: DefaultTabController(
         length: 3,
-        child: NestedScrollView(
-          headerSliverBuilder: (context, _) {
-            return [
-              SliverToBoxAdapter(
-                child: BookInfo(book: widget.book),
-              ),
-            ];
+        child: RefreshIndicator(
+          notificationPredicate: (notification) {
+            // with NestedScrollView local(depth == 2) OverscrollNotification are not sent
+            if (notification is OverscrollNotification || Platform.isIOS) {
+              return notification.depth == 2;
+            }
+            return notification.depth == 0;
           },
-          body: NotificationListener<ScrollNotification>(
-            onNotification: (notification) {
-              if (notification is ScrollUpdateNotification) {
-                _handleScroll(notification.metrics);
-              }
-              return false;
+          onRefresh: _reloadData,
+          child: NestedScrollView(
+            headerSliverBuilder: (context, _) {
+              return [
+                SliverToBoxAdapter(
+                  child: BookInfo(book: widget.book),
+                ),
+              ];
             },
-            child: Column(
+            body: Column(
               children: <Widget>[
                 const TabBar(
                   indicatorColor: Color(0xFF8A6245),

@@ -30,9 +30,9 @@ class _HomePageState extends State<HomePage> {
   };
 
   final List<Widget> _pages = <Widget> [
-    HomeScreen(),
-    ExploreScreen(),
-    UploadScreen(),
+    const HomeScreen(),
+    const ExploreScreen(),
+    const UploadScreen(),
     // BookScreen(),
     ProfileScreen(userId: FirebaseAuth.instance.currentUser!.uid,)
   ];
