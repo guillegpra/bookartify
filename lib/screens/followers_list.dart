@@ -84,12 +84,25 @@ class _FollowersListScreenState extends State<FollowersListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () async {
-        await _fetchFollowersList();
-        _buildFollowersList();
-      },
-      child: _buildFollowersList(),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.grey[50],
+        elevation: 0,
+        centerTitle: true,
+        title: Text(
+          "Followers",
+          style: GoogleFonts.dmSerifDisplay(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await _fetchFollowersList();
+          _buildFollowersList();
+        },
+        child: _buildFollowersList(),
+      ),
     );
   }
 

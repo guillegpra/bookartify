@@ -179,12 +179,12 @@ class _FollowingListScreenState extends State<FollowingListScreen>
         backgroundColor: Colors.grey[50],
         elevation: 0,
         centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        // leading: IconButton(
+        //   icon: const Icon(Icons.arrow_back, color: Colors.black),
+        //   onPressed: () {
+        //     Navigator.pop(context);
+        //   },
+        // ),
         title: Text(
           "Following",
           style: GoogleFonts.dmSerifDisplay(
