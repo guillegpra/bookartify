@@ -109,11 +109,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                           245, 239, 225, 1),
                                       shape: RoundedRectangleBorder(
                                         borderRadius:
-                                        BorderRadius.circular(10.0),
+                                            BorderRadius.circular(10.0),
                                       ),
                                       child: Column(
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                         children: [
                                           GestureDetector(
                                             onTap: () {
@@ -122,14 +122,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       ArtSoloScreen(
-                                                        type: posts[index]
-                                                        ["type"]
-                                                            .toString(),
-                                                        post: posts[
+                                                    type: posts[index]["type"]
+                                                        .toString(),
+                                                    post: posts[
                                                         index], // Pass the appropriate post data
-                                                        book: books[
+                                                    book: books[
                                                         index], // Pass the appropriate book data (if available)
-                                                      ),
+                                                  ),
                                                 ),
                                               );
                                             },
@@ -219,13 +218,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets
-                                                .symmetric(
+                                            padding: const EdgeInsets.symmetric(
                                                 vertical: 8.0,
                                                 horizontal: 10.0),
                                             child: Row(
                                               mainAxisAlignment:
-                                              MainAxisAlignment.end,
+                                                  MainAxisAlignment.end,
                                               children: [
                                                 Expanded(
                                                   child: GestureDetector(
@@ -233,163 +231,143 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       Navigator.push(
                                                         context,
                                                         MaterialPageRoute(
-                                                          builder:
-                                                              (context) =>
+                                                          builder: (context) =>
                                                               ArtSoloScreen(
-                                                                type: posts[index]
-                                                                [
-                                                                "type"]
-                                                                    .toString(),
-                                                                post: posts[
-                                                                index],
-                                                                book: books[
-                                                                index],
-                                                              ),
+                                                            type: posts[index]
+                                                                    ["type"]
+                                                                .toString(),
+                                                            post: posts[index],
+                                                            book: books[index],
+                                                          ),
                                                         ),
                                                       );
                                                     },
                                                     child: Text(
-                                                      posts[index]
-                                                      ["title"]
+                                                      posts[index]["title"]
                                                           .toString(),
                                                       style: GoogleFonts
                                                           .dmSerifDisplay(
-                                                          fontSize:
-                                                          18),
+                                                              fontSize: 18),
                                                     ),
                                                   ),
                                                 ),
-                                                const SizedBox(
-                                                    width: 8.0),
+                                                const SizedBox(width: 8.0),
                                                 LikeIcon(
-                                                  type: posts[index]
-                                                  ["type"]
+                                                  type: posts[index]["type"]
                                                       .toString(),
                                                   id: posts[index]["id"]
                                                       .toString(),
                                                 ),
-                                                const SizedBox(
-                                                    width: 8.0),
+                                                const SizedBox(width: 8.0),
                                                 SaveIcon(
-                                                  type: posts[index]
-                                                  ["type"]
+                                                  type: posts[index]["type"]
                                                       .toString(),
                                                   id: posts[index]["id"]
                                                       .toString(),
                                                 ),
-                                                const SizedBox(
-                                                    width: 8.0),
+                                                const SizedBox(width: 8.0),
                                                 ShareButton(
                                                   onPressed: () {
                                                     // TODO: share functionality
                                                   },
+                                                  post: posts[index],
                                                 ),
                                               ],
                                             ),
                                           ),
                                           Padding(
-                                            padding:
-                                            const EdgeInsets.fromLTRB(
+                                            padding: const EdgeInsets.fromLTRB(
                                                 10.0, 1.0, 10.0, 1.0),
                                             child: RichText(
                                               text: TextSpan(
                                                 children: [
                                                   TextSpan(
                                                     text: 'By ',
-                                                    style: GoogleFonts
-                                                        .poppins(
+                                                    style: GoogleFonts.poppins(
                                                       fontSize: 15,
                                                       color: Colors.grey,
                                                       fontWeight:
-                                                      FontWeight.w500,
+                                                          FontWeight.w500,
                                                     ),
                                                   ),
                                                   TextSpan(
-                                                    text: posts[index]["username"].toString(),
-                                                    style: GoogleFonts
-                                                        .poppins(
+                                                    text: posts[index]
+                                                            ["username"]
+                                                        .toString(),
+                                                    style: GoogleFonts.poppins(
                                                       fontSize: 15,
                                                       color: Colors.black,
                                                       fontWeight:
-                                                      FontWeight.w500,
-                                                      decoration:
-                                                      TextDecoration
+                                                          FontWeight.w500,
+                                                      decoration: TextDecoration
                                                           .underline,
                                                     ),
                                                     // Add the onTap callback here
                                                     recognizer:
-                                                    TapGestureRecognizer()
-                                                      ..onTap =
-                                                          () async {
-                                                        Navigator
-                                                            .push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder:
-                                                                (context) =>
-                                                                ProfileScreen(
-                                                                  userId:
-                                                                  posts[index]["user_id"].toString(),
+                                                        TapGestureRecognizer()
+                                                          ..onTap = () async {
+                                                            Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        ProfileScreen(
+                                                                  userId: posts[
+                                                                              index]
+                                                                          [
+                                                                          "user_id"]
+                                                                      .toString(),
                                                                 ),
-                                                          ),
-                                                        );
-                                                        // TODO
-                                                      },
+                                                              ),
+                                                            );
+                                                            // TODO
+                                                          },
                                                   ),
                                                 ],
                                               ),
                                             ),
                                           ),
                                           Padding(
-                                            padding:
-                                            const EdgeInsets.fromLTRB(
-                                                10.0,
-                                                1.0,
-                                                10.0,
-                                                10.0),
+                                            padding: const EdgeInsets.fromLTRB(
+                                                10.0, 1.0, 10.0, 10.0),
                                             child: RichText(
                                               text: TextSpan(
                                                 children: [
                                                   TextSpan(
                                                     text: 'For ',
-                                                    style: GoogleFonts
-                                                        .poppins(
+                                                    style: GoogleFonts.poppins(
                                                       fontSize: 15,
                                                       color: Colors.grey,
                                                       fontWeight:
-                                                      FontWeight.w500,
+                                                          FontWeight.w500,
                                                     ),
                                                   ),
                                                   TextSpan(
-                                                    text: books[index]
-                                                        .title,
-                                                    style: GoogleFonts
-                                                        .poppins(
+                                                    text: books[index].title,
+                                                    style: GoogleFonts.poppins(
                                                       fontSize: 15,
                                                       color: Colors.black,
                                                       fontWeight:
-                                                      FontWeight.w500,
-                                                      decoration:
-                                                      TextDecoration
+                                                          FontWeight.w500,
+                                                      decoration: TextDecoration
                                                           .underline,
                                                     ),
                                                     // Add the onTap callback here
                                                     recognizer:
-                                                    TapGestureRecognizer()
-                                                      ..onTap = () {
-                                                        Navigator
-                                                            .push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder:
-                                                                (context) =>
-                                                                BookScreen(
+                                                        TapGestureRecognizer()
+                                                          ..onTap = () {
+                                                            Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        BookScreen(
                                                                   book: books[
-                                                                  index],
+                                                                      index],
                                                                 ),
-                                                          ),
-                                                        );
-                                                      },
+                                                              ),
+                                                            );
+                                                          },
                                                   ),
                                                 ],
                                               ),

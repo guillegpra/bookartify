@@ -27,7 +27,8 @@ class ArtSoloScreen extends StatelessWidget {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ProfileScreen(userId: post["user_id"].toString()),
+          builder: (context) =>
+              ProfileScreen(userId: post["user_id"].toString()),
         ),
       );
     }
@@ -66,7 +67,8 @@ class ArtSoloScreen extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 2.0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 2.0),
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(42),
@@ -92,31 +94,23 @@ class ArtSoloScreen extends StatelessWidget {
                                   children: [
                                     TextSpan(
                                       text: 'By ',
-                                      style: GoogleFonts
-                                          .poppins(
+                                      style: GoogleFonts.poppins(
                                         fontSize: 15,
                                         color: Colors.black,
-                                        fontWeight:
-                                        FontWeight.w300,
+                                        fontWeight: FontWeight.w300,
                                       ),
                                     ),
                                     TextSpan(
                                       text: post["username"].toString(),
-                                      style: GoogleFonts
-                                          .poppins(
+                                      style: GoogleFonts.poppins(
                                         fontSize: 15,
                                         color: Colors.black,
-                                        fontWeight:
-                                        FontWeight.w300,
-                                        decoration:
-                                        TextDecoration
-                                            .underline,
+                                        fontWeight: FontWeight.w300,
+                                        decoration: TextDecoration.underline,
                                       ),
                                       // Add the onTap callback here
-                                      recognizer:
-                                      TapGestureRecognizer()
-                                        ..onTap =
-                                            navigateToUserProfile,
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = navigateToUserProfile,
                                     ),
                                   ],
                                 ),
@@ -140,6 +134,7 @@ class ArtSoloScreen extends StatelessWidget {
                               ),
                               ShareButton(
                                 onPressed: () {},
+                                post: post,
                               ),
                             ],
                           ),
@@ -153,7 +148,8 @@ class ArtSoloScreen extends StatelessWidget {
                 height: 5,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -251,7 +247,8 @@ class ArtSoloScreen extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -279,15 +276,19 @@ class ArtSoloScreen extends StatelessWidget {
                             horizontal: 0,
                           ),
                           child: Text(
-                            FirebaseAuth.instance.currentUser!.uid == post["user_id"].toString()
-                                ? "Delete" : "Add to Collection",
+                            FirebaseAuth.instance.currentUser!.uid ==
+                                    post["user_id"].toString()
+                                ? "Delete"
+                                : "Add to Collection",
                             style: GoogleFonts.poppins(
                                 fontSize: 16, fontWeight: FontWeight.w400),
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 10,),
+                    const SizedBox(
+                      width: 10,
+                    ),
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
@@ -295,7 +296,8 @@ class ArtSoloScreen extends StatelessWidget {
                           print("Button pressed!");
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(255, 47, 47, 47),
+                          backgroundColor:
+                              const Color.fromARGB(255, 47, 47, 47),
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.5),

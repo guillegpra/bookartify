@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:bookartify/widgets/build_social_buttons.dart';
+import 'package:bookartify/widgets/photo_widget.dart';
 
 class ShareButton extends StatelessWidget {
   final Function() onPressed;
+  final Map<String, dynamic> post;
 
-  const ShareButton({super.key, required this.onPressed});
+  const ShareButton({super.key, required this.onPressed, required this.post});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,7 @@ class ShareButton extends StatelessWidget {
         showModalBottomSheet(
           context: context,
           builder: (BuildContext context) {
-            return buildShareOptions(context);
+            return buildShareOptions(context, post);
           },
         );
       },
@@ -22,7 +24,7 @@ class ShareButton extends StatelessWidget {
     );
   }
 
-  Widget buildShareOptions(BuildContext context) {
-    return buildSocialButtons(context);
+  Widget buildShareOptions(BuildContext context, Map<String, dynamic> post) {
+    return buildSocialButtons(context, post);
   }
 }
