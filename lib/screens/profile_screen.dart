@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bookartify/screens/followers_list.dart';
 import 'package:bookartify/services/database_api.dart';
 import 'package:bookartify/services/register.dart';
@@ -28,7 +30,6 @@ class _ProfileScreenState extends State<ProfileScreen>
   List<dynamic> _covers = [];
   List<dynamic> _bookmarks = [];
   int _followers = 0;
-  bool _showUsernameInAppBar = false;
 
   @override
   void initState() {
@@ -88,12 +89,6 @@ class _ProfileScreenState extends State<ProfileScreen>
   @override
   bool get wantKeepAlive => true;
 
-  void _handleScroll(ScrollMetrics metrics) {
-    setState(() {
-      _showUsernameInAppBar = metrics.pixels > 0;
-    });
-  }
-
   Future<void> _reloadData() async {
     // Fetch the data again and update the state
     await _fetchUserData();
@@ -111,14 +106,10 @@ class _ProfileScreenState extends State<ProfileScreen>
       appBar: AppBar(
         backgroundColor: Colors.grey[50],
         elevation: 0,
-        title: AnimatedOpacity(
-          opacity: _showUsernameInAppBar ? 1.0 : 0.0,
-          duration: const Duration(milliseconds: 300),
-          child: Text(
-            _userData["username"] ?? "username",
-            style: GoogleFonts.dmSerifDisplay(
-              fontWeight: FontWeight.bold,
-            ),
+        title: Text(
+          _userData["username"] ?? "username",
+          style: GoogleFonts.dmSerifDisplay(
+            fontWeight: FontWeight.bold,
           ),
         ),
         centerTitle: true,
@@ -187,30 +178,32 @@ class _ProfileScreenState extends State<ProfileScreen>
       ),
       body: DefaultTabController(
         length: 3,
-        child: NestedScrollView(
-          // allows you to build a list of elements that would be scrolled away till the
-          // body reached the top
-          headerSliverBuilder: (context, _) {
-            return [
-              SliverToBoxAdapter(
-                child: UserWidget(
-                  userId: widget.userId,
-                  username: _userData["username"] ?? "username",
-                  bio: _userData["bio"] ?? "Hi there!",
-                  goodreadsUrl: _userData["goodreads_url"] ?? "",
-                  profileImageUrl: _userData["profile_pic_url"] ?? "", // Pass the profile image URL
-                ),
-              ),
-            ];
+        child: RefreshIndicator(
+          notificationPredicate: (notification) {
+            // with NestedScrollView local(depth == 2) OverscrollNotification are not sent
+            if (notification is OverscrollNotification || Platform.isIOS) {
+              return notification.depth == 2;
+            }
+            return notification.depth == 0;
           },
-          body: NotificationListener<ScrollNotification>(
-            onNotification: (notification) {
-              if (notification is ScrollUpdateNotification) {
-                _handleScroll(notification.metrics); // show username in AppBar
-              }
-              return false;
+          onRefresh: _reloadData,
+          child: NestedScrollView(
+            // allows you to build a list of elements that would be scrolled away till the
+            // body reached the top
+            headerSliverBuilder: (context, _) {
+              return [
+                SliverToBoxAdapter(
+                  child: UserWidget(
+                    userId: widget.userId,
+                    username: _userData["username"] ?? "username",
+                    bio: _userData["bio"] ?? "Hi there!",
+                    goodreadsUrl: _userData["goodreads_url"] ?? "",
+                    profileImageUrl: _userData["profile_pic_url"] ?? "", // Pass the profile image URL
+                  ),
+                ),
+              ];
             },
-            child: Column(
+            body: Column(
               children: <Widget>[
                 const TabBar(
                     indicatorColor: Color(0xFF8A6245),
@@ -224,36 +217,27 @@ class _ProfileScreenState extends State<ProfileScreen>
                     child: TabBarView(
                   children: [
                     // ------ Bookart content ------
-                    RefreshIndicator(
-                      onRefresh: _reloadData,
-                      child: KeepAliveWrapper(
-                        key: const ValueKey(0),
-                        child: ImageGrid(
-                          types: List.filled(_bookart.length, "art"),
-                          posts: _bookart,
-                        ),
+                    KeepAliveWrapper(
+                      key: const ValueKey(0),
+                      child: ImageGrid(
+                        types: List.filled(_bookart.length, "art"),
+                        posts: _bookart,
                       ),
                     ),
                     // ------ Covers content ------
-                    RefreshIndicator(
-                      onRefresh: _reloadData,
-                      child: KeepAliveWrapper(
-                        key: const ValueKey(1),
-                        child: ImageGrid(
-                          types: List.filled(_covers.length, "cover"),
-                          posts: _covers,
-                        ),
+                    KeepAliveWrapper(
+                      key: const ValueKey(1),
+                      child: ImageGrid(
+                        types: List.filled(_covers.length, "cover"),
+                        posts: _covers,
                       ),
                     ),
                     // ------ Collections content ------
-                    RefreshIndicator(
-                      onRefresh: _reloadData,
-                      child: KeepAliveWrapper(
-                        key: const ValueKey(2),
-                        child: ImageGrid(
-                          types: _bookmarks.map((e) => e["type"].toString()).toList(),
-                          posts: _bookmarks,
-                        ),
+                    KeepAliveWrapper(
+                      key: const ValueKey(2),
+                      child: ImageGrid(
+                        types: _bookmarks.map((e) => e["type"].toString()).toList(),
+                        posts: _bookmarks,
                       ),
                     ),
                   ],

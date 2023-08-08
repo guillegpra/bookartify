@@ -1,7 +1,6 @@
 /*import 'package:flutter/material.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:bookartify/widgets/build_social_buttons.dart';
-import 'package:bookartify/widgets/photo_widget.dart';
 
 class ShareButton extends StatelessWidget {
   final Function() onPressed;
@@ -33,7 +32,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:bookartify/widgets/photo_widget.dart';
 
 class ShareButton extends StatelessWidget {
   final Map<String, dynamic> post;
