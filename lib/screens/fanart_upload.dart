@@ -12,8 +12,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'dart:io';
 
 class ArtUploadPage extends StatefulWidget {
+  const ArtUploadPage({super.key});
+
   @override
-  _ArtUploadPageState createState() => _ArtUploadPageState();
+  State<ArtUploadPage> createState() => _ArtUploadPageState();
 }
 
 class _ArtUploadPageState extends State<ArtUploadPage> {
@@ -282,8 +284,9 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xfffbf8f2),
+        backgroundColor: Colors.grey[50],
         centerTitle: true,
+        elevation: 0,
         title: Text(
           'Upload Your Art Work',
           style: GoogleFonts.dmSerifDisplay(

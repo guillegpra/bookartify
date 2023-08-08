@@ -12,8 +12,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'dart:io';
 
 class CoverUploadPage extends StatefulWidget {
+  const CoverUploadPage({super.key});
+
   @override
-  _CoverUploadPageState createState() => _CoverUploadPageState();
+  State<CoverUploadPage> createState() => _CoverUploadPageState();
 }
 
 class _CoverUploadPageState extends State<CoverUploadPage> {
@@ -282,8 +284,9 @@ class _CoverUploadPageState extends State<CoverUploadPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xfffbf8f2),
+        backgroundColor: Colors.grey[50],
         centerTitle: true,
+        elevation: 0,
         title: Text(
           'Upload Your Cover',
           style: GoogleFonts.dmSerifDisplay(

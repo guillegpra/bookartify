@@ -27,9 +27,10 @@ class _UploadScreenState extends State<UploadScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      //backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        backgroundColor: const Color(0xfffbf8f2),
+        backgroundColor: Colors.grey[50],
+        elevation: 0,
         centerTitle: true,
         title: Text(
           "Upload options",
