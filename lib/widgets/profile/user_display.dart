@@ -123,9 +123,9 @@ class UserDisplay extends StatelessWidget {
                     style: GoogleFonts.poppins(color: const Color(0xFF2F2F2F)),
                   )),
             ),
-            ShareButton(onPressed: () {
+            /*ShareButton(onPressed: () {
               // TODO: share functionality
-            })
+            })*/
           ],
         )
       ],

@@ -41,7 +41,7 @@ Future<Map<String, dynamic>> getUserById(String userId) async {
 
 Future<String> getUsernameById(String userId) async {
   final http.Response response =
-  await http.get(Uri.parse("$baseUrl/user/$userId"));
+      await http.get(Uri.parse("$baseUrl/user/$userId"));
 
   if (response.statusCode == 200) {
     final Map<String, dynamic> data = jsonDecode(response.body);
@@ -107,8 +107,8 @@ Future<void> updateUsername(String userId, String newUsername) async {
 }
 
 Future<bool> isUsernameAvailable(String username) async {
-  final http.Response response = await http.get(Uri.parse(
-      "$baseUrl/check_username?username=$username"));
+  final http.Response response =
+      await http.get(Uri.parse("$baseUrl/check_username?username=$username"));
 
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);

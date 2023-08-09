@@ -93,7 +93,8 @@ class _FollowingListScreenState extends State<FollowingListScreen>
         }
 
         // check if current user is following them
-        bool isFollowingArtistAux = await isFollowingUser(currentUserId, artistId);
+        bool isFollowingArtistAux =
+            await isFollowingUser(currentUserId, artistId);
         isFollowingArtistList.add(isFollowingArtistAux);
       }
 
@@ -213,16 +214,13 @@ class _FollowingListScreenState extends State<FollowingListScreen>
               controller: _tabController,
               children: [
                 RefreshIndicator(
-                  onRefresh: _fetchFollowingBooks,
-                  child: _buildBooksTab()
-                ),
+                    onRefresh: _fetchFollowingBooks, child: _buildBooksTab()),
                 RefreshIndicator(
-                  onRefresh: () async {
-                    await _fetchFollowingUsers();
-                    _buildUsersTab();
-                  },
-                  child: _buildUsersTab()
-                ),
+                    onRefresh: () async {
+                      await _fetchFollowingUsers();
+                      _buildUsersTab();
+                    },
+                    child: _buildUsersTab()),
               ],
             ),
           ),
@@ -233,7 +231,9 @@ class _FollowingListScreenState extends State<FollowingListScreen>
 
   Widget _buildBooksTab() {
     if (_followingBooks.isEmpty) {
-      return const Center(child: Text("No books followed yet."),);
+      return const Center(
+        child: Text("No books followed yet."),
+      );
     }
 
     return ListView.builder(
@@ -323,56 +323,77 @@ class _FollowingListScreenState extends State<FollowingListScreen>
 
   Widget _buildUsersTab() {
     if (_followingUsers.isEmpty) {
-      return const Center(child: Text("No users followed yet."),);
+      return const Center(
+        child: Text("No users followed yet."),
+      );
     }
 
     return ListView.builder(
       itemCount: _followingUsers.length,
       itemBuilder: (context, index) {
         String userId = _followingUsers[index];
-        String username = _followingUsernames[index];
         bool isFollowing = _isFollowingUserList[index];
-        print("is following: $isFollowing");
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(42),
-              color: const Color.fromARGB(70, 192, 162, 73),
-            ),
-            child: ListTile(
-              leading: const Icon(Icons.person),
-              title: GestureDetector(
-                onTap: () {
-                  _navigateToUserProfileScreen(userId);
-                },
-                child: Text(
-                  username,
-                  style: GoogleFonts.dmSerifDisplay(
-                    fontWeight: FontWeight.bold,
+        return FutureBuilder<Map<String, dynamic>>(
+          future: getUserById(userId), // Fetch user data
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator(); // Display loading indicator while fetching data.
+            } else if (snapshot.hasError || !snapshot.hasData) {
+              return Container(); // Handle error or missing data.
+            } else {
+              String username = snapshot.data!['username'];
+              String imageUrl = snapshot.data!['profile_pic_url'] ?? "";
+
+              return Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(42),
+                    color: const Color.fromARGB(70, 192, 162, 73),
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              trailing: Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: GestureDetector(
-                  onTap: () {
-                    _toggleFollowingUser(isFollowing, userId, index);
-                  },
-                  child: Icon(
-                    isFollowing ? Icons.check : Icons.add,
-                    size: 30,
-                    color: isFollowing
-                        ? const Color(0xFFBFA054)
-                        : const Color(0xFF2F2F2F),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      radius: 24,
+                      backgroundImage: imageUrl == ""
+                          ? AssetImage("images/upload-images-placeholder.png")
+                              as ImageProvider
+                          : NetworkImage(imageUrl),
+                    ),
+                    title: GestureDetector(
+                      onTap: () {
+                        _navigateToUserProfileScreen(userId);
+                      },
+                      child: Text(
+                        username,
+                        style: GoogleFonts.dmSerifDisplay(
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    trailing: Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          _toggleFollowingUser(isFollowing, userId, index);
+                        },
+                        child: Icon(
+                          isFollowing ? Icons.check : Icons.add,
+                          size: 30,
+                          color: isFollowing
+                              ? const Color(0xFFBFA054)
+                              : const Color(0xFF2F2F2F),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ),
+              );
+            }
+          },
         );
       },
     );
