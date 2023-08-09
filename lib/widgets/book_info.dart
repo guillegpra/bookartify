@@ -131,47 +131,40 @@ class _BookInfoState extends State<BookInfo> {
           Expanded(
             flex: 3,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 4,
-                      child: Container(
-                        margin: const EdgeInsetsDirectional.only(start: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              widget.book.title,
-                              style: GoogleFonts.dmSerifDisplay(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              ),
-                              overflow: TextOverflow.ellipsis,
+                // Centered title and follow icon
+                Center(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 8.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            widget.book.title,
+                            style: GoogleFonts.dmSerifDisplay(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
                             ),
-                            Text(" by ${widget.book.author}"),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding:
-                            const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                        child: GestureDetector(
-                          onTap: _toggleSaveBook,
-                          child: Icon(
-                            isBookSaved ? Icons.check : Icons.add,
-                            size: 30,
-                            color: isBookSaved
-                                ? const Color(0xFFBFA054)
-                                : const Color(0xFF2F2F2F),
+                            overflow: TextOverflow.ellipsis,
                           ),
-                        ),
+                          const SizedBox(width: 8.0), // Add spacing
+                          GestureDetector(
+                            onTap: _toggleSaveBook,
+                            child: Icon(
+                              isBookSaved ? Icons.check : Icons.add,
+                              size: 30,
+                              color: isBookSaved
+                                  ? const Color(0xFFBFA054)
+                                  : const Color(0xFF2F2F2F),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
+                      Text(" by ${widget.book.author}"),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 8.0),
                 Row(
@@ -189,11 +182,14 @@ class _BookInfoState extends State<BookInfo> {
                   ],
                 ),
                 const SizedBox(height: 8.0),
-                IntrinsicWidth(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      UploadButton(
+                Column(
+                  // Stack the buttons vertically
+                  mainAxisAlignment:
+                      MainAxisAlignment.center, // Center the buttons
+                  children: [
+                    Container(
+                      width: 200, // Set a specific width for the button
+                      child: UploadButton(
                         buttonLabel: 'Upload your cover',
                         onPressed: () {
                           // TODO
@@ -205,7 +201,11 @@ class _BookInfoState extends State<BookInfo> {
                           size: 22,
                         ),
                       ),
-                      UploadButton(
+                    ),
+                    const SizedBox(height: 8.0), // Add spacing between buttons
+                    Container(
+                      width: 200, // Set a specific width for the button
+                      child: UploadButton(
                         buttonLabel: 'Upload your art',
                         onPressed: () {
                           // TODO
@@ -217,8 +217,8 @@ class _BookInfoState extends State<BookInfo> {
                           size: 22,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -228,8 +228,3 @@ class _BookInfoState extends State<BookInfo> {
     );
   }
 }
-
-
-
-
-
