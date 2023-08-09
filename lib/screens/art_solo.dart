@@ -272,7 +272,7 @@ class ArtSoloScreen extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                             vertical: 10,
-                            horizontal: 0,
+                            horizontal: 10,
                           ),
                           child: Text(
                             FirebaseAuth.instance.currentUser!.uid ==
@@ -305,7 +305,7 @@ class ArtSoloScreen extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                             vertical: 10,
-                            horizontal: 28,
+                            horizontal: 10,
                           ),
                           child: Text(
                             "View in AR",
