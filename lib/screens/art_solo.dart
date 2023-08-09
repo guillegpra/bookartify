@@ -1,3 +1,4 @@
+import 'package:bookartify/services/database_api.dart';
 import 'package:bookartify/widgets/icons_and_buttons/like_icon.dart';
 import 'package:bookartify/widgets/icons_and_buttons/save_icon.dart';
 import 'package:bookartify/widgets/icons_and_buttons/share_button.dart';
@@ -256,7 +257,10 @@ class ArtSoloScreen extends StatelessWidget {
                         onPressed: () {
                           if (FirebaseAuth.instance.currentUser!.uid ==
                               post["user_id"].toString()) {
-                            // TODO: delete post
+                            type == "art" ? deleteArt(post["user_id"], post["id"].toString())
+                                : deleteCover(post["user_id"].toString(), post["id"].toString());
+                            Navigator.pop(context);
+                            // TODO: reload page after deleting
                           } else {
                             // TODO: save/unsave
                           }

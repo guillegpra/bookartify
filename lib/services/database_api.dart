@@ -231,6 +231,18 @@ Future<void> uploadArt(String userId, String title, String description,
   }
 }
 
+Future<void> deleteArt(String userId, String artId) async {
+  final url = Uri.parse("$baseUrl/art/delete/$artId");
+
+  final http.Response response = await http.delete(url);
+
+  if (response.statusCode == 200) {
+    print("Artwork deleted successfully");
+  } else {
+    throw Exception("Failed to delete artwork");
+  }
+}
+
 /* ------------------ Covers ------------------ */
 Future<List<dynamic>> getCoversByUser(String userId) async {
   final http.Response response =
@@ -292,6 +304,18 @@ Future<void> uploadCover(String userId, String title, String description,
     print("Cover uploaded successfully");
   } else {
     throw Exception("Failed to upload cover to the server");
+  }
+}
+
+Future<void> deleteCover(String userId, String coverId) async {
+  final url = Uri.parse("$baseUrl/covers/delete/$coverId");
+
+  final http.Response response = await http.delete(url);
+
+  if (response.statusCode == 200) {
+    print("Cover deleted successfully");
+  } else {
+    throw Exception("Failed to delete cover");
   }
 }
 
