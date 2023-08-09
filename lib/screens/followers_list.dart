@@ -16,6 +16,7 @@ class FollowersListScreen extends StatefulWidget {
 class _FollowersListScreenState extends State<FollowersListScreen> {
   List<dynamic> _followers = [];
   List<String> _followersUsernames = [];
+  List<String> _followersPics = [];
   List<bool> _isFollowingUserList = [];
 
   @override
@@ -38,10 +39,12 @@ class _FollowersListScreenState extends State<FollowersListScreen> {
       print("Followers IDs: $followerIds");
 
       List<String> usernames = [];
+      List<String> profilePics = [];
       for (String followerId in followerIds) {
-        String? username = await getUsernameById(followerId);
-        if (username != null) {
-          usernames.add(username);
+        Map<String, dynamic> user = await getUserById(followerId);
+        if (user != null) {
+          usernames.add(user["username"] ?? "");
+          profilePics.add(user["profile_pic_url"] ?? "");
         }
 
         // check if current user is following them
@@ -52,6 +55,7 @@ class _FollowersListScreenState extends State<FollowersListScreen> {
       setState(() {
         _followers = followerIds;
         _followersUsernames = usernames;
+        _followersPics = profilePics;
         _isFollowingUserList = isFollowingUserList;
       });
     } catch (e) {
@@ -116,6 +120,7 @@ class _FollowersListScreenState extends State<FollowersListScreen> {
       itemBuilder: (context, index) {
         String userId = _followers[index];
         String username = _followersUsernames[index];
+        String profilePic = _followersPics[index];
         bool isFollowing = _isFollowingUserList[index];
 
         return Padding(
@@ -126,7 +131,13 @@ class _FollowersListScreenState extends State<FollowersListScreen> {
               color: const Color.fromARGB(70, 192, 162, 73),
             ),
             child: ListTile(
-              leading: const Icon(Icons.person),
+              leading: CircleAvatar(
+                radius: 24,
+                backgroundImage: profilePic == ""
+                    ? const AssetImage("images/upload-images-placeholder.png")
+                        as ImageProvider
+                    : NetworkImage(profilePic),
+              ),
               title: GestureDetector(
                 onTap: () {
                   _navigateToUserProfileScreen(userId);

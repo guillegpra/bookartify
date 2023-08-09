@@ -357,7 +357,7 @@ class _FollowingListScreenState extends State<FollowingListScreen>
                     leading: CircleAvatar(
                       radius: 24,
                       backgroundImage: imageUrl == ""
-                          ? AssetImage("images/upload-images-placeholder.png")
+                          ? const AssetImage("images/upload-images-placeholder.png")
                               as ImageProvider
                           : NetworkImage(imageUrl),
                     ),
