@@ -101,6 +101,8 @@ flutter:
     - images/ig_logo.png
     - images/upload-images-placeholder.png
     - images/augmented-reality.png 
+    - images/camera.png
+    - images/Indicator.png
   #   - the augmented reality png will require attribution if we publish this on a platform.  Attribution Link below:
   #   - <a href="https://www.flaticon.com/free-icons/augmented-reality" title="augmented reality icons">Augmented reality icons created by Ilham Fitrotul Hayat - Flaticon</a>
   #   - images/a_dot_ham.jpeg
