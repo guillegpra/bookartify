@@ -94,11 +94,167 @@ class _BookInfoState extends State<BookInfo> {
 
   @override
   Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        if (constraints.maxWidth > 1279.0) {
+          // Tablet Landscape Mode
+          return _buildTabletLandscapeLayout();
+        } else {
+          // Phone/Tablet Portrait Mode
+          return _buildPortraitLayout();
+        }
+      },
+    );
+  }
+
+  Widget _buildTabletLandscapeLayout() {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8.0, top: 8.0, left: 200),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // Smaller thumbnail size in landscape mode
+          Expanded(
+            flex: 1,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: Container(
+                width: 150,
+                height: 420,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF5EFE1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: widget.book.thumbnailUrl.isNotEmpty
+                      ? FadeInImage.assetNetwork(
+                          placeholder: 'images/search_placeholder_image.jpg',
+                          image: widget.book.thumbnailUrl,
+                          fit: BoxFit.cover,
+                          imageErrorBuilder: (BuildContext context,
+                              Object exception, StackTrace? stackTrace) {
+                            return Image.asset(
+                              'images/search_placeholder_image.jpg',
+                              fit: BoxFit.cover,
+                            );
+                          },
+                        )
+                      : Image.asset(
+                          'images/search_placeholder_image.jpg',
+                          fit: BoxFit.cover,
+                        ),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Centered title and follow icon
+                Center(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 8.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            widget.book.title,
+                            style: GoogleFonts.dmSerifDisplay(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(width: 8.0), // Add spacing
+                          GestureDetector(
+                            onTap: _toggleSaveBook,
+                            child: Icon(
+                              isBookSaved ? Icons.check : Icons.add,
+                              size: 30,
+                              color: isBookSaved
+                                  ? const Color(0xFFBFA054)
+                                  : const Color(0xFF2F2F2F),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Text(" by ${widget.book.author}"),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 8.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InfoBox(
+                      title: "Released",
+                      info: formatDate(widget.book.publishedDate),
+                    ),
+                    const SizedBox(width: 10.0),
+                    InfoBox(
+                      title: "Pages",
+                      info: widget.book.pageCount.toString(),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8.0),
+                Column(
+                  // Stack the buttons vertically
+                  mainAxisAlignment:
+                      MainAxisAlignment.center, // Center the buttons
+                  children: [
+                    Container(
+                      width: 200, // Set a specific width for the button
+                      child: UploadButton(
+                        buttonLabel: 'Upload your cover',
+                        onPressed: () {
+                          // TODO
+                        },
+                        backgroundColor: const Color(0xFFBFA054),
+                        foregroundColor: const Color(0xFF2F2F2F),
+                        icon: const Icon(
+                          CupertinoIcons.add,
+                          size: 22,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8.0), // Add spacing between buttons
+                    Container(
+                      width: 200, // Set a specific width for the button
+                      child: UploadButton(
+                        buttonLabel: 'Upload your art',
+                        onPressed: () {
+                          // TODO
+                        },
+                        backgroundColor: const Color(0xFF2F2F2F),
+                        foregroundColor: const Color(0xFFFBF8F2),
+                        icon: const Icon(
+                          CupertinoIcons.add,
+                          size: 22,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPortraitLayout() {
     return Container(
       margin: const EdgeInsets.only(bottom: 8.0, top: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
+          // Original thumbnail size in portrait mode
           Expanded(
             flex: 2,
             child: Padding(
@@ -118,12 +274,15 @@ class _BookInfoState extends State<BookInfo> {
                           imageErrorBuilder: (BuildContext context,
                               Object exception, StackTrace? stackTrace) {
                             return Image.asset(
-                                'images/search_placeholder_image.jpg',
-                                fit: BoxFit.cover);
+                              'images/search_placeholder_image.jpg',
+                              fit: BoxFit.cover,
+                            );
                           },
                         )
-                      : Image.asset('images/search_placeholder_image.jpg',
-                          fit: BoxFit.cover),
+                      : Image.asset(
+                          'images/search_placeholder_image.jpg',
+                          fit: BoxFit.cover,
+                        ),
                 ),
               ),
             ),
