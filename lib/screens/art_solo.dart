@@ -10,17 +10,44 @@ import 'package:bookartify/models/book_model.dart';
 import 'package:bookartify/screens/book_screen.dart';
 import 'package:bookartify/screens/profile_screen.dart';
 
-class ArtSoloScreen extends StatelessWidget {
+class ArtSoloScreen extends StatefulWidget {
   final String type;
   final dynamic post;
   final Book book;
 
-  const ArtSoloScreen({
-    Key? key,
-    required this.type,
-    required this.post,
-    required this.book,
-  }) : super(key: key);
+  const ArtSoloScreen({super.key, required this.type, required this.post,
+    required this.book});
+
+  @override
+  State<ArtSoloScreen> createState() => _ArtSoloScreenState();
+}
+
+class _ArtSoloScreenState extends State<ArtSoloScreen> {
+  String userId = FirebaseAuth.instance.currentUser!.uid;
+  bool isSaved = false;
+
+  @override
+  void initState() {
+    super.initState();
+    getSavedStatus();
+  }
+
+  Future<void> getSavedStatus() async {
+    bool saved = (widget.type == "art")
+        ? await isBookmarkedArt(userId, widget.post["id"].toString())
+        : await isBookmarkedCover(userId, widget.post["id"].toString());
+    if (mounted) {
+      setState(() {
+        isSaved = saved;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   Future<String> saveOrUnsaveText(String type, String id) async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
@@ -39,16 +66,16 @@ class ArtSoloScreen extends StatelessWidget {
         context,
         MaterialPageRoute(
           builder: (context) =>
-              ProfileScreen(userId: post["user_id"].toString()),
+              ProfileScreen(userId: widget.post["user_id"].toString()),
         ),
       );
     }
 
     Future<String> getButtonText() async {
-      if (FirebaseAuth.instance.currentUser!.uid == post["user_id"].toString()) {
+      if (userId == widget.post["user_id"].toString()) {
         return "Delete";
       } else {
-        return await saveOrUnsaveText(type, post["id"].toString());
+        return await saveOrUnsaveText(widget.type, widget.post["id"].toString());
       }
     }
 
@@ -64,7 +91,7 @@ class ArtSoloScreen extends StatelessWidget {
         //   },
         // ),
         title: Text(
-          post["title"].toString(),
+          widget.post["title"].toString(),
           style: GoogleFonts.dmSerifDisplay(
             fontWeight: FontWeight.bold,
           ),
@@ -81,13 +108,13 @@ class ArtSoloScreen extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15),
                   child: Image.network(
-                    post["url"].toString(),
+                    widget.post["url"].toString(),
                   ),
                 ),
               ),
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 5, horizontal: 2.0),
+                const EdgeInsets.symmetric(vertical: 5, horizontal: 2.0),
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(42),
@@ -104,7 +131,7 @@ class ArtSoloScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                post["title"].toString(),
+                                widget.post["title"].toString(),
                                 style: GoogleFonts.dmSerifDisplay(
                                     fontSize: 19, fontWeight: FontWeight.w600),
                               ),
@@ -120,7 +147,7 @@ class ArtSoloScreen extends StatelessWidget {
                                       ),
                                     ),
                                     TextSpan(
-                                      text: post["username"].toString(),
+                                      text: widget.post["username"].toString(),
                                       style: GoogleFonts.poppins(
                                         fontSize: 15,
                                         color: Colors.black,
@@ -143,16 +170,16 @@ class ArtSoloScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               LikeIcon(
-                                type: type,
-                                id: post["id"].toString(),
+                                type: widget.type,
+                                id: widget.post["id"].toString(),
                               ),
                               const SizedBox(width: 10),
                               SaveIcon(
-                                type: type,
-                                id: post["id"].toString(),
+                                type: widget.type,
+                                id: widget.post["id"].toString(),
                               ),
                               ShareButton(
-                                post: post,
+                                post: widget.post,
                               ),
                             ],
                           ),
@@ -167,7 +194,7 @@ class ArtSoloScreen extends StatelessWidget {
               ),
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -178,7 +205,7 @@ class ArtSoloScreen extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => BookScreen(book: book),
+                              builder: (context) => BookScreen(book: widget.book),
                             ),
                           );
                         },
@@ -194,7 +221,7 @@ class ArtSoloScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 5),
                             Text(
-                              book.title,
+                              widget.book.title,
                               style: GoogleFonts.poppins(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w300,
@@ -211,7 +238,7 @@ class ArtSoloScreen extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => BookScreen(book: book),
+                              builder: (context) => BookScreen(book: widget.book),
                             ),
                           );
                         },
@@ -227,7 +254,7 @@ class ArtSoloScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 5),
                             Text(
-                              book.author,
+                              widget.book.author,
                               style: GoogleFonts.poppins(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w300,
@@ -254,7 +281,7 @@ class ArtSoloScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 2.5),
                     Text(
-                      post["description"] ?? "No description added.",
+                      widget.post["description"] ?? "No description added.",
                       style: GoogleFonts.poppins(
                         fontSize: 16,
                         fontWeight: FontWeight.w300,
@@ -266,26 +293,37 @@ class ArtSoloScreen extends StatelessWidget {
               ),
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () {
-                          if (FirebaseAuth.instance.currentUser!.uid ==
-                              post["user_id"].toString()) {
-                            type == "art" ? deleteArt(post["user_id"], post["id"].toString())
-                                : deleteCover(post["user_id"].toString(), post["id"].toString());
+                        onPressed: () async {
+                          if (userId == widget.post["user_id"].toString()) {
+                            widget.type == "art" ? deleteArt(userId, widget.post["id"].toString())
+                                : deleteCover(userId, widget.post["id"].toString());
                             Navigator.pop(context);
                             // TODO: reload page after deleting
                           } else {
-                            // TODO: save/unsave
+                            if (widget.type == "art" && !isSaved) {
+                              await bookmarkArt(userId, widget.post["id"].toString());
+                            } else if (widget.type == "art" && isSaved) {
+                              await unbookmarkArt(userId, widget.post["id"].toString());
+                            } else if (widget.type == "cover" && !isSaved) {
+                              await bookmarkCover(userId, widget.post["id"].toString());
+                            } else {
+                              await unbookmarkCover(userId, widget.post["id"].toString());
+                            }
+
+                            setState(() {
+                              isSaved = !isSaved;
+                            });
                           }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
-                              const Color.fromARGB(255, 192, 162, 73),
+                          const Color.fromARGB(255, 192, 162, 73),
                           foregroundColor: Colors.black,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.5),
@@ -326,7 +364,7 @@ class ArtSoloScreen extends StatelessWidget {
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
-                              const Color.fromARGB(255, 47, 47, 47),
+                          const Color.fromARGB(255, 47, 47, 47),
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.5),
