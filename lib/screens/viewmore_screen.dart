@@ -7,12 +7,16 @@ import 'package:bookartify/widgets/icons_and_buttons/save_icon.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:bookartify/widgets/icons_and_buttons/share_button.dart';
 import 'package:bookartify/widgets/icons_and_buttons/like_icon.dart';
 import 'package:bookartify/widgets/search/inactive_searchbar.dart';
 import 'package:bookartify/screens/art_solo.dart';
 import 'package:bookartify/services/usernames_db.dart';
+import 'package:bookartify/screens/ar_screen.dart';
+import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 
 class ViewMoreScreen extends StatefulWidget {
   const ViewMoreScreen({Key? key, required this.genre, required this.posts})
@@ -28,6 +32,7 @@ class ViewMoreScreen extends StatefulWidget {
 class _ViewMoreScreenState extends State<ViewMoreScreen> {
   // This map will hold the user ids and their names.
   Map<String, String> userNames = {};
+  UnityWidgetController? _unityWidgetController;
 
   @override
   @override
@@ -50,6 +55,27 @@ class _ViewMoreScreenState extends State<ViewMoreScreen> {
       }
     }
   }
+
+    // Initialize Unity
+    void _onUnityCreated(UnityWidgetController controller) {
+      _unityWidgetController = controller;
+    }
+
+    // Handle messages from Unity
+    void _onUnityMessage(message) {
+      print('Received message from Unity: $message');
+    }
+
+    Future<String> getImageAsBase64String(String imageUrl) async {
+      final response = await http.get(Uri.parse(imageUrl));
+
+      if (response.statusCode == 200) {
+        final bytes = response.bodyBytes;
+        return base64Encode(bytes);
+      } else {
+        throw Exception('Failed to load image');
+      }
+    }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -156,15 +182,36 @@ class _ViewMoreScreenState extends State<ViewMoreScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: GestureDetector(
-                          onTap: () {
-                            //TODO: Link to the AR feature
-                            print("AR button pressed");
+                          onTap: () async {
+                            String imageUrl = post['url'].toString();
+                            String base64Image = await getImageAsBase64String(imageUrl);
+                            _unityWidgetController?.postMessage(
+                              'FramedPhoto', 
+                              'SetMaterial',
+                              base64Image
+                            );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => ARArt()),
+                            );
                           },
                           child: Image.asset(
                             'images/augmented-reality.png',
                             width: 10,
                             height: 10,
                           ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      left: (MediaQuery.of(context).size.width - 200) / 2, // Center horizontally
+                      child: Container(
+                        width: 1,
+                        height: 1,
+                        child: UnityWidget(
+                          onUnityCreated: _onUnityCreated,
+                          onUnityMessage: _onUnityMessage,
                         ),
                       ),
                     ),
