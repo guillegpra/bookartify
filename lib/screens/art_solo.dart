@@ -14,6 +14,7 @@ import 'package:bookartify/screens/profile_screen.dart';
 import 'package:bookartify/screens/ar_screen.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 
+
 class ArtSoloScreen extends StatefulWidget {
   final String type;
   final dynamic post;
@@ -29,6 +30,8 @@ class ArtSoloScreen extends StatefulWidget {
 class _ArtSoloScreenState extends State<ArtSoloScreen> {
   String userId = FirebaseAuth.instance.currentUser!.uid;
   bool isSaved = false;
+  UnityWidgetController? _unityWidgetController;
+
 
   @override
   void initState() {
@@ -80,6 +83,27 @@ class _ArtSoloScreenState extends State<ArtSoloScreen> {
         return "Delete";
       } else {
         return await saveOrUnsaveText(widget.type, widget.post["id"].toString());
+      }
+    }
+
+    // Initialize Unity
+    void _onUnityCreated(UnityWidgetController controller) {
+      _unityWidgetController = controller;
+    }
+
+    // Handle messages from Unity
+    void _onUnityMessage(message) {
+      print('Received message from Unity: $message');
+    }
+
+    Future<String> getImageAsBase64String(String imageUrl) async {
+      final response = await http.get(Uri.parse(imageUrl));
+
+      if (response.statusCode == 200) {
+        final bytes = response.bodyBytes;
+        return base64Encode(bytes);
+      } else {
+        throw Exception('Failed to load image');
       }
     }
 
@@ -362,10 +386,19 @@ class _ArtSoloScreenState extends State<ArtSoloScreen> {
                     ),
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () {
-                          // TODO: connect to AR
-                          print("Button pressed!");
-                        },
+                      onPressed: () async {
+                        String imageUrl = widget.post["url"].toString();
+                        String base64Image = await getImageAsBase64String(imageUrl);
+                        _unityWidgetController?.postMessage(
+                          'FramedPhoto', 
+                          'SetMaterial',
+                          base64Image
+                        );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ARArt()),
+                        );
+                      },
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
                           const Color.fromARGB(255, 47, 47, 47),
@@ -391,6 +424,18 @@ class _ArtSoloScreenState extends State<ArtSoloScreen> {
                 ),
               ),
               const SizedBox(height: 5),
+              Positioned(
+                bottom: 0,
+                left: (MediaQuery.of(context).size.width - 200) / 2, // Center horizontally
+                child: Container(
+                  width: 1,
+                  height: 1,
+                  child: UnityWidget(
+                    onUnityCreated: _onUnityCreated,
+                    onUnityMessage: _onUnityMessage,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
