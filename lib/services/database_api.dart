@@ -319,6 +319,31 @@ Future<void> deleteCover(String userId, String coverId) async {
   }
 }
 
+/* ------------------ Fetch All Posts ------------------ */
+
+Future<List<Map<String, dynamic>>> getAllPosts() async {
+  final artResponse = await http.get(Uri.parse("$baseUrl/art/all"));
+  final coversResponse = await http.get(Uri.parse("$baseUrl/covers/all"));
+
+  if (artResponse.statusCode == 200 && coversResponse.statusCode == 200) {
+    final artData = jsonDecode(artResponse.body) as List;
+    final coversData = jsonDecode(coversResponse.body) as List;
+
+    for (var art in artData) {
+      art['type'] =
+          'art'; // Adding a type key to distinguish between art and cover posts
+    }
+
+    for (var cover in coversData) {
+      cover['type'] = 'cover';
+    }
+
+    return [...artData, ...coversData];
+  } else {
+    throw Exception("Failed to load posts.");
+  }
+}
+
 /* ------------------ Follow ------------------ */
 Future<void> followUser(String userId, String followingId) async {
   final url = Uri.parse("$baseUrl/follow_user");

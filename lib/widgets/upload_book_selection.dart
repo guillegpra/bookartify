@@ -50,6 +50,10 @@ class _SearchScreenState extends State<SearchScreen> {
         onChanged: (value) {
           _searchSubject.add(value);
         },
+        onScan: (barcode) {
+          // Handle the barcode here
+          _searchSubject.add(barcode);
+        },
       ),
       body: _searchResult == null
           ? Center(
