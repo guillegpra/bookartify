@@ -1,38 +1,6 @@
-/*import 'package:flutter/material.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
-import 'package:bookartify/widgets/build_social_buttons.dart';
-
-class ShareButton extends StatelessWidget {
-  final Function() onPressed;
-  final Map<String, dynamic> post;
-
-  const ShareButton({super.key, required this.onPressed, required this.post});
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () {
-        showModalBottomSheet(
-          context: context,
-          builder: (BuildContext context) {
-            return buildShareOptions(context, post);
-          },
-        );
-      },
-      icon: const Icon(Icons.share),
-    );
-  }
-
-  Widget buildShareOptions(BuildContext context, Map<String, dynamic> post) {
-    return buildSocialButtons(context, post);
-  }
-}*/
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:share/share.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:http/http.dart' as http;
 
 class ShareButton extends StatelessWidget {
   final Map<String, dynamic> post;
@@ -49,7 +17,7 @@ class ShareButton extends StatelessWidget {
 }
 
 void share(BuildContext context, Map<String, dynamic> post) {
-  final text = "Check out this artwork from BookARtify!";
+  const text = "Check out this artwork from BookARtify!";
   final imageLink = post["url"].toString();
 
   final content = "$text\n$imageLink";
@@ -77,9 +45,10 @@ Widget buildSocialButton({
   required VoidCallback onClicked,
 }) =>
     InkWell(
-      child: Container(
-          width: 64,
-          height: 64,
-          child: Center(child: FaIcon(icon, color: color, size: 40))),
       onTap: onClicked,
+      child: SizedBox(
+        width: 64,
+        height: 64,
+        child: Center(child: FaIcon(icon, color: color, size: 40))
+      ),
     );

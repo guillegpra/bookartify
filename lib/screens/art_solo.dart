@@ -22,6 +22,16 @@ class ArtSoloScreen extends StatelessWidget {
     required this.book,
   }) : super(key: key);
 
+  Future<String> saveOrUnsaveText(String type, String id) async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    if ((type == "art" && await isBookmarkedArt(uid, id))
+        || (type == "cover" && await isBookmarkedCover(uid, id))) {
+      return "Unsave";
+    } else {
+      return "Save";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     void navigateToUserProfile() {
@@ -32,6 +42,14 @@ class ArtSoloScreen extends StatelessWidget {
               ProfileScreen(userId: post["user_id"].toString()),
         ),
       );
+    }
+
+    Future<String> getButtonText() async {
+      if (FirebaseAuth.instance.currentUser!.uid == post["user_id"].toString()) {
+        return "Delete";
+      } else {
+        return await saveOrUnsaveText(type, post["id"].toString());
+      }
     }
 
     return Scaffold(
@@ -276,15 +294,23 @@ class ArtSoloScreen extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                             vertical: 10,
-                            horizontal: 10,
+                            horizontal: 0,
                           ),
-                          child: Text(
-                            FirebaseAuth.instance.currentUser!.uid ==
-                                    post["user_id"].toString()
-                                ? "Delete"
-                                : "Add to Collection",
-                            style: GoogleFonts.poppins(
-                                fontSize: 16, fontWeight: FontWeight.w400),
+                          child: FutureBuilder<String>(
+                            future: getButtonText(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return const Center(child: CircularProgressIndicator(),);
+                              } else if (snapshot.hasError) {
+                                return Text("Error ${snapshot.error}");
+                              } else {
+                                return Text(
+                                  snapshot.data!,
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 16, fontWeight: FontWeight.w400),
+                                );
+                              }
+                            },
                           ),
                         ),
                       ),
@@ -309,7 +335,7 @@ class ArtSoloScreen extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                             vertical: 10,
-                            horizontal: 10,
+                            horizontal: 0,
                           ),
                           child: Text(
                             "View in AR",
