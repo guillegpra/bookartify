@@ -101,6 +101,10 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   @override
   Widget build(BuildContext context) {
+    bool isSignedInWithGoogle(User user) {
+      return user.providerData.any((userInfo) => userInfo.providerId == "google.com");
+    }
+
     super.build(context);
     return Scaffold(
       // Persistent AppBar that never scrolls
@@ -119,6 +123,23 @@ class _ProfileScreenState extends State<ProfileScreen>
             visible: widget.userId == currentUser!.uid,
             child: PopupMenuButton(
               itemBuilder: (BuildContext context) {
+                if (isSignedInWithGoogle(FirebaseAuth.instance.currentUser!)) {
+                  // Do not show Change Password for Google users
+                  return [
+                    PopupMenuItem(
+                      value: "followers",
+                      child: Text("Followers: $_followers"),
+                    ),
+                    const PopupMenuItem(
+                      value: "edit",
+                      child: Text("Edit profile"),
+                    ),
+                    const PopupMenuItem(
+                      value: "logout",
+                      child: Text("Logout"),
+                    ),
+                  ];
+                }
                 return [
                   PopupMenuItem(
                     value: "followers",
