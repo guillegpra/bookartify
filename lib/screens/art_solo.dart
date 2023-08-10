@@ -5,10 +5,14 @@ import 'package:bookartify/widgets/icons_and_buttons/share_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:bookartify/models/book_model.dart';
 import 'package:bookartify/screens/book_screen.dart';
 import 'package:bookartify/screens/profile_screen.dart';
+import 'package:bookartify/screens/ar_screen.dart';
+import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 
 class ArtSoloScreen extends StatefulWidget {
   final String type;
