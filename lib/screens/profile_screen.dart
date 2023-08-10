@@ -7,6 +7,7 @@ import 'package:bookartify/widgets/image_grid.dart';
 import 'package:bookartify/widgets/keep_alive_wrapper.dart';
 import 'package:bookartify/widgets/profile/user_widget.dart';
 import 'package:bookartify/widgets/profile/edit_profile.dart';
+import 'package:bookartify/widgets/register/forgot_password_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -161,7 +162,13 @@ class _ProfileScreenState extends State<ProfileScreen>
                     );
                     break;
                   case "change_pwd":
-                    // TODO
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            const ForgotPasswordPage(),
+                      ),
+                    );
                     break;
                   case "logout":
                     // TODO
@@ -207,7 +214,6 @@ class _ProfileScreenState extends State<ProfileScreen>
               children: <Widget>[
                 const TabBar(
                     indicatorColor: Color(0xFF8A6245),
-                    // labelStyle: GoogleFonts.poppins(),
                     tabs: [
                       Tab(text: 'Bookart'),
                       Tab(text: 'Covers'),
