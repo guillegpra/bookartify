@@ -15,7 +15,7 @@ import 'package:bookartify/widgets/icons_and_buttons/like_icon.dart';
 import 'package:bookartify/widgets/search/inactive_searchbar.dart';
 import 'package:bookartify/screens/art_solo.dart';
 import 'package:bookartify/services/usernames_db.dart';
-import 'package:bookartify/screens/ar_screen.dart';
+import 'package:bookartify/screens/ARart_screen.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 
 class ViewMoreScreen extends StatefulWidget {
