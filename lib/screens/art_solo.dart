@@ -1,3 +1,4 @@
+import 'package:bookartify/screens/bookcover_edit.dart';
 import 'package:bookartify/services/database_api.dart';
 import 'package:bookartify/widgets/icons_and_buttons/like_icon.dart';
 import 'package:bookartify/widgets/icons_and_buttons/save_icon.dart';
@@ -11,7 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:bookartify/models/book_model.dart';
 import 'package:bookartify/screens/book_screen.dart';
 import 'package:bookartify/screens/profile_screen.dart';
-import 'package:bookartify/screens/ar_screen.dart';
+import 'package:bookartify/screens/ARart_screen.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 
 
@@ -387,17 +388,31 @@ class _ArtSoloScreenState extends State<ArtSoloScreen> {
                     Expanded(
                       child: ElevatedButton(
                       onPressed: () async {
-                        String imageUrl = widget.post["url"].toString();
-                        String base64Image = await getImageAsBase64String(imageUrl);
-                        _unityWidgetController?.postMessage(
-                          'FramedPhoto', 
-                          'SetMaterial',
-                          base64Image
-                        );
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => ARArt()),
-                        );
+                        if (widget.type == "cover") {
+                          String imageUrl = widget.post["url"].toString();
+                          String base64Image = await getImageAsBase64String(imageUrl);
+                          _unityWidgetController?.postMessage(
+                            'Canvas', 
+                            'SetMaterial2',
+                            base64Image
+                          );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => BookCover()),
+                          );
+                        } else {
+                          String imageUrl = widget.post["url"].toString();
+                          String base64Image = await getImageAsBase64String(imageUrl);
+                          _unityWidgetController?.postMessage(
+                            'FramedPhoto', 
+                            'SetMaterial',
+                            base64Image
+                          );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => ARArt()),
+                          );
+                        }
                       },
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
