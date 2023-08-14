@@ -26,9 +26,10 @@ class TutorialPageData {
 }
 
 class ARCover extends StatefulWidget {
-  ARCover({Key? key}) : super(key: key);
+  const ARCover({Key? key}) : super(key: key);
+
   @override
-  _ARCoverState createState() => _ARCoverState();
+  State<ARCover> createState() => _ARCoverState();
 }
 
 class _ARCoverState extends State<ARCover> {
@@ -63,7 +64,8 @@ class _ARCoverState extends State<ARCover> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(191, 160, 84, 1),
+        backgroundColor: const Color.fromARGB(70, 192, 162, 73),
+        elevation: 0,
       ),
       body: Container(
         child: Stack(
@@ -80,6 +82,11 @@ class _ARCoverState extends State<ARCover> {
                   height: 100,
                   padding: const EdgeInsets.only(left: 5, right: 5, top: 5),
                   child: Card(
+                    color: const Color.fromRGBO(245, 239, 225, 1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                      BorderRadius.circular(10.0),
+                    ),
                     elevation: 10,
                     child: Column(
                       children: <Widget>[
@@ -153,7 +160,7 @@ class _ARCoverState extends State<ARCover> {
               Align(
                 alignment: Alignment.topRight,
                 child: IconButton(
-                  icon: Icon(Icons.close),
+                  icon: const Icon(Icons.close),
                   onPressed: () {
                     setState(() {
                       _showTutorialDialog = false;
@@ -184,7 +191,7 @@ class _ARCoverState extends State<ARCover> {
                 style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromRGBO(191, 160, 84, 1), 
                 ),
-                child: Text("I Understand"),
+                child: Text("I understand"),
               ),
             ],
           ),
@@ -203,7 +210,7 @@ class _ARCoverState extends State<ARCover> {
               child: SingleChildScrollView(
                 child: Text(
                   text,
-                  style: TextStyle(fontSize: 18),
+                  style: const TextStyle(fontSize: 18),
                   textAlign: TextAlign.left,
                 ),
               ),
