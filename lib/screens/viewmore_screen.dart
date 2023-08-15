@@ -27,7 +27,7 @@ class ViewMoreScreen extends StatefulWidget {
   final List<Map<String, dynamic>> posts;
 
   @override
-  _ViewMoreScreenState createState() => _ViewMoreScreenState();
+  State<ViewMoreScreen> createState() => _ViewMoreScreenState();
 }
 
 class _ViewMoreScreenState extends State<ViewMoreScreen> {
@@ -78,6 +78,7 @@ class _ViewMoreScreenState extends State<ViewMoreScreen> {
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -150,53 +151,42 @@ class _ViewMoreScreenState extends State<ViewMoreScreen> {
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Stack(
-                  children: [
-                    Image.network(
-                      post['url'].toString(),
-                      loadingBuilder: (BuildContext context, Widget child,
-                          ImageChunkEvent? loadingProgress) {
-                        if (loadingProgress == null) {
-                          return child;
-                        }
-                        return Center(
-                          child: CircularProgressIndicator(
-                            value: loadingProgress.expectedTotalBytes != null
-                                ? loadingProgress.cumulativeBytesLoaded /
-                                    loadingProgress.expectedTotalBytes!
-                                : null,
+              child: Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Stack(
+                    children: [
+                      Image.network(
+                        post['url'].toString(),
+                        loadingBuilder: (BuildContext context, Widget child,
+                            ImageChunkEvent? loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child;
+                          }
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes!
+                                  : null,
+                            ),
+                          );
+                        },
+                      ),
+                      Positioned(
+                        top: 10,
+                        right: 10,
+                        child: Container(
+                          width: 35,
+                          height: 35,
+                          decoration: BoxDecoration(
+                            color: Colors.white
+                                .withOpacity(0.4), // White background color
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                        );
-                      },
-                    ),
-                    Positioned(
-                      top: 10,
-                      right: 10,
-                      child: Container(
-                        width: 35,
-                        height: 35,
-                        decoration: BoxDecoration(
-                          color: Colors.white
-                              .withOpacity(0.4), // White background color
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: GestureDetector(
-                          onTap: () async {
-                            if (post["type"] == "cover") {
-                              String imageUrl = post["url"].toString();
-                              String base64Image =
-                                  await getImageAsBase64String(imageUrl);
-                              _unityWidgetController?.postMessage(
-                                  'Canvas', 'SetMaterial2', base64Image);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => BookCover()),
-                              );
-                            } else if (post["type"] == "art") {
-                              String imageUrl = post["url"].toString();
+                          child: GestureDetector(
+                            onTap: () async {
+                              String imageUrl = post['url'].toString();
                               String base64Image =
                                   await getImageAsBase64String(imageUrl);
                               _unityWidgetController?.postMessage(
@@ -204,32 +194,32 @@ class _ViewMoreScreenState extends State<ViewMoreScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ARArt()),
+                                    builder: (context) => const ARArt()),
                               );
-                            }
-                          },
-                          child: Image.asset(
-                            'images/augmented-reality.png',
-                            width: 10,
-                            height: 10,
+                            },
+                            child: Image.asset(
+                              'images/augmented-reality.png',
+                              width: 10,
+                              height: 10,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      left: (MediaQuery.of(context).size.width - 200) /
-                          2, // Center horizontally
-                      child: Container(
-                        width: 1,
-                        height: 1,
-                        child: UnityWidget(
-                          onUnityCreated: _onUnityCreated,
-                          onUnityMessage: _onUnityMessage,
+                      Positioned(
+                        bottom: 0,
+                        left: (MediaQuery.of(context).size.width - 200) /
+                            2, // Center horizontally
+                        child: SizedBox(
+                          width: 1,
+                          height: 1,
+                          child: UnityWidget(
+                            onUnityCreated: _onUnityCreated,
+                            onUnityMessage: _onUnityMessage,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

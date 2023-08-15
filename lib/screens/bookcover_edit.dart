@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert'; // Import dart:convert library
 import 'package:flutter/material.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:bookartify/screens/ARcover_screen.dart';
 
@@ -21,7 +22,15 @@ class _BookCoverState extends State<BookCover> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(191, 160, 84, 1),
+        backgroundColor: const Color.fromARGB(70, 192, 162, 73),
+        elevation: 0,
+        centerTitle: true,
+        title: Text(
+          "Cover",
+          style: GoogleFonts.dmSerifDisplay(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: SafeArea(
         bottom: false,
@@ -51,7 +60,7 @@ class _BookCoverState extends State<BookCover> {
     if (message.toString() == "buttonClicked") {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => ARCover()), 
+        MaterialPageRoute(builder: (context) => const ARCover()),
       );
     } else if (message.toString().startsWith("openGallery")) {
       // Call the image gallery function here

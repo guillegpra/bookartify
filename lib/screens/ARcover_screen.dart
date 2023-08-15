@@ -11,6 +11,7 @@ import 'package:ar_flutter_plugin/datatypes/node_types.dart';
 import 'package:ar_flutter_plugin/datatypes/hittest_result_types.dart';
 import 'package:ar_flutter_plugin/models/ar_node.dart';
 import 'package:ar_flutter_plugin/models/ar_hittest_result.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:vector_math/vector_math_64.dart' hide Colors;
 import 'package:path_provider/path_provider.dart';
 import 'dart:math';
@@ -66,6 +67,13 @@ class _ARCoverState extends State<ARCover> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(70, 192, 162, 73),
         elevation: 0,
+        centerTitle: true,
+        title: Text(
+          "Cover",
+          style: GoogleFonts.dmSerifDisplay(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: Container(
         child: Stack(
@@ -80,7 +88,7 @@ class _ARCoverState extends State<ARCover> {
               children: <Widget>[
                 Container(
                   height: 100,
-                  padding: const EdgeInsets.only(left: 5, right: 5, top: 5),
+                  padding: const EdgeInsets.only(left: 10, right: 10, top: 2),
                   child: Card(
                     color: const Color.fromRGBO(245, 239, 225, 1),
                     shape: RoundedRectangleBorder(
@@ -90,14 +98,16 @@ class _ARCoverState extends State<ARCover> {
                     elevation: 10,
                     child: Column(
                       children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(top: 15.0),
-                          child: const Text("Book size:"),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 15.0),
+                          child: Text("Size:"),
                         ),
                         Slider(
                           value: sliderValue,
                           min: 0.1,
                           max: 0.3,
+                          activeColor: const Color.fromARGB(255, 48, 80, 72),
+                          inactiveColor: const Color.fromARGB(100, 48, 80, 72),
                           onChanged: (double value) {
                             setState(() {
                               sliderValue = value;
@@ -120,17 +130,20 @@ class _ARCoverState extends State<ARCover> {
                           ElevatedButton(
                             onPressed: onTakeScreenshot,
                             style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.zero,
-                            backgroundColor: Colors.transparent,
-                            shadowColor: Colors.transparent,
-                            elevation: 0,
+                              shape: const CircleBorder(),
+                              backgroundColor: const Color.fromARGB(255, 192, 162, 73),
+                              padding: const EdgeInsets.all(20),
                             ),
-                            child: Image.asset(
-                              'images/camera.png',
-                              fit: BoxFit.cover,
-                              width: 60.0, 
-                              height: 60.0, 
+                            child: const Icon(
+                              Icons.camera_alt,
+                              color: Colors.black,
                             ),
+                            // child: Image.asset(
+                            //   'images/camera.png',
+                            //   fit: BoxFit.cover,
+                            //   width: 60.0,
+                            //   height: 60.0,
+                            // ),
                           )
                         ],
                       ),
@@ -152,7 +165,7 @@ class _ARCoverState extends State<ARCover> {
           width: MediaQuery.of(context).size.width * 0.8,
           height: MediaQuery.of(context).size.height * 0.29,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: const Color.fromRGBO(245, 239, 225, 1),
             borderRadius: BorderRadius.circular(15),
           ),
           child: Column(
@@ -189,10 +202,18 @@ class _ARCoverState extends State<ARCover> {
                   });
                 },
                 style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromRGBO(191, 160, 84, 1), 
+                  backgroundColor: const Color.fromARGB(255, 47, 47, 47),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.5),
+                  ),
                 ),
-                child: Text("I understand"),
+                child: const Padding(
+                  padding: EdgeInsets.all(6.5),
+                  child: Text("I understand"),
+                ),
               ),
+              const SizedBox(height: 10,),
             ],
           ),
         ),
@@ -202,22 +223,29 @@ class _ARCoverState extends State<ARCover> {
   Widget _tutorialPage(String text, int currentPage, int totalPages) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Scrollbar( 
-              child: SingleChildScrollView(
-                child: Text(
-                  text,
-                  style: const TextStyle(fontSize: 18),
-                  textAlign: TextAlign.left,
+            padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+            child: SingleChildScrollView(
+              child: Text(
+                text,
+                style: GoogleFonts.poppins(
+                  fontSize: 15,
+                  height: 0.99,
                 ),
+                textAlign: TextAlign.left,
               ),
             ),
           ),
         ),
-        Text("$currentPage/$totalPages"),
+        Text(
+          "$currentPage/$totalPages",
+          style: GoogleFonts.poppins(
+              fontSize: 12
+          ),
+        ),
       ],
     );
   }
