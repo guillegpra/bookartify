@@ -17,6 +17,7 @@ import 'package:bookartify/screens/art_solo.dart';
 import 'package:bookartify/services/usernames_db.dart';
 import 'package:bookartify/screens/ARart_screen.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
+import 'package:bookartify/screens/bookcover_edit.dart';
 
 class ViewMoreScreen extends StatefulWidget {
   const ViewMoreScreen({Key? key, required this.genre, required this.posts})
@@ -55,26 +56,26 @@ class _ViewMoreScreenState extends State<ViewMoreScreen> {
     }
   }
 
-    // Initialize Unity
-    void _onUnityCreated(UnityWidgetController controller) {
-      _unityWidgetController = controller;
-    }
+  // Initialize Unity
+  void _onUnityCreated(UnityWidgetController controller) {
+    _unityWidgetController = controller;
+  }
 
-    // Handle messages from Unity
-    void _onUnityMessage(message) {
-      print('Received message from Unity: $message');
-    }
+  // Handle messages from Unity
+  void _onUnityMessage(message) {
+    print('Received message from Unity: $message');
+  }
 
-    Future<String> getImageAsBase64String(String imageUrl) async {
-      final response = await http.get(Uri.parse(imageUrl));
+  Future<String> getImageAsBase64String(String imageUrl) async {
+    final response = await http.get(Uri.parse(imageUrl));
 
-      if (response.statusCode == 200) {
-        final bytes = response.bodyBytes;
-        return base64Encode(bytes);
-      } else {
-        throw Exception('Failed to load image');
-      }
+    if (response.statusCode == 200) {
+      final bytes = response.bodyBytes;
+      return base64Encode(bytes);
+    } else {
+      throw Exception('Failed to load image');
     }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -185,15 +186,14 @@ class _ViewMoreScreenState extends State<ViewMoreScreen> {
                           child: GestureDetector(
                             onTap: () async {
                               String imageUrl = post['url'].toString();
-                              String base64Image = await getImageAsBase64String(imageUrl);
+                              String base64Image =
+                                  await getImageAsBase64String(imageUrl);
                               _unityWidgetController?.postMessage(
-                                'FramedPhoto',
-                                'SetMaterial',
-                                base64Image
-                              );
+                                  'FramedPhoto', 'SetMaterial', base64Image);
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => const ARArt()),
+                                MaterialPageRoute(
+                                    builder: (context) => const ARArt()),
                               );
                             },
                             child: Image.asset(
@@ -206,7 +206,8 @@ class _ViewMoreScreenState extends State<ViewMoreScreen> {
                       ),
                       Positioned(
                         bottom: 0,
-                        left: (MediaQuery.of(context).size.width - 200) / 2, // Center horizontally
+                        left: (MediaQuery.of(context).size.width - 200) /
+                            2, // Center horizontally
                         child: SizedBox(
                           width: 1,
                           height: 1,

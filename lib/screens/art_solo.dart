@@ -15,14 +15,13 @@ import 'package:bookartify/screens/profile_screen.dart';
 import 'package:bookartify/screens/ARart_screen.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 
-
 class ArtSoloScreen extends StatefulWidget {
   final String type;
   final dynamic post;
   final Book book;
 
-  const ArtSoloScreen({super.key, required this.type, required this.post,
-    required this.book});
+  const ArtSoloScreen(
+      {super.key, required this.type, required this.post, required this.book});
 
   @override
   State<ArtSoloScreen> createState() => _ArtSoloScreenState();
@@ -32,7 +31,6 @@ class _ArtSoloScreenState extends State<ArtSoloScreen> {
   String userId = FirebaseAuth.instance.currentUser!.uid;
   bool isSaved = false;
   UnityWidgetController? _unityWidgetController;
-
 
   @override
   void initState() {
@@ -59,8 +57,8 @@ class _ArtSoloScreenState extends State<ArtSoloScreen> {
 
   Future<String> saveOrUnsaveText(String type, String id) async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    if ((type == "art" && await isBookmarkedArt(uid, id))
-        || (type == "cover" && await isBookmarkedCover(uid, id))) {
+    if ((type == "art" && await isBookmarkedArt(uid, id)) ||
+        (type == "cover" && await isBookmarkedCover(uid, id))) {
       return "Unsave";
     } else {
       return "Save";
@@ -83,7 +81,8 @@ class _ArtSoloScreenState extends State<ArtSoloScreen> {
       if (userId == widget.post["user_id"].toString()) {
         return "Delete";
       } else {
-        return await saveOrUnsaveText(widget.type, widget.post["id"].toString());
+        return await saveOrUnsaveText(
+            widget.type, widget.post["id"].toString());
       }
     }
 
@@ -143,7 +142,7 @@ class _ArtSoloScreenState extends State<ArtSoloScreen> {
               ),
               Padding(
                 padding:
-                const EdgeInsets.symmetric(vertical: 5, horizontal: 2.0),
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 2.0),
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(42),
@@ -223,7 +222,7 @@ class _ArtSoloScreenState extends State<ArtSoloScreen> {
               ),
               Padding(
                 padding:
-                const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -234,7 +233,8 @@ class _ArtSoloScreenState extends State<ArtSoloScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => BookScreen(book: widget.book),
+                              builder: (context) =>
+                                  BookScreen(book: widget.book),
                             ),
                           );
                         },
@@ -267,7 +267,8 @@ class _ArtSoloScreenState extends State<ArtSoloScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => BookScreen(book: widget.book),
+                              builder: (context) =>
+                                  BookScreen(book: widget.book),
                             ),
                           );
                         },
@@ -322,7 +323,7 @@ class _ArtSoloScreenState extends State<ArtSoloScreen> {
               ),
               Padding(
                 padding:
-                const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -330,19 +331,26 @@ class _ArtSoloScreenState extends State<ArtSoloScreen> {
                       child: ElevatedButton(
                         onPressed: () async {
                           if (userId == widget.post["user_id"].toString()) {
-                            widget.type == "art" ? deleteArt(userId, widget.post["id"].toString())
-                                : deleteCover(userId, widget.post["id"].toString());
+                            widget.type == "art"
+                                ? deleteArt(
+                                    userId, widget.post["id"].toString())
+                                : deleteCover(
+                                    userId, widget.post["id"].toString());
                             Navigator.pop(context);
                             // TODO: reload page after deleting
                           } else {
                             if (widget.type == "art" && !isSaved) {
-                              await bookmarkArt(userId, widget.post["id"].toString());
+                              await bookmarkArt(
+                                  userId, widget.post["id"].toString());
                             } else if (widget.type == "art" && isSaved) {
-                              await unbookmarkArt(userId, widget.post["id"].toString());
+                              await unbookmarkArt(
+                                  userId, widget.post["id"].toString());
                             } else if (widget.type == "cover" && !isSaved) {
-                              await bookmarkCover(userId, widget.post["id"].toString());
+                              await bookmarkCover(
+                                  userId, widget.post["id"].toString());
                             } else {
-                              await unbookmarkCover(userId, widget.post["id"].toString());
+                              await unbookmarkCover(
+                                  userId, widget.post["id"].toString());
                             }
 
                             setState(() {
@@ -352,7 +360,7 @@ class _ArtSoloScreenState extends State<ArtSoloScreen> {
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
-                          const Color.fromARGB(255, 192, 162, 73),
+                              const Color.fromARGB(255, 192, 162, 73),
                           foregroundColor: Colors.black,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.5),
@@ -366,15 +374,19 @@ class _ArtSoloScreenState extends State<ArtSoloScreen> {
                           child: FutureBuilder<String>(
                             future: getButtonText(),
                             builder: (context, snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                return const Center(child: CircularProgressIndicator(),);
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
                               } else if (snapshot.hasError) {
                                 return Text("Error ${snapshot.error}");
                               } else {
                                 return Text(
                                   snapshot.data!,
                                   style: GoogleFonts.poppins(
-                                      fontSize: 16, fontWeight: FontWeight.w400),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400),
                                 );
                               }
                             },
@@ -387,36 +399,34 @@ class _ArtSoloScreenState extends State<ArtSoloScreen> {
                     ),
                     Expanded(
                       child: ElevatedButton(
-                      onPressed: () async {
-                        if (widget.type == "cover") {
-                          String imageUrl = widget.post["url"].toString();
-                          String base64Image = await getImageAsBase64String(imageUrl);
-                          _unityWidgetController?.postMessage(
-                            'Canvas', 
-                            'SetMaterial2',
-                            base64Image
-                          );
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => BookCover()),
-                          );
-                        } else {
-                          String imageUrl = widget.post["url"].toString();
-                          String base64Image = await getImageAsBase64String(imageUrl);
-                          _unityWidgetController?.postMessage(
-                            'FramedPhoto', 
-                            'SetMaterial',
-                            base64Image
-                          );
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ARArt()),
-                          );
-                        }
-                      },
+                        onPressed: () async {
+                          print("Widget type: ${widget.type}");
+                          if (widget.type == "cover") {
+                            String imageUrl = widget.post["url"].toString();
+                            String base64Image =
+                                await getImageAsBase64String(imageUrl);
+                            _unityWidgetController?.postMessage(
+                                'Canvas', 'SetMaterial2', base64Image);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BookCover()),
+                            );
+                          } else if (widget.type == "art") {
+                            String imageUrl = widget.post["url"].toString();
+                            String base64Image =
+                                await getImageAsBase64String(imageUrl);
+                            _unityWidgetController?.postMessage(
+                                'FramedPhoto', 'SetMaterial', base64Image);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => ARArt()),
+                            );
+                          }
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
-                          const Color.fromARGB(255, 47, 47, 47),
+                              const Color.fromARGB(255, 47, 47, 47),
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.5),
@@ -441,7 +451,8 @@ class _ArtSoloScreenState extends State<ArtSoloScreen> {
               const SizedBox(height: 5),
               Positioned(
                 bottom: 0,
-                left: (MediaQuery.of(context).size.width - 200) / 2, // Center horizontally
+                left: (MediaQuery.of(context).size.width - 200) /
+                    2, // Center horizontally
                 child: Container(
                   width: 1,
                   height: 1,

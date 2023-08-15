@@ -329,15 +329,17 @@ Future<List<Map<String, dynamic>>> getAllPosts() async {
     final artData = jsonDecode(artResponse.body) as List;
     final coversData = jsonDecode(coversResponse.body) as List;
 
-    for (var art in artData) {
-      art['type'] =
-          'art'; // Adding a type key to distinguish between art and cover posts
-    }
+    // for (var art in artData) {
+    //   art['type'] =
+    //       'art'; // Adding a type key to distinguish between art and cover posts
+    // }
 
-    for (var cover in coversData) {
-      cover['type'] = 'cover';
-    }
+    // for (var cover in coversData) {
+    //   cover['type'] = 'cover';
+    // }
 
+    print("------------ Posts -----------");
+    print([...artData, ...coversData].toString());
     return [...artData, ...coversData];
   } else {
     throw Exception("Failed to load posts.");
