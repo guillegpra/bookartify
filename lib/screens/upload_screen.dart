@@ -196,13 +196,13 @@ class _UploadScreenState extends State<UploadScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ArtUploadPage()),
+                              builder: (context) => const ArtUploadPage()),
                         );
                       } else if (selectedOption == 'book_cover') {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => CoverUploadPage()),
+                              builder: (context) => const CoverUploadPage()),
                         );
                       }
                     },

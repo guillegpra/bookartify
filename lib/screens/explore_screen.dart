@@ -141,7 +141,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               height: (MediaQuery.of(context).size.width /
                   1.7), // Considering 2 rows and each item having aspect ratio close to 1
               child: explore_genre(
@@ -167,7 +167,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                             color: Colors.grey.withOpacity(0.5),
                             spreadRadius: 1,
                             blurRadius: 3,
-                            offset: Offset(0, 2),
+                            offset: const Offset(0, 2),
                           ),
                         ],
                       ),
@@ -186,7 +186,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                         },
                         child: const Padding(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 10.0, vertical: 5.0),
+                              horizontal: 20.0, vertical: 10.0),
                           child: Text(
                             'View More',
                             style: TextStyle(

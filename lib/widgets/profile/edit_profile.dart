@@ -249,7 +249,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               style: GoogleFonts.poppins(
                 fontWeight: FontWeight.normal,
                 color: const Color(0xff2f2f2f),
-                fontSize: 16,
+                fontSize: 14,
                 letterSpacing: -0.5,
               ),
             ),

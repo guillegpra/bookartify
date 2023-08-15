@@ -20,13 +20,6 @@ class BookScreen extends StatefulWidget {
 }
 
 class _BookScreenState extends State<BookScreen> {
-  bool _showTitleInAppBar = false;
-
-  void _handleScroll(ScrollMetrics metrics) {
-    setState(() {
-      _showTitleInAppBar = metrics.pixels > 0;
-    });
-  }
 
   Future<List<dynamic>> getArtByBook(String bookId) async {
     final http.Response response = await http

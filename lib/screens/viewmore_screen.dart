@@ -35,7 +35,6 @@ class _ViewMoreScreenState extends State<ViewMoreScreen> {
   UnityWidgetController? _unityWidgetController;
 
   @override
-  @override
   void initState() {
     super.initState();
     _fetchUserNames();

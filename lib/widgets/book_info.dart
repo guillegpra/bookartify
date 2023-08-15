@@ -1,4 +1,6 @@
 import 'package:bookartify/models/book_model.dart';
+import 'package:bookartify/screens/cover_upload.dart';
+import 'package:bookartify/screens/fanart_upload.dart';
 import 'package:bookartify/widgets/info_box.dart';
 import 'package:bookartify/widgets/upload_button.dart';
 import 'package:flutter/cupertino.dart';
@@ -157,7 +159,7 @@ class _BookInfoState extends State<BookInfo> {
                 Center(
                   child: Column(
                     children: [
-                      SizedBox(height: 8.0),
+                      const SizedBox(height: 8.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -207,7 +209,7 @@ class _BookInfoState extends State<BookInfo> {
                   mainAxisAlignment:
                       MainAxisAlignment.center, // Center the buttons
                   children: [
-                    Container(
+                    SizedBox(
                       width: 200, // Set a specific width for the button
                       child: UploadButton(
                         buttonLabel: 'Upload your cover',
@@ -223,7 +225,7 @@ class _BookInfoState extends State<BookInfo> {
                       ),
                     ),
                     const SizedBox(height: 8.0), // Add spacing between buttons
-                    Container(
+                    SizedBox(
                       width: 200, // Set a specific width for the button
                       child: UploadButton(
                         buttonLabel: 'Upload your art',
@@ -296,7 +298,7 @@ class _BookInfoState extends State<BookInfo> {
                 Center(
                   child: Column(
                     children: [
-                      SizedBox(height: 8.0),
+                      const SizedBox(height: 8.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -346,12 +348,15 @@ class _BookInfoState extends State<BookInfo> {
                   mainAxisAlignment:
                       MainAxisAlignment.center, // Center the buttons
                   children: [
-                    Container(
-                      width: 200, // Set a specific width for the button
+                    SizedBox(
+                      width: 210, // Set a specific width for the button
                       child: UploadButton(
                         buttonLabel: 'Upload your cover',
                         onPressed: () {
-                          // TODO
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const CoverUploadPage())
+                          );
                         },
                         backgroundColor: const Color(0xFFBFA054),
                         foregroundColor: const Color(0xFF2F2F2F),
@@ -361,13 +366,16 @@ class _BookInfoState extends State<BookInfo> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 8.0), // Add spacing between buttons
-                    Container(
-                      width: 200, // Set a specific width for the button
+                    const SizedBox(height: 1.0), // Add spacing between buttons
+                    SizedBox(
+                      width: 210, // Set a specific width for the button
                       child: UploadButton(
                         buttonLabel: 'Upload your art',
                         onPressed: () {
-                          // TODO
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const ArtUploadPage())
+                          );
                         },
                         backgroundColor: const Color(0xFF2F2F2F),
                         foregroundColor: const Color(0xFFFBF8F2),

@@ -271,7 +271,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           types: _bookmarks.map((e) => e["type"].toString()).toList(),
                           posts: _bookmarks,
                         )
-                        : const Center(child: Text("No posts saved yet."),)
+                        : const Center(child: Text("No content saved yet."),)
                     ),
                   ],
                 ))
