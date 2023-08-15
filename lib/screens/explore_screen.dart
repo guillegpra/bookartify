@@ -145,8 +145,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
               height: (MediaQuery.of(context).size.width /
                   1.7), // Considering 2 rows and each item having aspect ratio close to 1
               child: explore_genre(
-                types: List.generate(posts.length,
-                    (index) => genre), // Generate genre for each post
+                types: posts
+                    .map((e) => e["type"].toString())
+                    .toList(), // Generate genre for each post
                 posts: posts.take(4).toList(), // Take only 4 posts maximum
               ),
             ),

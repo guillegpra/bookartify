@@ -35,10 +35,11 @@ class ARArt extends StatefulWidget {
 
 class _ARArtState extends State<ARArt> {
   bool _arViewActive = false;
-    @override
+  @override
   void initState() {
     super.initState();
   }
+
   double sliderValue = 0.5;
   bool _showTutorialDialog = true;
   ARSessionManager? arSessionManager;
@@ -48,16 +49,23 @@ class _ARArtState extends State<ARArt> {
   List<ARNode> nodes = [];
   List<ARAnchor> anchors = [];
   List<TutorialPageData> tutorialPages = [
-    TutorialPageData(text: "Please note: \nThe AR camera may struggle to recognize plain surfaces like white or plain-colored walls and floors. It works best on textured or designed surfaces."),
-    TutorialPageData(text: "Tip: \nTap on the desired location to place an object."),
-    TutorialPageData(text: "Want to move the object? \nLong-press and drag to your preferred spot."),
-    TutorialPageData(text: "To rotate the object, long-press it and use another finger to swipe in the desired direction."),
+    TutorialPageData(
+        text:
+            "Please note: \nThe AR camera may struggle to recognize plain surfaces like white or plain-colored walls and floors. It works best on textured or designed surfaces."),
+    TutorialPageData(
+        text: "Tip: \nTap on the desired location to place an object."),
+    TutorialPageData(
+        text:
+            "Want to move the object? \nLong-press and drag to your preferred spot."),
+    TutorialPageData(
+        text:
+            "To rotate the object, long-press it and use another finger to swipe in the desired direction."),
   ];
 
   @override
   void dispose() {
     super.dispose();
-    arSessionManager!.dispose();
+    arSessionManager?.dispose();
     clearAllImagesFromPath("/data/user/0/com.example.bookartify/app_flutter/");
   }
 
@@ -69,20 +77,21 @@ class _ARArtState extends State<ARArt> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-            "Art",
-            style: GoogleFonts.dmSerifDisplay(
-              fontWeight: FontWeight.bold,
-            ),
+          "Art",
+          style: GoogleFonts.dmSerifDisplay(
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       body: Container(
         child: Stack(
           children: [
-          if (_arViewActive)
-            ARView(
-              onARViewCreated: onARViewCreated,
-              planeDetectionConfig: PlaneDetectionConfig.horizontalAndVertical,
-            ),
+            if (_arViewActive)
+              ARView(
+                onARViewCreated: onARViewCreated,
+                planeDetectionConfig:
+                    PlaneDetectionConfig.horizontalAndVertical,
+              ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -92,8 +101,7 @@ class _ARArtState extends State<ARArt> {
                   child: Card(
                     color: const Color.fromRGBO(245, 239, 225, 1),
                     shape: RoundedRectangleBorder(
-                      borderRadius:
-                      BorderRadius.circular(10.0),
+                      borderRadius: BorderRadius.circular(10.0),
                     ),
                     elevation: 10,
                     child: Column(
@@ -128,17 +136,17 @@ class _ARArtState extends State<ARArt> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           ElevatedButton(
-                            onPressed: onTakeScreenshot,
-                            style: ElevatedButton.styleFrom(
-                              shape: const CircleBorder(),
-                              backgroundColor: const Color.fromARGB(255, 192, 162, 73),
-                              padding: const EdgeInsets.all(20),
-                            ),
-                            child: const Icon(
-                              Icons.camera_alt,
-                              color: Colors.black,
-                            )
-                          ),
+                              onPressed: onTakeScreenshot,
+                              style: ElevatedButton.styleFrom(
+                                shape: const CircleBorder(),
+                                backgroundColor:
+                                    const Color.fromARGB(255, 192, 162, 73),
+                                padding: const EdgeInsets.all(20),
+                              ),
+                              child: const Icon(
+                                Icons.camera_alt,
+                                color: Colors.black,
+                              )),
                           // ElevatedButton(
                           //   onPressed: onTakeScreenshot,
                           //   style: ElevatedButton.styleFrom(
@@ -168,68 +176,69 @@ class _ARArtState extends State<ARArt> {
     );
   }
 
-
   Widget _buildTutorialDialog() {
-      return Center(
-        child: Container(
-          width: MediaQuery.of(context).size.width * 0.8,
-          height: MediaQuery.of(context).size.height * 0.29,
-          decoration: BoxDecoration(
-            // color: Colors.white,
-            color: const Color.fromRGBO(245, 239, 225, 1),
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () {
-                    setState(() {
-                      _showTutorialDialog = false;
-                      _arViewActive = true;
-                    });
-                  },
-                ),
-              ),
-              Expanded(
-                child: PageView.builder(
-                  itemCount: tutorialPages.length,
-                  itemBuilder: (context, index) {
-                    return _tutorialPage(
-                      tutorialPages[index].text,
-                      index + 1,
-                      tutorialPages.length,
-                    );
-                  },
-                ),
-              ),
-              ElevatedButton(
+    return Center(
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.8,
+        height: MediaQuery.of(context).size.height * 0.29,
+        decoration: BoxDecoration(
+          // color: Colors.white,
+          color: const Color.fromRGBO(245, 239, 225, 1),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.topRight,
+              child: IconButton(
+                icon: const Icon(Icons.close),
                 onPressed: () {
                   setState(() {
                     _showTutorialDialog = false;
                     _arViewActive = true;
                   });
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 47, 47, 47),
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.5),
-                  ),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.all(6.5),
-                  child: Text("I understand"),
+              ),
+            ),
+            Expanded(
+              child: PageView.builder(
+                itemCount: tutorialPages.length,
+                itemBuilder: (context, index) {
+                  return _tutorialPage(
+                    tutorialPages[index].text,
+                    index + 1,
+                    tutorialPages.length,
+                  );
+                },
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  _showTutorialDialog = false;
+                  _arViewActive = true;
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 47, 47, 47),
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.5),
                 ),
               ),
-              const SizedBox(height: 10,)
-            ],
-          ),
+              child: const Padding(
+                padding: EdgeInsets.all(6.5),
+                child: Text("I understand"),
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            )
+          ],
         ),
-      );
-    }
+      ),
+    );
+  }
 
   Widget _tutorialPage(String text, int currentPage, int totalPages) {
     return Column(
@@ -253,9 +262,7 @@ class _ARArtState extends State<ARArt> {
         ),
         Text(
           "$currentPage/$totalPages",
-          style: GoogleFonts.poppins(
-            fontSize: 12
-          ),
+          style: GoogleFonts.poppins(fontSize: 12),
         ),
       ],
     );
@@ -290,91 +297,92 @@ class _ARArtState extends State<ARArt> {
   }
 
   Future<void> resizeObject(double scale) async {
-      if (nodes.isNotEmpty) {
-        ARNode node = nodes.first; // Select the node you want to resize
-        node.scale = Vector3(scale, scale, scale); // Set the new size
-      }
+    if (nodes.isNotEmpty) {
+      ARNode node = nodes.first; // Select the node you want to resize
+      node.scale = Vector3(scale, scale, scale); // Set the new size
+    }
   }
 
   Future<void> clearAllImagesFromPath(String path) async {
     final dir = Directory(path);
     if (dir.existsSync()) {
       dir.listSync().forEach((file) {
-        if (file is File && (file.path.endsWith(".png") || file.path.endsWith(".jpg"))) {
+        if (file is File &&
+            (file.path.endsWith(".png") || file.path.endsWith(".jpg"))) {
           file.deleteSync();
         }
       });
     }
   }
 
-
   Future<void> onRemoveEverything() async {
-      nodes.forEach((node) {
-        this.arObjectManager!.removeNode(node);
-      });
-      anchors.forEach((anchor) {
-        this.arAnchorManager!.removeAnchor(anchor);
-      });
-      nodes.clear();
-      anchors.clear();
+    nodes.forEach((node) {
+      this.arObjectManager!.removeNode(node);
+    });
+    anchors.forEach((anchor) {
+      this.arAnchorManager!.removeAnchor(anchor);
+    });
+    nodes.clear();
+    anchors.clear();
   }
 
-Future<void> onTakeScreenshot() async {
-  var image = await arSessionManager!.snapshot();
-  final completer = Completer<Uint8List>();
-  image.resolve(ImageConfiguration()).addListener(
-    ImageStreamListener(
-      (ImageInfo info, bool _) async {
-        final ByteData? data = await info.image.toByteData(format: ui.ImageByteFormat.png);
-        completer.complete(data!.buffer.asUint8List());
-      },
-    ),
-  );
-  final Uint8List uint8list = await completer.future;
-  final String tempPath = (await getTemporaryDirectory()).path;
-  final File tempFile = File('$tempPath/screenshot.png');
-  await tempFile.writeAsBytes(uint8list);
-  GallerySaver.saveImage(tempFile.path, albumName: "myAlbum").then((bool? success) {
-    print("Image saved to gallery: $success");
-  });
-}
+  Future<void> onTakeScreenshot() async {
+    var image = await arSessionManager!.snapshot();
+    final completer = Completer<Uint8List>();
+    image.resolve(ImageConfiguration()).addListener(
+      ImageStreamListener(
+        (ImageInfo info, bool _) async {
+          final ByteData? data =
+              await info.image.toByteData(format: ui.ImageByteFormat.png);
+          completer.complete(data!.buffer.asUint8List());
+        },
+      ),
+    );
+    final Uint8List uint8list = await completer.future;
+    final String tempPath = (await getTemporaryDirectory()).path;
+    final File tempFile = File('$tempPath/screenshot.png');
+    await tempFile.writeAsBytes(uint8list);
+    GallerySaver.saveImage(tempFile.path, albumName: "myAlbum")
+        .then((bool? success) {
+      print("Image saved to gallery: $success");
+    });
+  }
 
+  Future<void> onPlaneOrPointTapped(
+      List<ARHitTestResult> hitTestResults) async {
+    await onRemoveEverything();
 
-  Future<void> onPlaneOrPointTapped(List<ARHitTestResult> hitTestResults) async {
-      await onRemoveEverything();
-     
-      var singleHitTestResult = hitTestResults.firstWhere(
-          (hitTestResult) => hitTestResult.type == ARHitTestResultType.plane);
-      if (singleHitTestResult != null) {
-        var newAnchor =
-            ARPlaneAnchor(transformation: singleHitTestResult.worldTransform);
-        bool? didAddAnchor = await this.arAnchorManager!.addAnchor(newAnchor);
-        if (didAddAnchor!) {
-          this.anchors.add(newAnchor);
+    var singleHitTestResult = hitTestResults.firstWhere(
+        (hitTestResult) => hitTestResult.type == ARHitTestResultType.plane);
+    if (singleHitTestResult != null) {
+      var newAnchor =
+          ARPlaneAnchor(transformation: singleHitTestResult.worldTransform);
+      bool? didAddAnchor = await this.arAnchorManager!.addAnchor(newAnchor);
+      if (didAddAnchor!) {
+        this.anchors.add(newAnchor);
 
-const fileName = 'FramedPhoto.gltf';
+        const fileName = 'FramedPhoto.gltf';
 
-var newNode = ARNode(
-    type: NodeType.fileSystemAppFolderGLTF2, 
-    uri: fileName, 
-    scale: Vector3(0.5, 0.5, 0.5), 
-    position: Vector3(0.0, 0.0, 0.0),
-    rotation: Vector4(1.0, 0.0, 0.0, 0.0));
+        var newNode = ARNode(
+            type: NodeType.fileSystemAppFolderGLTF2,
+            uri: fileName,
+            scale: Vector3(0.5, 0.5, 0.5),
+            position: Vector3(0.0, 0.0, 0.0),
+            rotation: Vector4(1.0, 0.0, 0.0, 0.0));
 
-          bool? didAddNodeToAnchor =
-              await this.arObjectManager!.addNode(newNode, planeAnchor: newAnchor);
-          if (didAddNodeToAnchor!) {
-            this.nodes.add(newNode);
-          } else {
-            this.arSessionManager!.onError("Adding Node to Anchor failed");
-          }
+        bool? didAddNodeToAnchor = await this
+            .arObjectManager!
+            .addNode(newNode, planeAnchor: newAnchor);
+        if (didAddNodeToAnchor!) {
+          this.nodes.add(newNode);
         } else {
-          this.arSessionManager!.onError("Adding Anchor failed");
+          this.arSessionManager!.onError("Adding Node to Anchor failed");
         }
+      } else {
+        this.arSessionManager!.onError("Adding Anchor failed");
       }
+    }
   }
-
-
 
   onPanStarted(String nodeName) {
     print("Started panning node " + nodeName);
@@ -416,7 +424,3 @@ var newNode = ARNode(
     //rotatedNode.transform = newTransform;
   }
 }
-
-
-
-
