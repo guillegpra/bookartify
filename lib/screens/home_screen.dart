@@ -282,7 +282,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                     .width -
                                                                 200) /
                                                             2, // Center horizontally
-                                                        child: Container(
+                                                        child: SizedBox(
                                                           width: 1,
                                                           height: 1,
                                                           child: UnityWidget(
@@ -361,7 +361,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                               text: TextSpan(
                                                 children: [
                                                   TextSpan(
-                                                    text: 'By ',
+                                                    text: posts[index]["type"]
+                                                        .toString() == "art" ? 'Artwork by '
+                                                    : 'Cover by ',
                                                     style: GoogleFonts.poppins(
                                                       fontSize: 15,
                                                       color: Colors.grey,
