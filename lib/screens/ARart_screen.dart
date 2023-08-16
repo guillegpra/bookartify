@@ -351,7 +351,9 @@ class _ARArtState extends State<ARArt> {
   Future<void> onPlaneOrPointTapped(
       List<ARHitTestResult> hitTestResults) async {
     await onRemoveEverything();
-
+    setState(() {
+      sliderValue = 0.5;
+    });
     var singleHitTestResult = hitTestResults.firstWhere(
         (hitTestResult) => hitTestResult.type == ARHitTestResultType.plane);
     if (singleHitTestResult != null) {
