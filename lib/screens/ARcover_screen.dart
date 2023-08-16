@@ -331,7 +331,9 @@ Future<void> onTakeScreenshot() async {
 
   Future<void> onPlaneOrPointTapped(List<ARHitTestResult> hitTestResults) async {
       await onRemoveEverything();
-     
+      setState(() {
+        sliderValue = 0.2;
+      });     
       var singleHitTestResult = hitTestResults.firstWhere(
           (hitTestResult) => hitTestResult.type == ARHitTestResultType.plane);
       if (singleHitTestResult != null) {
@@ -405,7 +407,3 @@ var newNode = ARNode(
     //rotatedNode.transform = newTransform;
   }
 }
-
-
-
-
