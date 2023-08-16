@@ -327,76 +327,119 @@ class _ArtSoloScreenState extends State<ArtSoloScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          if (userId == widget.post["user_id"].toString()) {
+                    Visibility(
+                      visible: userId == widget.post["user_id"].toString(),
+                      child: Expanded(
+                        child: ElevatedButton(
+                          onPressed: () async {
                             widget.type == "art"
-                                ? deleteArt(
-                                    userId, widget.post["id"].toString())
-                                : deleteCover(
-                                    userId, widget.post["id"].toString());
+                                ? await deleteArt(
+                                userId, widget.post["id"].toString())
+                                : await deleteCover(
+                                userId, widget.post["id"].toString());
                             Navigator.pop(context);
                             // TODO: reload page after deleting
-                          } else {
-                            if (widget.type == "art" && !isSaved) {
-                              await bookmarkArt(
-                                  userId, widget.post["id"].toString());
-                            } else if (widget.type == "art" && isSaved) {
-                              await unbookmarkArt(
-                                  userId, widget.post["id"].toString());
-                            } else if (widget.type == "cover" && !isSaved) {
-                              await bookmarkCover(
-                                  userId, widget.post["id"].toString());
-                            } else {
-                              await unbookmarkCover(
-                                  userId, widget.post["id"].toString());
-                            }
-
-                            setState(() {
-                              isSaved = !isSaved;
-                            });
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 192, 162, 73),
-                          foregroundColor: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.5),
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                            const Color.fromARGB(255, 192, 162, 73),
+                            foregroundColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.5),
+                            ),
                           ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 10,
-                            horizontal: 0,
-                          ),
-                          child: FutureBuilder<String>(
-                            future: getButtonText(),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              } else if (snapshot.hasError) {
-                                return Text("Error ${snapshot.error}");
-                              } else {
-                                return Text(
-                                  snapshot.data!,
-                                  style: GoogleFonts.poppins(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400),
-                                );
-                              }
-                            },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 10,
+                              horizontal: 0,
+                            ),
+                            child: Text(
+                              "Delete",
+                              style: GoogleFonts.poppins(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      width: 10,
+                    Visibility(
+                      visible: userId == widget.post["user_id"].toString(),
+                      child: const SizedBox(
+                        width: 10,
+                      ),
                     ),
+                    // Expanded(
+                    //   child: ElevatedButton(
+                    //     onPressed: () async {
+                    //       if (userId == widget.post["user_id"].toString()) {
+                    //         widget.type == "art"
+                    //             ? deleteArt(
+                    //                 userId, widget.post["id"].toString())
+                    //             : deleteCover(
+                    //                 userId, widget.post["id"].toString());
+                    //         Navigator.pop(context);
+                    //         // TODO: reload page after deleting
+                    //       } else {
+                    //         if (widget.type == "art" && !isSaved) {
+                    //           await bookmarkArt(
+                    //               userId, widget.post["id"].toString());
+                    //         } else if (widget.type == "art" && isSaved) {
+                    //           await unbookmarkArt(
+                    //               userId, widget.post["id"].toString());
+                    //         } else if (widget.type == "cover" && !isSaved) {
+                    //           await bookmarkCover(
+                    //               userId, widget.post["id"].toString());
+                    //         } else {
+                    //           await unbookmarkCover(
+                    //               userId, widget.post["id"].toString());
+                    //         }
+                    //
+                    //         setState(() {
+                    //           isSaved = !isSaved;
+                    //         });
+                    //       }
+                    //     },
+                    //     style: ElevatedButton.styleFrom(
+                    //       backgroundColor:
+                    //           const Color.fromARGB(255, 192, 162, 73),
+                    //       foregroundColor: Colors.black,
+                    //       shape: RoundedRectangleBorder(
+                    //         borderRadius: BorderRadius.circular(12.5),
+                    //       ),
+                    //     ),
+                    //     child: Padding(
+                    //       padding: const EdgeInsets.symmetric(
+                    //         vertical: 10,
+                    //         horizontal: 0,
+                    //       ),
+                    //       child: FutureBuilder<String>(
+                    //         future: getButtonText(),
+                    //         builder: (context, snapshot) {
+                    //           if (snapshot.connectionState ==
+                    //               ConnectionState.waiting) {
+                    //             return const Center(
+                    //               child: CircularProgressIndicator(),
+                    //             );
+                    //           } else if (snapshot.hasError) {
+                    //             return Text("Error ${snapshot.error}");
+                    //           } else {
+                    //             return Text(
+                    //               snapshot.data!,
+                    //               style: GoogleFonts.poppins(
+                    //                   fontSize: 16,
+                    //                   fontWeight: FontWeight.w400),
+                    //             );
+                    //           }
+                    //         },
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    // const SizedBox(
+                    //   width: 10,
+                    // ),
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () async {
