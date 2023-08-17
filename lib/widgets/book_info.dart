@@ -101,11 +101,163 @@ class _BookInfoState extends State<BookInfo> {
         if (constraints.maxWidth > 1279.0) {
           // Tablet Landscape Mode
           return _buildTabletLandscapeLayout();
+        } else if (constraints.maxWidth > 600) {
+          // Pixel 6 Sized Screen
+          return _buildPortraitLayout();
         } else {
           // Phone/Tablet Portrait Mode
-          return _buildPortraitLayout();
+          return _buildPhoneLayout();
         }
       },
+    );
+  }
+
+  Widget _buildPhoneLayout() {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      width: screenWidth,
+      margin: const EdgeInsets.only(bottom: 8.0, top: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Expanded(
+            flex: 2,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF5EFE1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: widget.book.thumbnailUrl.isNotEmpty
+                      ? FadeInImage.assetNetwork(
+                          placeholder: 'images/search_placeholder_image.jpg',
+                          image: widget.book.thumbnailUrl,
+                          fit: BoxFit.cover,
+                          imageErrorBuilder: (BuildContext context,
+                              Object exception, StackTrace? stackTrace) {
+                            return Image.asset(
+                                'images/search_placeholder_image.jpg',
+                                fit: BoxFit.cover);
+                          },
+                        )
+                      : Image.asset('images/search_placeholder_image.jpg',
+                          fit: BoxFit.cover),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 8.0),
+          Expanded(
+            flex: 3,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Centered title and follow icon
+                Center(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 8.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              widget.book.title,
+                              style: GoogleFonts.dmSerifDisplay(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          const SizedBox(width: 5.0), // Add spacing
+                          GestureDetector(
+                            onTap: _toggleSaveBook,
+                            child: Icon(
+                              isBookSaved ? Icons.check : Icons.add,
+                              size: 30,
+                              color: isBookSaved
+                                  ? const Color(0xFFBFA054)
+                                  : const Color(0xFF2F2F2F),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Text(" by ${widget.book.author}"),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 8.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InfoBox(
+                      title: "Released",
+                      info: formatDate(widget.book.publishedDate),
+                    ),
+                    const SizedBox(width: 10.0),
+                    InfoBox(
+                      title: "Pages",
+                      info: widget.book.pageCount.toString(),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8.0),
+                Column(
+                  // Stack the buttons vertically
+                  mainAxisAlignment:
+                      MainAxisAlignment.center, // Center the buttons
+                  children: [
+                    Container(
+                      width: 208, // Set a specific width for the button
+                      child: UploadButton(
+                        buttonLabel: 'Upload your cover',
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const CoverUploadPage()),
+                          );
+                        },
+                        backgroundColor: const Color(0xFFBFA054),
+                        foregroundColor: const Color(0xFF2F2F2F),
+                        icon: const Icon(
+                          CupertinoIcons.add,
+                          size: 22,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8.0), // Add spacing between buttons
+                    Container(
+                      width: 208, // Set a specific width for the button
+                      child: UploadButton(
+                        buttonLabel: 'Upload your art',
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const ArtUploadPage()),
+                          );
+                        },
+                        backgroundColor: const Color(0xFF2F2F2F),
+                        foregroundColor: const Color(0xFFFBF8F2),
+                        icon: const Icon(
+                          CupertinoIcons.add,
+                          size: 22,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -262,147 +414,149 @@ class _BookInfoState extends State<BookInfo> {
   Widget _buildPortraitLayout() {
     return Container(
       margin: const EdgeInsets.only(bottom: 8.0, top: 8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      child: Column(
         children: [
-          // Original thumbnail size in portrait mode
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF5EFE1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: widget.book.thumbnailUrl.isNotEmpty
-                      ? FadeInImage.assetNetwork(
-                          placeholder: 'images/search_placeholder_image.jpg',
-                          image: widget.book.thumbnailUrl,
-                          fit: BoxFit.cover,
-                          imageErrorBuilder: (BuildContext context,
-                              Object exception, StackTrace? stackTrace) {
-                            return Image.asset(
+          // Thumbnail
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                flex: 2,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF5EFE1),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: widget.book.thumbnailUrl.isNotEmpty
+                          ? FadeInImage.assetNetwork(
+                              placeholder:
+                                  'images/search_placeholder_image.jpg',
+                              image: widget.book.thumbnailUrl,
+                              fit: BoxFit.cover,
+                              imageErrorBuilder: (BuildContext context,
+                                  Object exception, StackTrace? stackTrace) {
+                                return Image.asset(
+                                  'images/search_placeholder_image.jpg',
+                                  fit: BoxFit.cover,
+                                );
+                              },
+                            )
+                          : Image.asset(
                               'images/search_placeholder_image.jpg',
                               fit: BoxFit.cover,
-                            );
-                          },
-                        )
-                      : Image.asset(
-                          'images/search_placeholder_image.jpg',
-                          fit: BoxFit.cover,
-                        ),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 8.0),
-          Expanded(
-            flex: 3,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Centered title and follow icon
-                Center(
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 16.0), // Add more space here
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              widget.book.title,
-                              style: GoogleFonts.dmSerifDisplay(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              ),
-                              overflow: TextOverflow.ellipsis,
                             ),
-                          ),
-                          const SizedBox(width: 8.0), // Add spacing
-                          GestureDetector(
-                            onTap: _toggleSaveBook,
-                            child: Icon(
-                              isBookSaved ? Icons.check : Icons.add,
-                              size: 30,
-                              color: isBookSaved
-                                  ? const Color(0xFFBFA054)
-                                  : const Color(0xFF2F2F2F),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Text(" by ${widget.book.author}"),
-                    ],
+                    ),
                   ),
                 ),
-
-                const SizedBox(height: 8.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+              ),
+              Expanded(
+                flex: 3,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    InfoBox(
-                      title: "Released",
-                      info: formatDate(widget.book.publishedDate),
+                    // Centered title and follow icon
+                    Center(
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 8.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                widget.book.title,
+                                style: GoogleFonts.dmSerifDisplay(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(width: 8.0), // Add spacing
+                              GestureDetector(
+                                onTap: _toggleSaveBook,
+                                child: Icon(
+                                  isBookSaved ? Icons.check : Icons.add,
+                                  size: 30,
+                                  color: isBookSaved
+                                      ? const Color(0xFFBFA054)
+                                      : const Color(0xFF2F2F2F),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Text(" by ${widget.book.author}"),
+                        ],
+                      ),
                     ),
-                    const SizedBox(width: 10.0),
-                    InfoBox(
-                      title: "Pages",
-                      info: widget.book.pageCount.toString(),
+                    const SizedBox(height: 8.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InfoBox(
+                          title: "Released",
+                          info: formatDate(widget.book.publishedDate),
+                        ),
+                        const SizedBox(width: 10.0),
+                        InfoBox(
+                          title: "Pages",
+                          info: widget.book.pageCount.toString(),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8.0),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 200,
+                          child: UploadButton(
+                            buttonLabel: 'Upload your cover',
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const CoverUploadPage(),
+                                ),
+                              );
+                            },
+                            backgroundColor: const Color(0xFFBFA054),
+                            foregroundColor: const Color(0xFF2F2F2F),
+                            icon: const Icon(
+                              CupertinoIcons.add,
+                              size: 22,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8.0),
+                        SizedBox(
+                          width: 200,
+                          child: UploadButton(
+                            buttonLabel: 'Upload your art',
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const ArtUploadPage(),
+                                ),
+                              );
+                            },
+                            backgroundColor: const Color(0xFF2F2F2F),
+                            foregroundColor: const Color(0xFFFBF8F2),
+                            icon: const Icon(
+                              CupertinoIcons.add,
+                              size: 22,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-                const SizedBox(height: 8.0),
-                Column(
-                  // Stack the buttons vertically
-                  mainAxisAlignment:
-                      MainAxisAlignment.center, // Center the buttons
-                  children: [
-                    SizedBox(
-                      width: 210, // Set a specific width for the button
-                      child: UploadButton(
-                        buttonLabel: 'Upload your cover',
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const CoverUploadPage()));
-                        },
-                        backgroundColor: const Color(0xFFBFA054),
-                        foregroundColor: const Color(0xFF2F2F2F),
-                        icon: const Icon(
-                          CupertinoIcons.add,
-                          size: 22,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 1.0), // Add spacing between buttons
-                    SizedBox(
-                      width: 210, // Set a specific width for the button
-                      child: UploadButton(
-                        buttonLabel: 'Upload your art',
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const ArtUploadPage()));
-                        },
-                        backgroundColor: const Color(0xFF2F2F2F),
-                        foregroundColor: const Color(0xFFFBF8F2),
-                        icon: const Icon(
-                          CupertinoIcons.add,
-                          size: 22,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),
