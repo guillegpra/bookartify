@@ -150,7 +150,7 @@ class _BookInfoState extends State<BookInfo> {
               ),
             ),
           ),
-          const SizedBox(width: 8.0),
+
           Expanded(
             flex: 3,
             child: Column(
@@ -164,16 +164,13 @@ class _BookInfoState extends State<BookInfo> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Expanded(
-                            // Wrap the title in an Expanded widget
-                            child: Text(
-                              widget.book.title,
-                              style: GoogleFonts.dmSerifDisplay(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              ),
-                              overflow: TextOverflow.ellipsis,
+                          Text(
+                            widget.book.title,
+                            style: GoogleFonts.dmSerifDisplay(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
                             ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                           const SizedBox(width: 8.0), // Add spacing
                           GestureDetector(
@@ -218,7 +215,11 @@ class _BookInfoState extends State<BookInfo> {
                       child: UploadButton(
                         buttonLabel: 'Upload your cover',
                         onPressed: () {
-                          // TODO
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const CoverUploadPage()),
+                          );
                         },
                         backgroundColor: const Color(0xFFBFA054),
                         foregroundColor: const Color(0xFF2F2F2F),
@@ -234,7 +235,11 @@ class _BookInfoState extends State<BookInfo> {
                       child: UploadButton(
                         buttonLabel: 'Upload your art',
                         onPressed: () {
-                          // TODO
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const ArtUploadPage()),
+                          );
                         },
                         backgroundColor: const Color(0xFF2F2F2F),
                         foregroundColor: const Color(0xFFFBF8F2),
