@@ -167,7 +167,9 @@ class _ArtSoloScreenState extends State<ArtSoloScreen> {
                                 text: TextSpan(
                                   children: [
                                     TextSpan(
-                                      text: 'By ',
+                                      text: widget.post["type"]
+                                          .toString() == "art" ? 'Artwork by '
+                                          : 'Cover by ',
                                       style: GoogleFonts.poppins(
                                         fontSize: 15,
                                         color: Colors.black,
