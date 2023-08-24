@@ -67,5 +67,10 @@
     <!-- Photo library permission -->
     <key>NSPhotoLibraryUsageDescription</key>
     <string>BookARtify needs access to the photo library to upload art/cover.</string>
+    <!-- Unity -->
+    <key>io.flutter.embedded_views_preview</key>
+    <string>YES</string>
+    <key>Privacy - Camera Usage Description</key>
+    <string>Camera permission is required for barcode scanning and AR features.</string>
 </dict>
 </plist>
