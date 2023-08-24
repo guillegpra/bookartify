@@ -1,5 +1,5 @@
 import 'package:bookartify/home_page.dart';
-import 'package:bookartify/services/usernames_db.dart';
+import 'package:bookartify/services/database_api.dart';
 import 'package:bookartify/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -66,14 +66,14 @@ class _UsernamePageState extends State<UsernamePage> {
                 width: double.infinity,
                 child: ElevatedButton(
                     onPressed: () async {
-                      if (!(await usernameAvailable(_username))) {
+                      if (!(await isUsernameAvailable(_username))) {
                         Utils.showSnackBar("Username is already taken", true);
                         return;
                       }
 
                       User? user = FirebaseAuth.instance.currentUser;
                       // add username to database
-                      await addUsername(user!.uid, _username);
+                      await updateUsername(user!.uid, _username);
 
                       // Redirect to the homepage
                       Navigator.pushReplacement(

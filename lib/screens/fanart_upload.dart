@@ -1,6 +1,5 @@
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:bookartify/services/usernames_db.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -58,7 +57,7 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
   Future<void> _fetchCurrentUsername() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      final String? username = await getUsername(user.uid);
+      final String username = await getUsernameById(user.uid);
       setState(() {
         _currentUsername = username ?? '';
         _usernameController.text = _currentUsername;
@@ -162,7 +161,7 @@ class _ArtUploadPageState extends State<ArtUploadPage> {
 
         // Fetch the username of the poster
         String? username =
-            await getUsername(mostRecentPost['user_id'].toString());
+            await getUsernameById(mostRecentPost['user_id'].toString());
 
         // Add the username to the map and return it
         mostRecentPost['username'] = username ?? 'Unknown Artist';

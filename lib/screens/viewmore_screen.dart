@@ -1,10 +1,8 @@
 import 'package:bookartify/models/book_model.dart';
 import 'package:bookartify/screens/book_screen.dart';
 import 'package:bookartify/screens/profile_screen.dart';
-import 'package:bookartify/services/google_books_api.dart';
 import 'package:bookartify/services/database_api.dart' as database_api;
 import 'package:bookartify/widgets/icons_and_buttons/save_icon.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -12,12 +10,9 @@ import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:bookartify/widgets/icons_and_buttons/share_button.dart';
 import 'package:bookartify/widgets/icons_and_buttons/like_icon.dart';
-import 'package:bookartify/widgets/search/inactive_searchbar.dart';
 import 'package:bookartify/screens/art_solo.dart';
-import 'package:bookartify/services/usernames_db.dart';
 import 'package:bookartify/screens/ARart_screen.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
-import 'package:bookartify/screens/bookcover_edit.dart';
 
 class ViewMoreScreen extends StatefulWidget {
   const ViewMoreScreen({Key? key, required this.genre, required this.posts})

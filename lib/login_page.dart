@@ -1,6 +1,6 @@
 import 'package:bookartify/home_page.dart';
+import 'package:bookartify/services/database_api.dart';
 import 'package:bookartify/services/register.dart';
-import 'package:bookartify/services/usernames_db.dart';
 import 'package:bookartify/username_page.dart';
 import 'package:bookartify/widgets/register/register_button.dart';
 import 'package:bookartify/widgets/divider_text.dart';
@@ -94,9 +94,9 @@ class LoginPage extends StatelessWidget {
 
                     if (user != null) {
                       print("-----------------------------------------------");
-                      print(getUsername(user.uid));
+                      print(getUsernameById(user.uid));
                       Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (_) => getUsername(user.uid) != null ? const HomePage() : const UsernamePage())
+                        MaterialPageRoute(builder: (_) => getUsernameById(user.uid) != null ? const HomePage() : const UsernamePage())
                       );
                     }
                   },
